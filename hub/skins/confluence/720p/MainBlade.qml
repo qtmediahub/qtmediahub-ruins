@@ -30,14 +30,21 @@ Blade {
     bladeWidth: 400
     bladePixmap: themeResourcePath + "/media/HomeBlade.png"
 
-    property variant audioLoader: Qt.createComponent("QMHAudio.qml");
-    property variant clickSample
+    property variant clickComponent: Qt.createComponent("components/QMHAudio.qml");
+    property variant menuSoundEffect
+
+    Component.onCompleted: {
+        if(clickComponent.status == Component.Ready) {
+            menuSoundEffect = clickComponent.createObject(mainBlade)
+            menuSoundEffect.source = themeResourcePath + "/sounds/click.wav"
+        }
+    }
 
     ListModel {
         //Eventually plugins
         id: menuList
         ListElement {
-            name: "Scripts"
+            name: QT_TR_NOOP("Scripts")
             backgroundImage: "programs.jpg"
             mHasSubBlade: false
         }
@@ -127,13 +134,8 @@ Blade {
         }
         onItemSelected: {
             background.asyncSetImage(currentItem.background)
-            if(clickSample == undefined) {
-                if(audioLoader.status == Loader.Ready) {
-                    clickSample = audioLoader.createObject(mainBladeList)
-                    clickSample.source = themeResourcePath + "/sounds/click.wav"
-                }
-            } else {
-                clickSample.play()
+            if(menuSoundEffect != undefined) {
+                menuSoundEffect.play()
             }
         }
         Keys.onEnterPressed:

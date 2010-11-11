@@ -18,13 +18,15 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 ****************************************************************************/
 
 import QtQuick 1.0
-import CustomCursor 1.0
+import "components"
+
 //import "weather"
 
 FocusScope {
     id: confluence
 
     property string themeResourcePath: skinPath + "/confluence/3rdparty/skin.confluence"
+    property variant customCursor: Qt.createComponent("components/Cursor.qml")
 
     //Will scale if loading 720p theme at different res
     height: 720; width: 1280
@@ -120,6 +122,11 @@ FocusScope {
     Keys.onEscapePressed:
         confluence.state = "showingRootMenu"
 
+    Component.onCompleted: {
+        if(customCursor.status == Component.Ready)
+            customCursor.createObject(confluence)
+    }
+
     Background{ id: background }
 
     MainBlade { id: blade; focus: true }
@@ -135,12 +142,6 @@ FocusScope {
     WebDialog { id: webDialog }
 
     Dashboard { id: dashBoard }
-
-    CustomCursor {
-        idleTimeout: 2
-        defaultCursorPath: themeResourcePath + "/media/pointer-focus.png"
-        clickedCursorPath: themeResourcePath + "/media/pointer-focus-click.png"
-    }
 
     Image {
         id: banner
