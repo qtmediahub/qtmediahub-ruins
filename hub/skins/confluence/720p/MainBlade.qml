@@ -44,7 +44,7 @@ Blade {
         //Eventually plugins
         id: menuList
         ListElement {
-            name: QT_TR_NOOP("Scripts")
+            name: "Scripts"
             backgroundImage: "programs.jpg"
             mHasSubBlade: false
         }
