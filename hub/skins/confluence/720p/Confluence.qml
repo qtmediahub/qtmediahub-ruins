@@ -102,10 +102,6 @@ FocusScope {
         State {
             name: "showingDashboard"
             PropertyChanges {
-                target: blade
-                state: "closed"
-            }
-            PropertyChanges {
                 target: dashBoard
                 state: "visible"
             }
@@ -141,7 +137,7 @@ FocusScope {
 
     WebDialog { id: webDialog }
 
-    Dashboard { id: dashBoard }
+    ConfluenceDashboard { id: dashBoard }
 
     Image {
         id: banner
