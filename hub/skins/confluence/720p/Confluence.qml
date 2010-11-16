@@ -25,7 +25,7 @@ import "components"
 FocusScope {
     id: confluence
 
-    property string themeResourcePath: skinPath + "/confluence/3rdparty/skin.confluence"
+    property string themeResourcePath: backend.skinPath + "/confluence/3rdparty/skin.confluence"
     property variant customCursor: Qt.createComponent("components/Cursor.qml")
 
     //Will scale if loading 720p theme at different res
@@ -85,7 +85,7 @@ FocusScope {
                 target: webDialog
                 state: "visible"
                 //FIXME: Obviously remove hard coded path
-                url: resourcePath + "/Google\ Maps/Nokia.html"
+                url: backend.resourcePath + "/Google\ Maps/Nokia.html"
             }
         },
         State {
