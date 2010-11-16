@@ -24,7 +24,7 @@ Item {
     id: menuItem
     width: parent.width; height: entry.height
 
-    property bool hasSubBlade: mHasSubBlade
+    property bool hasSubBlade: model.modelData.browseable
     property string background: backgroundImage
     property alias textColor: entry.color
     property alias text: entry.text
@@ -70,7 +70,7 @@ Item {
         id: entry
         anchors { right: parent.right; rightMargin: 20 }
         font.pointSize: 60
-        text: name
+        text: model.modelData.name
         horizontalAlignment: Text.AlignRight
         transformOrigin: Item.Right
         width: parent.width

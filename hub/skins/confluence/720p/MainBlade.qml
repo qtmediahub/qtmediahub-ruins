@@ -40,6 +40,7 @@ Blade {
         }
     }
 
+    /* Cheerio mofo
     ListModel {
         //Eventually plugins
         id: menuList
@@ -93,7 +94,7 @@ Blade {
             backgroundImage: "system.jpg"
             mHasSubBlade: false
         }
-    }
+    }*/
 
     Item {
         id: bannerPlaceHolder
@@ -117,7 +118,7 @@ Blade {
         height: parent.height - 200
         width: bladeWidth
 
-        model: menuList
+        model: backend.engines //menuList
         delegate:
             BladeListItem { }
         onItemTriggered: {
