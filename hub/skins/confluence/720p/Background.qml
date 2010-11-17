@@ -41,11 +41,12 @@ Item {
         id: temp
     }
 
-    function asyncSetImage(fileName) {
-        if(fileName == null)
+    function asyncSetRole(role) {
+        if(role == null)
             return
 
-        imageFilename = fileName
+        //console.log("Getting image for " + role)
+        imageFilename = bgmap[role]
         staggeredTimer.start()
     }
 
@@ -54,5 +55,20 @@ Item {
         primary.source = backgroundPath + fileName
         temp.opacity = 1
         transition()
+    }
+
+    //FIXME: Can't decide whether this is genius or idiocy, please let me know
+    Item {
+        id: bgmap
+        property string music: "music.jpg"
+        property string videos: "videos.jpg"
+        property string scripts: "programs.jpg"
+        property string weather: "weather.jpg"
+        property string pictures: "pictures.jpg"
+        property string programs: "programs.jpg"
+        property string system: "system.jpg"
+        property string web: "system.jpg"
+        property string maps: "system.jpg"
+        property string dashboard: "system.jpg"
     }
 }

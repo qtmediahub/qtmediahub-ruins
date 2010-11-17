@@ -24,8 +24,8 @@ Item {
     id: menuItem
     width: parent.width; height: entry.height
 
+    property string role: model.modelData.role
     property bool hasSubBlade: model.modelData.browseable
-    property string background: backgroundImage
     property alias textColor: entry.color
     property alias text: entry.text
 

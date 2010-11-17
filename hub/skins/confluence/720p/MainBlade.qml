@@ -40,62 +40,6 @@ Blade {
         }
     }
 
-    /* Cheerio mofo
-    ListModel {
-        //Eventually plugins
-        id: menuList
-        ListElement {
-            name: "Scripts"
-            backgroundImage: "programs.jpg"
-            mHasSubBlade: false
-        }
-        ListElement {
-            name: "Weather"
-            backgroundImage: "weather.jpg"
-            mHasSubBlade: false
-        }
-        ListElement {
-            name: "Pictures"
-            backgroundImage: "pictures.jpg"
-            mHasSubBlade: false
-        }
-        ListElement {
-            name: "Videos"
-            backgroundImage: "videos.jpg"
-            mHasSubBlade: true
-        }
-        ListElement {
-            name: "Music"
-            backgroundImage: "music.jpg"
-            mHasSubBlade: true
-        }
-        ListElement {
-            name: "Programs"
-            backgroundImage: "programs.jpg"
-            mHasSubBlade: false
-        }
-        ListElement {
-            name: "System"
-            backgroundImage: "system.jpg"
-            mHasSubBlade: false
-        }
-        ListElement {
-            name: "Web"
-            backgroundImage: "system.jpg"
-            mHasSubBlade: false
-        }
-        ListElement {
-            name: "Maps"
-            backgroundImage: "system.jpg"
-            mHasSubBlade: false
-        }
-        ListElement {
-            name: "Dashboard"
-            backgroundImage: "system.jpg"
-            mHasSubBlade: false
-        }
-    }*/
-
     Item {
         id: bannerPlaceHolder
         height: banner.height
@@ -134,7 +78,7 @@ Blade {
                 confluence.state = "showingDashboard"
         }
         onItemSelected: {
-            background.asyncSetImage(currentItem.background)
+            background.asyncSetRole(currentItem.role)
             if(menuSoundEffect != undefined) {
                 menuSoundEffect.play()
             }
