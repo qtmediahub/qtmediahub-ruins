@@ -25,6 +25,7 @@ FocusScope {
 
     property string generalResourcePath: backend.resourcePath
     property string themeResourcePath: backend.skinPath + "/confluence/3rdparty/skin.confluence"
+    property variant weatherDialog
 
     //Will scale if loading 720p theme at different res
     height: 720; width: 1280
@@ -129,7 +130,7 @@ FocusScope {
         
         var weatherDialogLoader = Qt.createComponent("weather/WeatherDialog.qml")
         if(weatherDialogLoader.status == Component.Ready)
-            weatherDialogLoader.createObject(confluence)
+            weatherDialog = weatherDialogLoader.createObject(confluence)
     }
 
     //Create Confluence specific plugins
