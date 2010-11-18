@@ -119,6 +119,10 @@ FocusScope {
     Keys.onEscapePressed:
         confluence.state = "showingRootMenu"
 
+    // Just convenience remove for real use!!!!!!!
+    Keys.onDeletePressed:
+        Qt.quit();
+
     Component.onCompleted: {
         if(customCursor.status == Component.Ready)
             customCursor.createObject(confluence)
@@ -150,5 +154,10 @@ FocusScope {
         id: banner
         z: 1000
         source: themeResourcePath + "/media/Confluence_Logo.png"
+    }
+
+    BusyIndicator {
+        on: true
+        anchors.centerIn: parent
     }
 }
