@@ -158,6 +158,7 @@ FocusScope {
 
     BusyIndicator {
         on: true
-        anchors.centerIn: parent
+        anchors.right: parent.right
+        anchors.top: parent.top
     }
 }

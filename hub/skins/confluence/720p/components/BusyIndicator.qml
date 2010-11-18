@@ -25,6 +25,7 @@ Image {
 
     source: themeResourcePath + "/media/busy.png"
     visible: root.on
+    smooth: true
 
     NumberAnimation on rotation {
         running: root.on; from: 0; to: 360; loops: Animation.Infinite; duration: 1200

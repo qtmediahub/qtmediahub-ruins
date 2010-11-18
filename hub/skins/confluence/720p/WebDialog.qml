@@ -24,7 +24,6 @@ import "components"
 Dialog {
     id: webDialog
     property alias url: webView.url
-    property string pendingUrl
 
     Flickable {
         id: webViewport
@@ -52,21 +51,13 @@ Dialog {
     }
 
     function onVisibleTransitionComplete() {
-        if(pendingUrl != "") {
-            webView.url = pendingUrl
-            pendingUrl = ""
-        }
         webView.forceActiveFocus()
     }
-    
-    function loadPage(url) {
-        if(webDialog.state == "visible")
-            webView.url = url
-        else
-            pendingUrl = url
 
+    function loadPage(url) {
+        webView.url = url
         webViewport.contentY = 0
-        
+
         confluence.state = "showingWebDialog"
     }
 }

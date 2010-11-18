@@ -25,8 +25,11 @@ FocusScope {
 
     anchors.centerIn: parent
 
-    width: 0; height: 0
     opacity: 0; visible: false
+    scale: 0
+
+    width: frame.width
+    height: frame.height
 
     property alias defaultDecoration: frame.visible
 
@@ -39,8 +42,7 @@ FocusScope {
             target: dialog
             visible: true
             opacity: 1
-            width: frame.width
-            height: frame.height
+            scale: 1
         }
     }
 
@@ -51,8 +53,7 @@ FocusScope {
                 ScriptAction { script: onHideTransitionStarted() }
                 ParallelAnimation {
                     NumberAnimation { property: "opacity"; duration: 500; easing.type: Easing.InOutQuad }
-                    NumberAnimation { property: "width"; duration: 500; easing.type: Easing.InOutQuad }
-                    NumberAnimation { property: "height"; duration: 500; easing.type: Easing.InOutQuad }
+                    NumberAnimation { property: "scale"; duration: 500; easing.type: Easing.InOutQuad }
                 }
                 PropertyAction { target: dialog; property: "visible"; value: false }
             }
@@ -63,8 +64,7 @@ FocusScope {
                 PropertyAction { target: dialog; property: "visible"; value: true }
                 ParallelAnimation {
                     NumberAnimation { property: "opacity"; duration: 500; easing.type: Easing.InOutQuad }
-                    NumberAnimation { property: "width"; duration: 500; easing.type: Easing.InOutQuad }
-                    NumberAnimation { property: "height"; duration: 500; easing.type: Easing.InOutQuad }
+                    NumberAnimation { property: "scale"; duration: 500; easing.type: Easing.InOutQuad }
                 }
                 ScriptAction { script: onVisibleTransitionComplete() }
                 ScriptAction { script: dialog.forceActiveFocus() }
