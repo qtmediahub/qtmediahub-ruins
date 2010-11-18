@@ -64,9 +64,13 @@ FocusScope {
             itemTriggered()
         Keys.onReturnPressed:
             itemTriggered()
-        Keys.onRightPressed:
-            if(currentItem.hasSubBlade)
-                mainBlade.subMenu.state = "open"
+        Keys.onRightPressed: {
+            if(currentItem.hasSubBlade) {
+                mainBlade.subMenu.state = "open";
+                // not really nice should be also a property of the currentItem, but I don't know how to add a QList<QObject*> property
+                mainBlade.subMenuList.model = backend.engines[currentIndex].childItems;
+            }
+        }
     }
 
     ButtonList {
