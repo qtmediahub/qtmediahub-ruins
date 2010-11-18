@@ -21,6 +21,7 @@ import QtQuick 1.0
 
 FocusScope {
     id: bladeViewport
+    z: 10
     width: blade.width + blade.x; height: parent.height
 
     clip: true
@@ -32,6 +33,9 @@ FocusScope {
     property alias bladePixmap: bladePixmap.source
     property alias bladeX: blade.x
     property alias bladeContent: content
+    //pixmap specific offset (pixmap alpha!)
+    property int bladeRightMargin: 30
+    property string visibleContent
 
     state:  "closed"
 
@@ -68,6 +72,21 @@ FocusScope {
         if(activeFocus == false)
             state = "closed"
 
+    onVisibleContentChanged:
+        setCurrentContent(visibleContent)
+
+    function setCurrentContent(contentName)
+    {
+        for(var i = 0; i < content.children.length; ++i)
+        {
+            var currentChild = content.children[i]
+            if(currentChild.name == contentName)
+                currentChild.visible = true
+            else
+                currentChild.visible = false
+        }
+    }
+
     Item {
         id: blade
         clip: true
@@ -78,7 +97,7 @@ FocusScope {
         }
         FocusScope {
             id: content
-            anchors.right: blade.right;
+            anchors { right: blade.right; rightMargin: bladeRightMargin }
             width: blade.width; height: blade.height
         }
     }

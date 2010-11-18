@@ -25,13 +25,17 @@ Blade {
     clip: false
 
     property alias subMenu : subBlade
-    property alias subMenuList : list
+    property variant rootMenu
+    property variant subMenuList
 
     bladeWidth: 400
     bladePixmap: themeResourcePath + "/media/HomeBlade.png"
 
-    RootMenu {
-        id: rootMenu
+    Component.onCompleted: {
+        //Want root item parented to mainBlade.bladeContent not mainBlade
+        var rootMenuLoader = Qt.createComponent("RootMenu.qml")
+        if(rootMenuLoader.status == Component.Ready)
+            rootMenu = rootMenuLoader.createObject(mainBlade.bladeContent)
     }
 
     Blade {
@@ -49,19 +53,11 @@ Blade {
             state = "closed"
             rootMenu.forceActiveFocus()
         }
-
-        ListView {
-            id: list
-            anchors.fill: parent
-            delegate: ConfluenceText {
-                id: delegate
-                anchors { right: parent.right; rightMargin: 20 }
-                font.pointSize: 30
-                text: model.modelData.name
-                horizontalAlignment: Text.AlignRight
-                transformOrigin: Item.Right
-                width: parent.width
-            }
+        Component.onCompleted: {
+            //Want root item parented to mainBlade.bladeContent not mainBlade
+            var subBladeMenuLoader = Qt.createComponent("SubBladeMenu.qml")
+            if(subBladeMenuLoader.status == Component.Ready)
+                subMenuList = subBladeMenuLoader.createObject(subBlade.bladeContent)
         }
     }
 }

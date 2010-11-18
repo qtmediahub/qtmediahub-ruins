@@ -5,8 +5,10 @@ import "components"
 FocusScope {
     id: rootMenu
     height: parent.height; width: parent.width
+
     property variant clickComponent: Qt.createComponent("components/QMHAudio.qml");
     property variant menuSoundEffect
+    property string name: "rootmenu"
 
     Component.onCompleted: {
         if(clickComponent.status == Component.Ready) {
@@ -35,7 +37,7 @@ FocusScope {
         keyNavigationWraps: true
         //highlightFollowsCurrentItem: true
 
-        anchors { right: rootMenu.right; rightMargin: 30; top: bannerPlaceHolder.bottom; bottom: buttonGrid.top }
+        anchors { right: rootMenu.right; top: bannerPlaceHolder.bottom; bottom: buttonGrid.top }
 
         width: bladeWidth
 
@@ -75,7 +77,7 @@ FocusScope {
 
     ButtonList {
         id: buttonGrid
-        x: mainBlade.bladeX + 5; y: parent.height - height;
+        x: mainBlade.bladeX + 5 + bladeRightMargin; y: parent.height - height;
         spacing: 2
         width: parent.width
 

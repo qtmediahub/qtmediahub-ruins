@@ -20,13 +20,11 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 import QtQuick 1.0
 import "components"
 
-//import "weather"
-
 FocusScope {
     id: confluence
 
+    property string generalResourcePath: backend.resourcePath
     property string themeResourcePath: backend.skinPath + "/confluence/3rdparty/skin.confluence"
-    property variant customCursor: Qt.createComponent("components/Cursor.qml")
 
     //Will scale if loading 720p theme at different res
     height: 720; width: 1280
@@ -40,6 +38,7 @@ FocusScope {
             PropertyChanges {
                 target: blade
                 state: "open"
+                visibleContent: rootMenu.name
             }
         },
         State {
@@ -47,12 +46,12 @@ FocusScope {
             PropertyChanges {
                 target: blade
                 state: "closed"
+                visibleContent: weatherDialog.weatherMenu.name
             }
-            /*
             PropertyChanges {
                 target: weatherDialog
                 state: "visible"
-            }*/
+            }
         },
         State {
             name: "showingSystemDialog"
@@ -124,14 +123,18 @@ FocusScope {
         Qt.quit();
 
     Component.onCompleted: {
-        if(customCursor.status == Component.Ready)
-            customCursor.createObject(confluence)
+        var customCursorLoader = Qt.createComponent("components/Cursor.qml")
+        if(customCursorLoader.status == Component.Ready)
+            customCursorLoader.createObject(confluence)
+        
+        var weatherDialogLoader = Qt.createComponent("weather/WeatherDialog.qml")
+        if(weatherDialogLoader.status == Component.Ready)
+            weatherDialogLoader.createObject(confluence)
     }
 
     //Create Confluence specific plugins
     Engine { name: "Web"; role: "web" }
     Engine { name: "Maps"; role: "maps" }
-    Engine { name: "Weather"; role: "weather" }
     Engine { name: "Dashboard"; role: "dashboard" }
 
     Background{ id: background }
@@ -139,8 +142,6 @@ FocusScope {
     MainBlade { id: blade; focus: true }
 
     ExitDialog { id: exitDialog }
-
-//    WeatherDialog { id: weatherDialog }
 
     SystemDialog { id: systemDialog }
 
