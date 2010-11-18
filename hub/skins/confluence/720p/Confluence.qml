@@ -48,10 +48,11 @@ FocusScope {
                 target: blade
                 state: "closed"
             }
+            /*
             PropertyChanges {
                 target: weatherDialog
                 state: "visible"
-            }
+            }*/
         },
         State {
             name: "showingSystemDialog"
@@ -122,6 +123,12 @@ FocusScope {
         if(customCursor.status == Component.Ready)
             customCursor.createObject(confluence)
     }
+
+    //Create Confluence specific plugins
+    Engine { name: "Web"; role: "web" }
+    Engine { name: "Maps"; role: "maps" }
+    Engine { name: "Weather"; role: "weather" }
+    Engine { name: "Dashboard"; role: "dashboard" }
 
     Background{ id: background }
 
