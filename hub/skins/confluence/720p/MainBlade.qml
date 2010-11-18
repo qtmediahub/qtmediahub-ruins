@@ -66,15 +66,15 @@ Blade {
         delegate:
             BladeListItem { }
         onItemTriggered: {
-            if(currentItem.text == "Weather")
+            if(currentItem.role == "weather")
                 confluence.state = "showingWeatherDialog"
-            if(currentItem.text == "System")
+            if(currentItem.role == "system")
                 confluence.state = "showingSystemDialog"
-            if(currentItem.text == "Web")
+            if(currentItem.role == "web")
                 confluence.state = "showingWebDialog"
-            if(currentItem.text == "Maps")
+            if(currentItem.role == "maps")
                 confluence.state = "showingMapsDialog"
-            if(currentItem.text == "Dashboard")
+            if(currentItem.role == "dashboard")
                 confluence.state = "showingDashboard"
         }
         onItemSelected: {
