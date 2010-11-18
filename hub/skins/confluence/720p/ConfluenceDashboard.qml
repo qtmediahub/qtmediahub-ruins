@@ -29,7 +29,7 @@ Dashboard {
 
     state: "invisible"
 
-    widgetPath: backend.resourcePath + "/widgets"
+    widgetPath: generalResourcePath + "/widgets"
 
     states: [
         State {

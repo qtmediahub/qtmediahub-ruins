@@ -85,8 +85,7 @@ FocusScope {
             PropertyChanges {
                 target: webDialog
                 state: "visible"
-                //FIXME: Obviously remove hard coded path
-                url: backend.resourcePath + "/Google\ Maps/Nokia.html"
+                url: generalResourcePath + "/Google\ Maps/Nokia.html"
             }
         },
         State {
