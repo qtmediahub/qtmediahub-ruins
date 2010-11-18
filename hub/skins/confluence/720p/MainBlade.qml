@@ -24,91 +24,15 @@ Blade {
     id: mainBlade
     clip: false
 
-    Keys.onLeftPressed:
-        buttonGrid.focusUpperItem()
-
     bladeWidth: 400
     bladePixmap: themeResourcePath + "/media/HomeBlade.png"
 
-    property variant clickComponent: Qt.createComponent("components/QMHAudio.qml");
-    property variant menuSoundEffect
+    property variant rootMenuLoader: Qt.createComponent("RootMenu.qml")
+    property variant rootMenu
 
     Component.onCompleted: {
-        if(clickComponent.status == Component.Ready) {
-            menuSoundEffect = clickComponent.createObject(mainBlade)
-            menuSoundEffect.source = themeResourcePath + "/sounds/click.wav"
-        }
-    }
-
-    Item {
-        id: bannerPlaceHolder
-        height: banner.height
-    }
-
-    ListView {
-        id: mainBladeList
-
-        signal itemTriggered
-        signal itemSelected
-
-        //Oversized fonts being downscaled
-        spacing: -30
-        focus: true
-        keyNavigationWraps: true
-        //highlightFollowsCurrentItem: true
-
-        anchors { right: blade.right; rightMargin: 30; top: bannerPlaceHolder.bottom }
-
-        height: parent.height - 200
-        width: bladeWidth
-
-        model: backend.engines //menuList
-        delegate:
-            BladeListItem { }
-        onItemTriggered: {
-            if(currentItem.role == "weather")
-                confluence.state = "showingWeatherDialog"
-            if(currentItem.role == "system")
-                confluence.state = "showingSystemDialog"
-            if(currentItem.role == "web")
-                confluence.state = "showingWebDialog"
-            if(currentItem.role == "maps")
-                confluence.state = "showingMapsDialog"
-            if(currentItem.role == "dashboard")
-                confluence.state = "showingDashboard"
-        }
-        onItemSelected: {
-            background.asyncSetRole(currentItem.role)
-            if(menuSoundEffect != undefined) {
-                menuSoundEffect.play()
-            }
-        }
-        Keys.onEnterPressed:
-            itemTriggered()
-        Keys.onReturnPressed:
-            itemTriggered()
-        Keys.onRightPressed:
-            if(currentItem.hasSubBlade)
-                mediaBlade.state = "open"
-    }
-
-    ButtonList {
-        id: buttonGrid
-        x: mainBlade.bladeX + 5; y: 650;
-        spacing: 2
-
-        onUpperBoundExceeded: {
-            mainBladeList.focus = true
-        }
-
-        PixmapButton { basePixmap: "home-playmedia"; focusedPixmap: "home-playmedia-FO" }
-        PixmapButton { basePixmap: "home-favourites"; focusedPixmap: "home-favourites-FO" }
-        PixmapButton {
-            basePixmap: "home-power";
-            focusedPixmap: "home-power-FO";
-            onClicked:
-                confluence.state = "showingExitDialog"
-        }
+        if(rootMenuLoader.status == Component.Ready)
+            rootMenu = rootMenuLoader.createObject(mainBlade.bladeContent)
     }
 
     Blade {
@@ -123,7 +47,7 @@ Blade {
 
         Keys.onLeftPressed: {
             state = "closed"
-            mainBladeList.forceActiveFocus()
+            rootMenu.forceActiveFocus()
         }
     }
 }

@@ -31,6 +31,7 @@ FocusScope {
     property alias bladeWidth: blade.width
     property alias bladePixmap: bladePixmap.source
     property alias bladeX: blade.x
+    property alias bladeContent: content
 
     state:  "closed"
 
@@ -69,10 +70,16 @@ FocusScope {
 
     Item {
         id: blade
+        clip: true
         height: parent.height
         Image {
             id: bladePixmap
             anchors.right: blade.right
+        }
+        FocusScope {
+            id: content
+            anchors.right: blade.right;
+            width: blade.width; height: blade.height
         }
     }
 }

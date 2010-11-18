@@ -78,6 +78,7 @@ Item {
             id: mr
             anchors.fill: entry
             hoverEnabled: true
+
             onEntered: {
                 mainBladeList.currentIndex = index
                 mainBladeList.forceActiveFocus()
