@@ -6,11 +6,11 @@ FocusScope {
     id: rootMenu
     height: parent.height; width: parent.width
 
-    property variant clickComponent: Qt.createComponent("components/QMHAudio.qml");
     property variant menuSoundEffect
     property string name: "rootmenu"
 
     Component.onCompleted: {
+        var clickComponent = Qt.createComponent("components/QMHAudio.qml");
         if(clickComponent.status == Component.Ready) {
             menuSoundEffect = clickComponent.createObject(mainBlade)
             menuSoundEffect.source = themeResourcePath + "/sounds/click.wav"
