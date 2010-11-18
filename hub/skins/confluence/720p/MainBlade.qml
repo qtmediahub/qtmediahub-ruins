@@ -24,19 +24,19 @@ Blade {
     id: mainBlade
     clip: false
 
+    property alias subMenu : subBlade
+    property alias subMenuList : list
+
     bladeWidth: 400
     bladePixmap: themeResourcePath + "/media/HomeBlade.png"
 
-    property variant rootMenuLoader: Qt.createComponent("RootMenu.qml")
-    property variant rootMenu
-
-    Component.onCompleted: {
-        if(rootMenuLoader.status == Component.Ready)
-            rootMenu = rootMenuLoader.createObject(mainBlade.bladeContent)
+    RootMenu {
+        id: rootMenu
     }
 
     Blade {
-        id: mediaBlade
+        id: subBlade
+
         bladePeek: 10
         bladeWidth: 200
 

@@ -38,19 +38,19 @@ Item {
     states: [
         State {
             name: 'selected'
-            when: activeFocus && ListView.isCurrentItem && mediaBlade.state == "closed"
+            when: activeFocus && ListView.isCurrentItem && mainBlade.subMenu.state == "closed"
             PropertyChanges { target: menuItem; scale: 1; opacity:  1 }
             StateChangeScript { script: mainBladeList.itemSelected() }
             PropertyChanges { target: subIndicator; opacity: 1 }
         },
         State {
             name: 'triggered'
-            when: ListView.isCurrentItem && mediaBlade.state == "open"
+            when: ListView.isCurrentItem && mainBlade.subMenu.state == "open"
             PropertyChanges { target: menuItem; opacity: 0.5 }
         },
         State {
             name: 'non-triggered'
-            when: !ListView.isCurrentItem && mediaBlade.state == "open"
+            when: !ListView.isCurrentItem && mainBlade.subMenu.state == "open"
             PropertyChanges { target: menuItem; opacity: 0 }
         }
     ]

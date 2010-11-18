@@ -66,7 +66,7 @@ FocusScope {
             itemTriggered()
         Keys.onRightPressed:
             if(currentItem.hasSubBlade)
-                mediaBlade.state = "open"
+                mainBlade.subMenu.state = "open"
     }
 
     ButtonList {
