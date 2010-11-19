@@ -137,9 +137,6 @@ FocusScope {
             console.log(weatherDialogLoader.errorString())
     }
 
-    //FIXME: Want to share this with Web item
-    //Engine { name: "Maps"; role: "maps" }
-
     Background{ id: background }
 
     MainBlade { id: blade; focus: true }

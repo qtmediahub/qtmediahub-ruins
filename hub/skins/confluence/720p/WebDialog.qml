@@ -42,7 +42,8 @@ Dialog {
         webView.url = url
         webViewport.contentY = 0
 
-        confluence.state = "showingWebDialog"
+        confluence.selectedElement = webDialog
+        confluence.state = "showingSelectedElement"
     }
 
     Flickable {
@@ -62,4 +63,5 @@ Dialog {
     }
 
     Engine { name: "Web"; role: "web"; visualElement: webDialog }
+    Engine { name: "Maps"; role: "maps"; visualElement: webDialog; visualElementProperties: ["url", generalResourcePath + "/Google\ Maps/Nokia.html"] }
 }

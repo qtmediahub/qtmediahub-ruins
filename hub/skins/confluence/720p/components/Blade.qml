@@ -76,6 +76,7 @@ FocusScope {
     onVisibleContentChanged:
         setCurrentContent(visibleContent)
 
+
     function setCurrentContent(contentName)
     {
         for(var i = 0; i < content.children.length; ++i)
