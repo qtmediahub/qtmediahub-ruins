@@ -14,6 +14,8 @@ FocusScope {
         if(clickComponent.status == Component.Ready) {
             menuSoundEffect = clickComponent.createObject(mainBlade)
             menuSoundEffect.source = themeResourcePath + "/sounds/click.wav"
+        } else if (clickComponent.status == Component.Error) {
+            console.log(clickComponent.errorString())
         }
     }
 

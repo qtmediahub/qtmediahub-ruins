@@ -127,10 +127,14 @@ FocusScope {
         var customCursorLoader = Qt.createComponent("components/Cursor.qml")
         if(customCursorLoader.status == Component.Ready)
             customCursorLoader.createObject(confluence)
+        else if(customCursorLoader.status == Component.Error)
+            console.log(customCursorLoader.errorString())
         
         var weatherDialogLoader = Qt.createComponent("weather/WeatherDialog.qml")
         if(weatherDialogLoader.status == Component.Ready)
             weatherDialog = weatherDialogLoader.createObject(confluence)
+        else if(weatherDialogLoader.status == Component.Error)
+            console.log(weatherDialogLoader.errorString())
     }
 
     //FIXME: Want to share this with Web item

@@ -36,6 +36,8 @@ Blade {
         var rootMenuLoader = Qt.createComponent("RootMenu.qml")
         if(rootMenuLoader.status == Component.Ready)
             rootMenu = rootMenuLoader.createObject(mainBlade.bladeContent)
+        else if(rootMenuLoader.status == Component.Error)
+            console.log(rootMenuLoader.errorString())
     }
 
     Blade {
@@ -58,6 +60,8 @@ Blade {
             var subBladeMenuLoader = Qt.createComponent("SubBladeMenu.qml")
             if(subBladeMenuLoader.status == Component.Ready)
                 subMenuList = subBladeMenuLoader.createObject(subBlade.bladeContent)
+            else if (SubBladeMenuLoader.status == Component.Ready)
+                console.log(subMenuLoader.errorString())
         }
     }
 }

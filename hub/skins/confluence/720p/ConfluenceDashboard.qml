@@ -101,11 +101,15 @@ Dashboard {
         var list  = db.discoverWidgets()
         for(var i = 0; i < list.length; ++i) {
             var dbComponent = Qt.createComponent("components/DashboardItem.qml")
+            if (dbComponent.status == Component.Error)
+                console.log(dbComponent.errorString())
             var item = dbComponent.createObject(db)
 
             var widget = Qt.createComponent(list[i])
             if(widget.status == Component.Ready)
                 widget.createObject(item.container)
+            else if(widget.status == Component.Error)
+                console.log(widget.errorString())
         }
     }
 }
