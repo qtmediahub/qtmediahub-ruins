@@ -35,7 +35,8 @@ FocusScope {
     property alias bladeContent: content
     //pixmap specific offset (pixmap alpha!)
     property int bladeRightMargin: 30
-    property string visibleContent
+
+    property variant visibleContent
 
     state:  "closed"
 
@@ -80,7 +81,7 @@ FocusScope {
         for(var i = 0; i < content.children.length; ++i)
         {
             var currentChild = content.children[i]
-            if(currentChild.name == contentName)
+            if(currentChild == visibleContent)
                 currentChild.visible = true
             else
                 currentChild.visible = false

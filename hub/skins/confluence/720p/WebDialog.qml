@@ -25,22 +25,6 @@ Dialog {
     id: webDialog
     property alias url: webView.url
 
-    Flickable {
-        id: webViewport
-        clip: true
-        boundsBehavior: Flickable.StopAtBounds
-        flickableDirection:  Flickable.VerticalFlick
-        //revolting magical numbers, god bless non symmetrical pixmaps
-        width: webDialog.width - 60; height: webDialog.height - 40
-        contentWidth: webView.width; contentHeight: webView.height
-        anchors.centerIn: parent
-        WebView {
-            id: webView
-            anchors.centerIn: parent
-            url: "http://www.google.com"
-        }
-    }
-
     transitions: Transition {
         to: "visible"
         ParallelAnimation {
@@ -60,4 +44,22 @@ Dialog {
 
         confluence.state = "showingWebDialog"
     }
+
+    Flickable {
+        id: webViewport
+        clip: true
+        boundsBehavior: Flickable.StopAtBounds
+        flickableDirection:  Flickable.VerticalFlick
+        //revolting magical numbers, god bless non symmetrical pixmaps
+        width: webDialog.width - 60; height: webDialog.height - 40
+        contentWidth: webView.width; contentHeight: webView.height
+        anchors.centerIn: parent
+        WebView {
+            id: webView
+            anchors.centerIn: parent
+            url: "http://www.google.com"
+        }
+    }
+
+    Engine { name: "Web"; role: "web"; visualElement: webDialog }
 }

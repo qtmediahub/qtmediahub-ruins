@@ -66,6 +66,11 @@ Item {
         }
     }
 
+    function trigger() {
+        confluence.selectedEngine = model.modelData.visualElement
+        confluence.state = "showingSelectedEngine"
+    }
+
     ConfluenceText {
         id: entry
         anchors { right: parent.right; rightMargin: 20 }
@@ -84,7 +89,7 @@ Item {
                 mainBladeList.forceActiveFocus()
             }
             onClicked: {
-                mainBladeList.itemTriggered()
+                trigger()
             }
         }
     }

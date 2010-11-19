@@ -26,6 +26,7 @@ FocusScope {
     property string generalResourcePath: backend.resourcePath
     property string themeResourcePath: backend.skinPath + "/confluence/3rdparty/skin.confluence"
     property variant weatherDialog
+    property variant selectedEngine
 
     //Will scale if loading 720p theme at different res
     height: 720; width: 1280
@@ -39,73 +40,73 @@ FocusScope {
             PropertyChanges {
                 target: blade
                 state: "open"
-                visibleContent: rootMenu.name
+                visibleContent: rootMenu
             }
         },
         State {
-            name: "showingWeatherDialog"
+            name: "showingSelectedEngine"
             PropertyChanges {
                 target: blade
                 state: "closed"
-                visibleContent: weatherDialog.weatherMenu.name
+                visibleContent: selectedEngine.bladeContent
             }
             PropertyChanges {
-                target: weatherDialog
-                state: "visible"
-            }
-        },
-        State {
-            name: "showingSystemDialog"
-            PropertyChanges {
-                target: blade
-                state: "closed"
-            }
-            PropertyChanges {
-                target: systemDialog
-                state: "visible"
-            }
-        },
-        State {
-            name: "showingWebDialog"
-            PropertyChanges {
-                target: blade
-                state: "closed"
-            }
-            PropertyChanges {
-                target: webDialog
-                state: "visible"
-            }
-        },
-        State {
-            name: "showingMapsDialog"
-            PropertyChanges {
-                target: blade
-                state: "closed"
-            }
-            PropertyChanges {
-                target: webDialog
-                state: "visible"
-                url: generalResourcePath + "/Google\ Maps/Nokia.html"
-            }
-        },
-        State {
-            name: "showingExitDialog"
-            PropertyChanges {
-                target: blade
-                state: "closed"
-            }
-            PropertyChanges {
-                target: exitDialog
-                state: "visible"
-            }
-        },
-        State {
-            name: "showingDashboard"
-            PropertyChanges {
-                target: dashBoard
+                target: selectedEngine
                 state: "visible"
             }
         }
+//        State {
+//            name: "showingSystemDialog"
+//            PropertyChanges {
+//                target: blade
+//                state: "closed"
+//            }
+//            PropertyChanges {
+//                target: systemDialog
+//                state: "visible"
+//            }
+//        },
+//        State {
+//            name: "showingWebDialog"
+//            PropertyChanges {
+//                target: blade
+//                state: "closed"
+//            }
+//            PropertyChanges {
+//                target: webDialog
+//                state: "visible"
+//            }
+//        },
+//        State {
+//            name: "showingMapsDialog"
+//            PropertyChanges {
+//                target: blade
+//                state: "closed"
+//            }
+//            PropertyChanges {
+//                target: webDialog
+//                state: "visible"
+//                url: generalResourcePath + "/Google\ Maps/Nokia.html"
+//            }
+//        },
+//        State {
+//            name: "showingExitDialog"
+//            PropertyChanges {
+//                target: blade
+//                state: "closed"
+//            }
+//            PropertyChanges {
+//                target: exitDialog
+//                state: "visible"
+//            }
+//        },
+//        State {
+//            name: "showingDashboard"
+//            PropertyChanges {
+//                target: dashBoard
+//                state: "visible"
+//            }
+//        }
     ]
 
     transitions: Transition {
@@ -132,18 +133,14 @@ FocusScope {
             weatherDialog = weatherDialogLoader.createObject(confluence)
     }
 
-    //Create Confluence specific plugins
-    Engine { name: "Web"; role: "web" }
-    Engine { name: "Maps"; role: "maps" }
-    Engine { name: "Dashboard"; role: "dashboard" }
+    //FIXME: Want to share this with Web item
+    //Engine { name: "Maps"; role: "maps" }
 
     Background{ id: background }
 
     MainBlade { id: blade; focus: true }
 
     ExitDialog { id: exitDialog }
-
-    SystemDialog { id: systemDialog }
 
     Ticker { id: ticker; anchors { right: parent.right; bottom: parent.bottom } }
 

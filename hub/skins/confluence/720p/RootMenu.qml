@@ -28,7 +28,6 @@ FocusScope {
     ListView {
         id: mainBladeList
 
-        signal itemTriggered
         signal itemSelected
 
         //Oversized fonts being downscaled
@@ -44,28 +43,18 @@ FocusScope {
         model: backend.engines //menuList
         delegate:
             BladeListItem { }
-        onItemTriggered: {
-            if(currentItem.role == "weather")
-                confluence.state = "showingWeatherDialog"
-            if(currentItem.role == "system")
-                confluence.state = "showingSystemDialog"
-            if(currentItem.role == "web")
-                confluence.state = "showingWebDialog"
-            if(currentItem.role == "maps")
-                confluence.state = "showingMapsDialog"
-            if(currentItem.role == "dashboard")
-                confluence.state = "showingDashboard"
-        }
+
         onItemSelected: {
             background.asyncSetRole(currentItem.role)
             if(menuSoundEffect != undefined) {
                 menuSoundEffect.play()
             }
         }
+
         Keys.onEnterPressed:
-            itemTriggered()
+            currentItem.trigger()
         Keys.onReturnPressed:
-            itemTriggered()
+            currentItem.trigger()
         Keys.onRightPressed: {
             if(currentItem.hasSubBlade) {
                 mainBlade.subMenu.state = "open";
