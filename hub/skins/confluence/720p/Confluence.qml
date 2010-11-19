@@ -26,7 +26,7 @@ FocusScope {
     property string generalResourcePath: backend.resourcePath
     property string themeResourcePath: backend.skinPath + "/confluence/3rdparty/skin.confluence"
     property variant weatherDialog
-    property variant selectedEngine
+    property variant selectedElement
 
     //Will scale if loading 720p theme at different res
     height: 720; width: 1280
@@ -44,14 +44,14 @@ FocusScope {
             }
         },
         State {
-            name: "showingSelectedEngine"
+            name: "showingSelectedElement"
             PropertyChanges {
                 target: blade
                 state: "closed"
-                visibleContent: selectedEngine.bladeContent
+                visibleContent: selectedElement.bladeContent
             }
             PropertyChanges {
-                target: selectedEngine
+                target: selectedElement
                 state: "visible"
             }
         }

@@ -67,8 +67,8 @@ Item {
     }
 
     function trigger() {
-        confluence.selectedEngine = model.modelData.visualElement
-        confluence.state = "showingSelectedEngine"
+        confluence.selectedElement = model.modelData.visualElement
+        confluence.state = "showingSelectedElement"
     }
 
     ConfluenceText {

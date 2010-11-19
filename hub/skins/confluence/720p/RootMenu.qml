@@ -79,8 +79,10 @@ FocusScope {
         PixmapButton {
             basePixmap: "home-power";
             focusedPixmap: "home-power-FO";
-            onClicked:
-                confluence.state = "showingExitDialog"
+            onClicked: {
+                confluence.selectedElement = exitDialog
+                confluence.state = "showingSelectedElement"
+            }
         }
     }
 }
