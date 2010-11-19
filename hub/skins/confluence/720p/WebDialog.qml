@@ -24,6 +24,7 @@ import "components"
 Dialog {
     id: webDialog
     property alias url: webView.url
+    property string defaultUrl: "http://www.google.com"
 
     transitions: Transition {
         to: "visible"
@@ -58,10 +59,10 @@ Dialog {
         WebView {
             id: webView
             anchors.centerIn: parent
-            url: "http://www.google.com"
+            url: defaultUrl
         }
     }
 
-    Engine { name: "Web"; role: "web"; visualElement: webDialog }
+    Engine { name: "Web"; role: "web"; visualElement: webDialog; visualElementProperties: ["url", defaultUrl] }
     Engine { name: "Maps"; role: "maps"; visualElement: webDialog; visualElementProperties: ["url", generalResourcePath + "/Google\ Maps/Nokia.html"] }
 }

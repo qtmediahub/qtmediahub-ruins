@@ -25,7 +25,11 @@ FocusScope {
 
     property string generalResourcePath: backend.resourcePath
     property string themeResourcePath: backend.skinPath + "/confluence/3rdparty/skin.confluence"
-    property variant weatherDialog
+
+    //FIXME: QML const equivalent?
+    property variant confluenceEasingCurve: Easing.InOutQuad
+    property variant confluenceAnimationDuration: 200
+
     property variant selectedElement
 
     //Will scale if loading 720p theme at different res
@@ -42,6 +46,10 @@ FocusScope {
                 state: "open"
                 visibleContent: rootMenu
             }
+            PropertyChanges {
+                target: ticker
+                y: confluence.height - ticker.height
+            }
         },
         State {
             name: "showingSelectedElement"
@@ -55,64 +63,14 @@ FocusScope {
                 state: "visible"
             }
         }
-//        State {
-//            name: "showingSystemDialog"
-//            PropertyChanges {
-//                target: blade
-//                state: "closed"
-//            }
-//            PropertyChanges {
-//                target: systemDialog
-//                state: "visible"
-//            }
-//        },
-//        State {
-//            name: "showingWebDialog"
-//            PropertyChanges {
-//                target: blade
-//                state: "closed"
-//            }
-//            PropertyChanges {
-//                target: webDialog
-//                state: "visible"
-//            }
-//        },
-//        State {
-//            name: "showingMapsDialog"
-//            PropertyChanges {
-//                target: blade
-//                state: "closed"
-//            }
-//            PropertyChanges {
-//                target: webDialog
-//                state: "visible"
-//                url: generalResourcePath + "/Google\ Maps/Nokia.html"
-//            }
-//        },
-//        State {
-//            name: "showingExitDialog"
-//            PropertyChanges {
-//                target: blade
-//                state: "closed"
-//            }
-//            PropertyChanges {
-//                target: exitDialog
-//                state: "visible"
-//            }
-//        },
-//        State {
-//            name: "showingDashboard"
-//            PropertyChanges {
-//                target: dashBoard
-//                state: "visible"
-//            }
-//        }
     ]
 
     transitions: Transition {
         reversible: true
-        SequentialAnimation {
-            NumberAnimation { property: "x"; duration: 300; easing.type: Easing.InOutQuad }
+        NumberAnimation {
+            properties: "x,y"
+            easing.type: confluenceEasingCurve
+            duration: confluenceAnimationDuration
         }
     }
 
@@ -132,7 +90,7 @@ FocusScope {
         
         var weatherDialogLoader = Qt.createComponent("weather/WeatherDialog.qml")
         if(weatherDialogLoader.status == Component.Ready)
-            weatherDialog = weatherDialogLoader.createObject(confluence)
+            weatherDialogLoader.createObject(confluence)
         else if(weatherDialogLoader.status == Component.Error)
             console.log(weatherDialogLoader.errorString())
     }
@@ -143,7 +101,7 @@ FocusScope {
 
     ExitDialog { id: exitDialog }
 
-    Ticker { id: ticker; anchors { right: parent.right; bottom: parent.bottom } }
+    Ticker { id: ticker; y: confluence.height; anchors { right: parent.right } }
 
     WebDialog { id: webDialog }
 

@@ -30,6 +30,8 @@ FocusScope {
 
     property int bladePeek: 30
     property alias bladeWidth: blade.width
+    property int bladeRestingPosition: -bladeWidth + bladePeek
+
     property alias bladePixmap: bladePixmap.source
     property alias bladeX: blade.x
     property alias bladeContent: content
@@ -45,7 +47,7 @@ FocusScope {
             name: "closed"
             PropertyChanges {
                 target: blade
-                x: -bladeWidth + bladePeek
+                x: bladeRestingPosition
             }
         },
         State {
@@ -60,12 +62,12 @@ FocusScope {
     transitions: [
         Transition {
             to: "open"
-            NumberAnimation { target: blade; properties: "x"; easing.type: Easing.InOutQuad }
+            NumberAnimation { target: blade; properties: "x"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
             ScriptAction { script: forceActiveFocus() }
         }, Transition {
             to: "closed"
             ScriptAction { script: closed() }
-            NumberAnimation { target: blade; properties: "x"; easing.type: Easing.InOutQuad }
+            NumberAnimation { target: blade; properties: "x"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
         }
     ]
 
@@ -75,7 +77,6 @@ FocusScope {
 
     onVisibleContentChanged:
         setCurrentContent(visibleContent)
-
 
     function setCurrentContent(contentName)
     {
