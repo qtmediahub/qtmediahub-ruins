@@ -28,10 +28,8 @@ FocusScope {
     opacity: 0; visible: false
     scale: 0
 
-    width: frame.width
-    height: frame.height
-
-    property alias defaultDecoration: frame.visible
+    width: 400
+    height: 200
 
     //useful for focus debugging
     //onActiveFocusChanged: console.log(idtext + " just " + (activeFocus ? "got" : "lost") + " focus")
@@ -72,9 +70,9 @@ FocusScope {
         }
     ]
 
-    Image {
-        id: frame
+    BorderImage {
         source: themeResourcePath + "/media/ContentPanel.png"
+        anchors.fill: parent
     }
 
     function onHideTransitionStarted() {

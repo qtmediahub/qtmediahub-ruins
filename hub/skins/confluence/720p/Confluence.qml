@@ -99,7 +99,7 @@ FocusScope {
         else if(customCursorLoader.status == Component.Error)
             console.log(customCursorLoader.errorString())
         
-        var weatherDialogLoader = Qt.createComponent("weather/WeatherDialog.qml")
+        var weatherDialogLoader = Qt.createComponent("WeatherDialog.qml")
         if(weatherDialogLoader.status == Component.Ready)
             weatherDialogLoader.createObject(confluence)
         else if(weatherDialogLoader.status == Component.Error)
