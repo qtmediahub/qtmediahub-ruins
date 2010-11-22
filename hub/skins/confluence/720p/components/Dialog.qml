@@ -28,8 +28,10 @@ FocusScope {
     opacity: 0; visible: false
     scale: 0
 
-    width: 400
-    height: 200
+    width: 1024; height: 512
+
+    property alias defaultDecoration: frame.visible
+
 
     //useful for focus debugging
     //onActiveFocusChanged: console.log(idtext + " just " + (activeFocus ? "got" : "lost") + " focus")
@@ -71,6 +73,7 @@ FocusScope {
     ]
 
     BorderImage {
+        id: frame
         source: themeResourcePath + "/media/ContentPanel.png"
         anchors.fill: parent
     }
