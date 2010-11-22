@@ -60,7 +60,17 @@ Dialog {
             id: webView
             anchors.centerIn: parent
             url: defaultUrl
+            opacity: progress == 1 ? 1 : 0.5
+
+            Behavior on opacity {
+                NumberAnimation{}
+            }
         }
+    }
+
+    BusyIndicator {
+        anchors.centerIn: parent
+        on: webView.progress != 1
     }
 
     Engine { name: "Web"; role: "web"; visualElement: webDialog; visualElementProperties: ["url", defaultUrl] }
