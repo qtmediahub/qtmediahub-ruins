@@ -31,10 +31,16 @@ FocusScope {
     property variant confluenceAnimationDuration: 200
 
     property variant selectedElement
+    property variant videoPlayer
 
     //Will scale if loading 720p theme at different res
     height: 720; width: 1280
     focus: true; clip: true
+
+    Rectangle {
+        anchors.fill: parent
+        color: "black"
+    }
 
     state: "showingRootMenu"
 
@@ -81,6 +87,11 @@ FocusScope {
     Keys.onDeletePressed:
         Qt.quit();
 
+//    Keys.onAsteriskPressed: {
+//        videoPlayer.source = "/home/jzellner/video/big_buck_bunny_1080p_surround.avi";
+//        videoPlayer.play();
+//    }
+
     Component.onCompleted: {
         var customCursorLoader = Qt.createComponent("components/Cursor.qml")
         if(customCursorLoader.status == Component.Ready)
@@ -93,19 +104,31 @@ FocusScope {
             weatherDialogLoader.createObject(confluence)
         else if(weatherDialogLoader.status == Component.Error)
             console.log(weatherDialogLoader.errorString())
+
+        var videoPlayerComponent = Qt.createComponent("components/QMHVideo.qml");
+        if(videoPlayerComponent.status == Component.Ready) {
+            videoPlayer = videoPlayerComponent.createObject(confluence)
+            videoPlayer.z = 0
+        } else if (videoPlayerComponent.status == Component.Error) {
+            console.log(videoPlayerComponent.errorString())
+        }
     }
 
-    Background{ id: background }
+    Background{
+        id: background
+        z: 1
+        opacity: videoPlayer.playing ? 0.5 : 1
+    }
 
-    MainBlade { id: blade; focus: true }
+    MainBlade { id: blade; z: 1; focus: true }
 
-    ExitDialog { id: exitDialog }
+    ExitDialog { id: exitDialog; z: 1 }
 
-    Ticker { id: ticker; y: confluence.height; anchors { right: parent.right } }
+    Ticker { id: ticker; y: confluence.height; z: 1; anchors { right: parent.right } }
 
-    WebDialog { id: webDialog }
+    WebDialog { id: webDialog; z: 1 }
 
-    ConfluenceDashboard { id: dashBoard }
+    ConfluenceDashboard { id: dashBoard; z: 1 }
 
     Image {
         id: banner
@@ -113,9 +136,9 @@ FocusScope {
         source: themeResourcePath + "/media/Confluence_Logo.png"
     }
 
-    BusyIndicator {
-        on: true
-        anchors.right: parent.right
-        anchors.top: parent.top
-    }
+//    BusyIndicator {
+//        on: true
+//        anchors.right: parent.right
+//        anchors.top: parent.top
+//    }
 }

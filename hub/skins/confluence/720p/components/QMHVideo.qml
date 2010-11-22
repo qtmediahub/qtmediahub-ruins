@@ -17,62 +17,9 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 ****************************************************************************/
 
-import QtQuick 1.0
+import QtMultimediaKit 1.1
 
-Item {
-    signal transition
-    property string backgroundPath: themeResourcePath + "/backgrounds/"
-    property string imageFilename
-
-    onTransition: PropertyAnimation { target: temp; properties: "opacity"; to: 0; duration:500; easing.type: Easing.InOutQuad }
-    
-    Timer {
-        id: staggeredTimer
-        interval: 1000; running: false; repeat: false
-        onTriggered: setImage(imageFilename)
-    }
-
-    Image {
-        id: primary
-        source: backgroundPath + "videos.jpg"
-    }
-
-    Image {
-        id: temp
-    }
-
-    function asyncSetRole(role) {
-        if(role == null)
-            return
-
-        //console.log("Getting image for " + role)
-        imageFilename = bgmap[role]
-        staggeredTimer.start()
-    }
-
-    function setImage(fileName) {
-        temp.source = primary.source
-        primary.source = backgroundPath + fileName
-        temp.opacity = 1
-        transition()
-    }
-
-    //FIXME: Can't decide whether this is genius or idiocy, please let me know
-    Item {
-        id: bgmap
-        property string music: "music.jpg"
-        property string videos: "videos.jpg"
-        property string scripts: "programs.jpg"
-        property string weather: "weather.jpg"
-        property string pictures: "pictures.jpg"
-        property string programs: "programs.jpg"
-        property string system: "system.jpg"
-        property string web: "system.jpg"
-        property string maps: "system.jpg"
-        property string dashboard: "system.jpg"
-    }
-
-    Behavior on opacity {
-        NumberAnimation{}
-    }
+//This serves to isolate import failures if QtMultimedia is not present
+Video {
+    anchors.fill: parent
 }
