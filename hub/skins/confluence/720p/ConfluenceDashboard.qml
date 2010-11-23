@@ -69,8 +69,6 @@ Dashboard {
         }
     ]
 
-    Engine { name: "Dashboard"; role: "dashboard"; visualElement: db }
-
     Rectangle {
         id: curtain
         color: "black"
@@ -111,5 +109,6 @@ Dashboard {
             else if(widget.status == Component.Error)
                 console.log(widget.errorString())
         }
+        backend.engine("dashboard").visualElement = db
     }
 }

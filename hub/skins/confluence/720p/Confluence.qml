@@ -104,8 +104,8 @@ FocusScope {
         //FIXME: keyboard modifiers don't work?
         //else if((event.key == Qt.Key_Enter) && (keys.modifiers == Qt.AltModifier))
         else if(event.key == Qt.Key_F12)
-                if(confluence.state == "showingSelectedElement")
-                    confluence.state = "showingSelectedElementMaximized"
+            if(confluence.state == "showingSelectedElement")
+                confluence.state = "showingSelectedElementMaximized"
     }
 
 //    Keys.onAsteriskPressed: {
@@ -135,6 +135,14 @@ FocusScope {
         } else if (videoPlayerComponent.status == Component.Error) {
             console.log(videoPlayerComponent.errorString())
         }
+
+        var dashboardLoader = Qt.createComponent("ConfluenceDashboard.qml");
+        if(dashboardLoader.status == Component.Ready) {
+            var dashboard = dashboardLoader.createObject(confluence)
+            dashboard.z = 1
+        } else if (dashboardLoader.status == Component.Error) {
+            console.log(dashboardLoader.errorString())
+        }
     }
 
     Background{
@@ -150,8 +158,6 @@ FocusScope {
     Ticker { id: ticker; y: confluence.height; z: 1; anchors { right: parent.right } }
 
     WebDialog { id: webDialog; z: 1 }
-
-    ConfluenceDashboard { id: dashBoard; z: 1 }
 
     Image {
         id: banner
