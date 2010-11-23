@@ -33,7 +33,6 @@ FocusScope {
 
     property string city: "munich"
 
-
     function f2c(f) {
         return ((f-32)*5/9.0).toFixed(0);
     }
@@ -52,16 +51,12 @@ FocusScope {
                 anchors.fill: parent
                 anchors.margins: 30
                 spacing: 5
-                Text {
-                    color: "white"
-                    font.pointSize: 20
+                DefaultText {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: "CURRENT TEMP"
                 }
 
-                Text {
-                    color: "white"
-                    font.pointSize: 20
+                DefaultText {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: weatherModel.count > 0 ? weatherModel.get(0).city : ""
                 }
@@ -72,7 +67,6 @@ FocusScope {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: weatherModel.count > 0 ? "Last Updated - " + weatherModel.get(0).current_date_time : ""
                 }
-
 
                 Item {
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -88,9 +82,7 @@ FocusScope {
                         anchors.left: parent.left
                     }
 
-                    Text {
-                        color: "white"
-                        font.pointSize: 20
+                    DefaultText {
                         text: "°C"
                         anchors.verticalCenter: weatherDegree.top
                         anchors.left: weatherDegree.right; anchors.leftMargin: 10
@@ -104,42 +96,32 @@ FocusScope {
                         asynchronous: true
                         source: weatherMeasurements.count > 0 ? "http://www.google.com" + weatherMeasurements.get(0).icon : ""
                         anchors.right: parent.right
-                        anchors.verticalCenter: parent.verticalCenter                    }
-
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
                 }
 
-                Text {
-                    color: "white"
-                    font.pointSize: 20
+                DefaultText {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: weatherMeasurements.count > 0 ? weatherMeasurements.get(0).condition : ""
                 }
 
                 Rectangle {
-                    height: 40
-                    width: 5
+                    height: 40; width: 5
                     color: "transparent"
-
                 }
 
-                Text {
-                    color: "white"
-                    font.pointSize: 20
+                DefaultText {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: weatherMeasurements.count > 0 ? weatherMeasurements.get(0).humidity : ""
                 }
-
-
-                Text {
-                    color: "white"
-                    font.pointSize: 20
+                DefaultText {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: weatherMeasurements.count > 0 ? weatherMeasurements.get(0).wind_condition : ""
                 }
             }
         }
 
-         Dialog {
+        Dialog {
             id: dialog0
             width: 480
             height: 600
@@ -151,9 +133,7 @@ FocusScope {
                 anchors.margins: 30
                 spacing: 5
 
-                Text {
-                    color: "white"
-                    font.pointSize: 20
+                DefaultText {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: "WEATHER FORECAST"
                 }
@@ -163,36 +143,37 @@ FocusScope {
                     width: parent.width
                     clip: true
                     model: weatherForecast
-                    delegate: Column {
+                    delegate: Item {
                         height: 120
                         width: 400
 
-                        Text {
-                            color: "white"
-                            font.pointSize: 20
+                        DefaultText {
+                            id: dayofweek
                             anchors.horizontalCenter: parent.horizontalCenter
                             text: weatherForecast.count > 0 ? weatherForecast.get(index).day_of_week : ""
                         }
-                        Row {
-                            //height: parent.height
-                            width: parent.width
-                            spacing: 20
-                            Text {
-                                color: "white"
-                                font.pointSize: 20
-                                text: weatherForecast.count > 0 ? "High: " + root.f2c(weatherForecast.get(index).high_f) + " °C" : ""
-                            }
-
-                            Text {
-                                color: "white"
-                                font.pointSize: 20
-                                text: weatherForecast.count > 0 ? "Low: " + root.f2c(weatherForecast.get(index).low_f)  + " °C" : ""
-                            }
-
+                        DefaultText {
+                            id: hightemp
+                            anchors.top: dayofweek.bottom
+                            text: weatherForecast.count > 0 ? "High: " + root.f2c(weatherForecast.get(index).high_f) + " °C" : ""
                         }
-                        Text {
-                            color: "white"
-                            font.pointSize: 20
+
+                        DefaultText {
+                            anchors.left: hightemp.right; anchors.leftMargin: 25
+                            anchors.top: dayofweek.bottom
+                            text: weatherForecast.count > 0 ? "Low: " + root.f2c(weatherForecast.get(index).low_f)  + " °C" : ""
+                        }
+                        Image {
+                            width: 60
+                            height: width
+                            smooth: true
+                            asynchronous: true
+                            source: weatherMeasurements.count > 0 ? "http://www.google.com" + weatherForecast.get(index).icon : ""
+                            anchors.right: parent.right
+                            anchors.top: hightemp.top
+                        }
+                        DefaultText {
+                            anchors.top: hightemp.bottom
                             text: weatherForecast.count > 0 ? weatherForecast.get(index).condition : ""
                         }
                     }
