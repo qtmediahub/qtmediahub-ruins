@@ -23,6 +23,6 @@ Text {
     color: "white"
     //Disable on transitions
     smooth: true
-    font.pointSize: 16
+    font.pointSize: 20
     font.weight: Font.DemiBold
 }

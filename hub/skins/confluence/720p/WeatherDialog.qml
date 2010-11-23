@@ -51,12 +51,12 @@ FocusScope {
                 anchors.fill: parent
                 anchors.margins: 30
                 spacing: 5
-                DefaultText {
+                ConfluenceText {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: "CURRENT TEMP"
                 }
 
-                DefaultText {
+                ConfluenceText {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: weatherModel.count > 0 ? weatherModel.get(0).city : ""
                 }
@@ -82,7 +82,7 @@ FocusScope {
                         anchors.left: parent.left
                     }
 
-                    DefaultText {
+                    ConfluenceText {
                         text: "°C"
                         anchors.verticalCenter: weatherDegree.top
                         anchors.left: weatherDegree.right; anchors.leftMargin: 10
@@ -100,7 +100,7 @@ FocusScope {
                     }
                 }
 
-                DefaultText {
+                ConfluenceText {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: weatherMeasurements.count > 0 ? weatherMeasurements.get(0).condition : ""
                 }
@@ -110,11 +110,11 @@ FocusScope {
                     color: "transparent"
                 }
 
-                DefaultText {
+                ConfluenceText {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: weatherMeasurements.count > 0 ? weatherMeasurements.get(0).humidity : ""
                 }
-                DefaultText {
+                ConfluenceText {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: weatherMeasurements.count > 0 ? weatherMeasurements.get(0).wind_condition : ""
                 }
@@ -133,7 +133,7 @@ FocusScope {
                 anchors.margins: 30
                 spacing: 5
 
-                DefaultText {
+                ConfluenceText {
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: "WEATHER FORECAST"
                 }
@@ -147,18 +147,18 @@ FocusScope {
                         height: 120
                         width: 400
 
-                        DefaultText {
+                        ConfluenceText {
                             id: dayofweek
                             anchors.horizontalCenter: parent.horizontalCenter
                             text: weatherForecast.count > 0 ? weatherForecast.get(index).day_of_week : ""
                         }
-                        DefaultText {
+                        ConfluenceText {
                             id: hightemp
                             anchors.top: dayofweek.bottom
                             text: weatherForecast.count > 0 ? "High: " + root.f2c(weatherForecast.get(index).high_f) + " °C" : ""
                         }
 
-                        DefaultText {
+                        ConfluenceText {
                             anchors.left: hightemp.right; anchors.leftMargin: 25
                             anchors.top: dayofweek.bottom
                             text: weatherForecast.count > 0 ? "Low: " + root.f2c(weatherForecast.get(index).low_f)  + " °C" : ""
@@ -172,7 +172,7 @@ FocusScope {
                             anchors.right: parent.right
                             anchors.top: hightemp.top
                         }
-                        DefaultText {
+                        ConfluenceText {
                             anchors.top: hightemp.bottom
                             text: weatherForecast.count > 0 ? weatherForecast.get(index).condition : ""
                         }
