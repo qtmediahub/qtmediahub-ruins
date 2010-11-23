@@ -108,10 +108,10 @@ FocusScope {
                     confluence.state = "showingSelectedElementMaximized"
     }
 
-    //    Keys.onAsteriskPressed: {
-    //        videoPlayer.source = "/home/jzellner/video/big_buck_bunny_1080p_surround.avi";
-    //        videoPlayer.play();
-    //    }
+//    Keys.onAsteriskPressed: {
+//        videoPlayer.source = "/home/jzellner/video/big_buck_bunny_1080p_surround.avi";
+//        videoPlayer.play();
+//    }
 
     Component.onCompleted: {
         var customCursorLoader = Qt.createComponent("components/Cursor.qml")
@@ -138,7 +138,7 @@ FocusScope {
     Background{
         id: background
         z: 1
-        opacity: videoPlayer.playing ? 0.5 : 1
+        visible: !videoPlayer.playing
     }
 
     MainBlade { id: blade; z: 1; focus: true }

@@ -42,7 +42,7 @@ Item {
     }
 
     function asyncSetRole(role) {
-        if(role == null)
+        if(role == null || !visible)
             return
 
         //console.log("Getting image for " + role)
