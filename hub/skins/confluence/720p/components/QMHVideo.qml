@@ -21,26 +21,45 @@ import QtQuick 1.0
 import QtMultimediaKit 1.1
 
 //This serves to isolate import failures if QtMultimedia is not present
-Video {
+FocusScope {
     id: root
+
+    property alias video : videoItem
 
     anchors.fill: parent
 
-    PixmapButton {
-        id: visibleButton
-        anchors.centerIn: parent
-        basePixmap: "OSDBookmarksNF"
-        focusedPixmap: "OSDBookmarksFO"
-        onClicked: { controlOSD.state = "visible"; infoOSD.state = "visible" }
+    Keys.onEscapePressed: {
+        if (controlOSD.state != "visible") {
+            showOSD();
+            event.accepted = true;
+        } else {
+            root.z = 0;
+        }
     }
 
+    MouseArea {
+        anchors.fill: parent
+        hoverEnabled: true
 
-    PixmapButton {
-        anchors.left: visibleButton.right
-        anchors.top: visibleButton.top
-        basePixmap: "OSDBookmarksNF"
-        focusedPixmap: "OSDBookmarksFO"
-        onClicked: { controlOSD.state = ""; infoOSD.state= ""; }
+        onPositionChanged: showOSD();
+    }
+
+    Timer {
+        id: osdTimer
+        interval: 2000
+        running: (controlOSD.state == "visible" || infoOSD.state == "visible")
+                && !(controlOSDMouseArea.containsMouse || infoOSDMouseArea.containsMouse)
+
+        repeat: false
+        onTriggered: {
+            controlOSD.state = "";
+            infoOSD.state = "";
+        }
+    }
+
+    Video {
+        id: videoItem
+        anchors.fill: parent
     }
 
     BorderImage {
@@ -51,6 +70,12 @@ Video {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: parent.top
         anchors.topMargin: -controlOSD.height
+
+        MouseArea {
+            id: controlOSDMouseArea
+            anchors.fill: parent
+            hoverEnabled: true
+        }
 
         ButtonList {
             id: controlOSDButtonList
@@ -63,10 +88,10 @@ Video {
             PixmapButton { basePixmap: "OSDAudioNF"; focusedPixmap: "OSDAudioFO" }
             PixmapButton { basePixmap: "OSDVideoNF"; focusedPixmap: "OSDVideoFO" }
             PixmapButton { basePixmap: "OSDPrevTrackNF"; focusedPixmap: "OSDPrevTrackFO" }
-            PixmapButton { basePixmap: "OSDRewindNF"; focusedPixmap: "OSDRewindFO" }
-            PixmapButton { basePixmap: "OSDPauseNF"; focusedPixmap: "OSDPauseFO"; onClicked: root.pause();}
-            PixmapButton { basePixmap: "OSDPlayNF"; focusedPixmap: "OSDPlayFO"; onClicked: root.play(); }
-            PixmapButton { basePixmap: "OSDForwardNF"; focusedPixmap: "OSDForwardFO" }
+            PixmapButton { basePixmap: "OSDRewindNF"; focusedPixmap: "OSDRewindFO"; onClicked: videoItem.playbackRate = -2 }
+            PixmapButton { basePixmap: "OSDPauseNF"; focusedPixmap: "OSDPauseFO"; onClicked: videoItem.pause();}
+            PixmapButton { basePixmap: "OSDPlayNF"; focusedPixmap: "OSDPlayFO"; onClicked: { videoItem.play(); videoItem.playbackRate = 1 } }
+            PixmapButton { basePixmap: "OSDForwardNF"; focusedPixmap: "OSDForwardFO"; onClicked: videoItem.playbackRate = 2}
             PixmapButton { basePixmap: "OSDNextTrackNF"; focusedPixmap: "OSDNextTrackFO" }
             PixmapButton { basePixmap: "OSDDvdNF"; focusedPixmap: "OSDDvdFO" }
             PixmapButton { basePixmap: "OSDRecordNF"; focusedPixmap: "OSDRecordFO" }
@@ -102,6 +127,12 @@ Video {
 
         border { left: 30; top: 30; right: 30; bottom: 30 }
 
+        MouseArea {
+            id: infoOSDMouseArea
+            anchors.fill: parent
+            hoverEnabled: true
+        }
+
         Row {
             width: childrenRect.width
             height: childrenRect.height
@@ -111,16 +142,16 @@ Video {
                 anchors.verticalCenter: seekOSD.verticalCenter
 
                 Text {
-                    text: root.paused ? "Paused" : "Playing"
+                    text: videoItem.paused ? "Paused" : "Playing"
                     color: "steelblue"
                 }
                 Text {
-                    text: root.ms2string(root.position) + " - " + root.ms2string(root.duration)
+                    text: root.ms2string(videoItem.position) + " - " + root.ms2string(videoItem.duration)
                     color: "white"
                 }
                 ProgressBar {
                     width: 200
-                    mProgress: root.position/root.duration
+                    mProgress: videoItem.position/videoItem.duration
                 }
             }
 
@@ -134,6 +165,7 @@ Video {
                     source:  themeResourcePath + "/media/OSDSeekRewind.png"
                     anchors.left: parent.left
                     anchors.verticalCenter: seekOSDCentral.verticalCenter
+                    opacity: videoItem.playbackRate < 0 ? 1 : 0.5
                 }
 
                 Image {
@@ -150,10 +182,11 @@ Video {
                     anchors.left: seekOSDCentral.right
                     anchors.leftMargin: -10
                     anchors.verticalCenter: seekOSDCentral.verticalCenter
+                    opacity: videoItem.playbackRate > 1 ? 1 : 0.5
                 }
 
                 Image {
-                    source:  root.paused ? themeResourcePath + "/media/OSDPause.png" : themeResourcePath + "/media/OSDPlay.png"
+                    source: videoItem.paused ? themeResourcePath + "/media/OSDPause.png" : themeResourcePath + "/media/OSDPlay.png"
                     anchors.centerIn: seekOSDCentral
                 }
             }
@@ -197,5 +230,10 @@ Video {
         ret += s < 10 ? "0" + s : s + "";
 
         return ret;
+    }
+
+    function showOSD() {
+        controlOSD.state = "visible";
+        infoOSD.state = "visible";
     }
 }

@@ -109,9 +109,10 @@ FocusScope {
     }
 
 //    Keys.onAsteriskPressed: {
-//        videoPlayer.source = "/home/jzellner/video/big_buck_bunny_1080p_surround.avi";
+//        videoPlayer.video.source = "/home/jzellner/video/big_buck_bunny_1080p_surround.avi";
 //        videoPlayer.z = 1000;
-//        videoPlayer.play();
+//        videoPlayer.forceActiveFocus();
+//        videoPlayer.video.play();
 //    }
 
     Component.onCompleted: {
@@ -139,7 +140,7 @@ FocusScope {
     Background{
         id: background
         z: 1
-        visible: !videoPlayer.playing
+        visible: !videoPlayer.video.playing
     }
 
     MainBlade { id: blade; z: 1; focus: true }
