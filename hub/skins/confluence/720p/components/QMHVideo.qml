@@ -17,9 +17,185 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 ****************************************************************************/
 
+import QtQuick 1.0
 import QtMultimediaKit 1.1
 
 //This serves to isolate import failures if QtMultimedia is not present
 Video {
+    id: root
+
     anchors.fill: parent
+
+    PixmapButton {
+        id: visibleButton
+        anchors.centerIn: parent
+        basePixmap: "OSDBookmarksNF"
+        focusedPixmap: "OSDBookmarksFO"
+        onClicked: { controlOSD.state = "visible"; infoOSD.state = "visible" }
+    }
+
+
+    PixmapButton {
+        anchors.left: visibleButton.right
+        anchors.top: visibleButton.top
+        basePixmap: "OSDBookmarksNF"
+        focusedPixmap: "OSDBookmarksFO"
+        onClicked: { controlOSD.state = ""; infoOSD.state= ""; }
+    }
+
+    BorderImage {
+        id: controlOSD
+        source: themeResourcePath + "/media/MediaInfoBackUpper.png"
+
+        width: parent.width
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top: parent.top
+        anchors.topMargin: -controlOSD.height
+
+        ButtonList {
+            id: controlOSDButtonList
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 20
+            anchors.horizontalCenter: parent.horizontalCenter
+            spacing: 5
+
+            PixmapButton { basePixmap: "OSDBookmarksNF"; focusedPixmap: "OSDBookmarksFO" }
+            PixmapButton { basePixmap: "OSDAudioNF"; focusedPixmap: "OSDAudioFO" }
+            PixmapButton { basePixmap: "OSDVideoNF"; focusedPixmap: "OSDVideoFO" }
+            PixmapButton { basePixmap: "OSDPrevTrackNF"; focusedPixmap: "OSDPrevTrackFO" }
+            PixmapButton { basePixmap: "OSDRewindNF"; focusedPixmap: "OSDRewindFO" }
+            PixmapButton { basePixmap: "OSDPauseNF"; focusedPixmap: "OSDPauseFO"; onClicked: root.pause();}
+            PixmapButton { basePixmap: "OSDPlayNF"; focusedPixmap: "OSDPlayFO"; onClicked: root.play(); }
+            PixmapButton { basePixmap: "OSDForwardNF"; focusedPixmap: "OSDForwardFO" }
+            PixmapButton { basePixmap: "OSDNextTrackNF"; focusedPixmap: "OSDNextTrackFO" }
+            PixmapButton { basePixmap: "OSDDvdNF"; focusedPixmap: "OSDDvdFO" }
+            PixmapButton { basePixmap: "OSDRecordNF"; focusedPixmap: "OSDRecordFO" }
+        }
+
+        states: [
+            State {
+                name: "visible"
+                PropertyChanges {
+                    target: controlOSD.anchors
+                    topMargin: -controlOSD.height + controlOSDButtonList.height + controlOSDButtonList.anchors.bottomMargin
+                }
+            }
+        ]
+
+        transitions: [
+            Transition {
+                NumberAnimation { property: "topMargin"; duration: 500; easing.type: Easing.InOutQuad }
+            }
+        ]
+    }
+
+    BorderImage {
+        id: infoOSD
+        source: themeResourcePath + "/media/InfoMessagePanel.png"
+
+        anchors.bottom: parent.bottom
+        anchors.right: parent.right
+        anchors.bottomMargin: -infoOSD.height
+
+        width: 450
+        height: 100
+
+        border { left: 30; top: 30; right: 30; bottom: 30 }
+
+        Row {
+            width: childrenRect.width
+            height: childrenRect.height
+            anchors.centerIn: parent
+
+            Column {
+                anchors.verticalCenter: seekOSD.verticalCenter
+
+                Text {
+                    text: root.paused ? "Paused" : "Playing"
+                    color: "steelblue"
+                }
+                Text {
+                    text: root.ms2string(root.position) + " - " + root.ms2string(root.duration)
+                    color: "white"
+                }
+                ProgressBar {
+                    width: 200
+                    mProgress: root.position/root.duration
+                }
+            }
+
+            Item {
+                id: seekOSD
+                width: childrenRect.width
+                height: childrenRect.height
+
+                Image {
+                    id: seekOSDRewind
+                    source:  themeResourcePath + "/media/OSDSeekRewind.png"
+                    anchors.left: parent.left
+                    anchors.verticalCenter: seekOSDCentral.verticalCenter
+                }
+
+                Image {
+                    id: seekOSDCentral
+                    source:  themeResourcePath + "/media/OSDSeekFrame.png"
+                    anchors.left: seekOSDRewind.right
+                    anchors.leftMargin: -10
+                    anchors.top: parent.top
+                }
+
+                Image {
+                    id: seekOSDForward
+                    source:  themeResourcePath + "/media/OSDSeekForward.png"
+                    anchors.left: seekOSDCentral.right
+                    anchors.leftMargin: -10
+                    anchors.verticalCenter: seekOSDCentral.verticalCenter
+                }
+
+                Image {
+                    source:  root.paused ? themeResourcePath + "/media/OSDPause.png" : themeResourcePath + "/media/OSDPlay.png"
+                    anchors.centerIn: seekOSDCentral
+                }
+            }
+        }
+
+        states: [
+            State {
+                name: "visible"
+                PropertyChanges {
+                    target: infoOSD.anchors
+                    bottomMargin: -5
+                }
+            }
+        ]
+
+        transitions: [
+            Transition {
+                NumberAnimation { property: "bottomMargin"; duration: 500; easing.type: Easing.InOutQuad }
+            }
+        ]
+    }
+
+    function ms2string(ms)
+    {
+        var ret = "";
+
+        if (ms == 0)
+            return "00:00:00";
+
+        var h = (ms/(1000*60*60)).toFixed(0);
+        var m = ((ms%(1000*60*60))/(1000*60)).toFixed(0);
+        var s = (((ms%(1000*60*60))%(1000*60))/1000).toFixed(0);
+
+        if (h >= 1) {
+            ret += h < 10 ? "0" + h : h + "";
+            ret += ":";
+        }
+
+        ret += m < 10 ? "0" + m : m + "";
+        ret += ":";
+        ret += s < 10 ? "0" + s : s + "";
+
+        return ret;
+    }
 }

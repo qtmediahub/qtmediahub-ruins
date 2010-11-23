@@ -110,6 +110,7 @@ FocusScope {
 
 //    Keys.onAsteriskPressed: {
 //        videoPlayer.source = "/home/jzellner/video/big_buck_bunny_1080p_surround.avi";
+//        videoPlayer.z = 1000;
 //        videoPlayer.play();
 //    }
 
