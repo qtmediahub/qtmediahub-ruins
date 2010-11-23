@@ -40,6 +40,9 @@ Blade {
             console.log(rootMenuLoader.errorString())
     }
 
+    onOpened:
+        confluence.state = "showingRootMenu"
+
     Blade {
         id: subBlade
 

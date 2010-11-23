@@ -26,15 +26,6 @@ Dialog {
     property alias url: webView.url
     property string defaultUrl: "http://www.google.com"
 
-    transitions: Transition {
-        to: "visible"
-        ParallelAnimation {
-            NumberAnimation { property: "opacity"; duration: 500; easing.type: Easing.InOutQuad }
-            NumberAnimation { property: "width"; duration: 500; easing.type: Easing.InOutQuad }
-            NumberAnimation { property: "height"; duration: 500; easing.type: Easing.InOutQuad }
-        }
-    }
-
     function onVisibleTransitionComplete() {
         webView.forceActiveFocus()
     }
@@ -59,6 +50,8 @@ Dialog {
         WebView {
             id: webView
             anchors.centerIn: parent
+            //FIXME: is this expensive at all?
+            width: webDialog.width
             url: defaultUrl
             opacity: progress == 1 ? 1 : 0.5
 

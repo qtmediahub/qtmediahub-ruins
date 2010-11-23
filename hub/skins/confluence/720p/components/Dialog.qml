@@ -28,7 +28,9 @@ FocusScope {
     opacity: 0; visible: false
     scale: 0
 
-    width: 1024; height: 512
+    property int defaultWidth: 1024
+    property int defaultHeight: 512
+    width: defaultWidth; height: defaultHeight
 
     property alias defaultDecoration: frame.visible
 
@@ -36,15 +38,28 @@ FocusScope {
     //useful for focus debugging
     //onActiveFocusChanged: console.log(idtext + " just " + (activeFocus ? "got" : "lost") + " focus")
 
-    states: State {
-        name: "visible"
-        PropertyChanges {
-            target: dialog
-            visible: true
-            opacity: 1
-            scale: 1
+    states: [
+        State {
+            name: "visible"
+            PropertyChanges {
+                target: dialog
+                visible: true
+                opacity: 1
+                scale: 1
+            }
+        },
+        State {
+            name: "maximized"
+            PropertyChanges {
+                target: dialog
+                visible: true
+                opacity: 1
+                scale: 1
+                width: confluence.width
+                height: confluence.height
+            }
         }
-    }
+    ]
 
     transitions: [
         Transition {
@@ -59,6 +74,7 @@ FocusScope {
             }
         },
         Transition {
+            from: ""
             to: "visible"
             SequentialAnimation {
                 PropertyAction { target: dialog; property: "visible"; value: true }
@@ -68,6 +84,13 @@ FocusScope {
                 }
                 ScriptAction { script: onVisibleTransitionComplete() }
                 ScriptAction { script: dialog.forceActiveFocus() }
+            }
+        },
+        Transition {
+            reversible: true
+            ParallelAnimation {
+                NumberAnimation { property: "width"; duration: 500; easing.type: Easing.InOutQuad }
+                NumberAnimation { property: "height"; duration: 500; easing.type: Easing.InOutQuad }
             }
         }
     ]

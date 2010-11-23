@@ -20,13 +20,14 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 import QtQuick 1.0
 
 FocusScope {
-    id: bladeViewport
+    id: bladeInterface
     z: 10
     width: blade.width + blade.x; height: parent.height
 
     clip: true
 
-    signal closed;
+    signal opened
+    signal closed
 
     property int bladePeek: 30
     property alias bladeWidth: blade.width
@@ -48,6 +49,7 @@ FocusScope {
             PropertyChanges {
                 target: blade
                 x: bladeRestingPosition
+                clickToShow: true
             }
         },
         State {
@@ -92,6 +94,7 @@ FocusScope {
 
     Item {
         id: blade
+        property bool clickToShow: false
         clip: true
         height: parent.height
         Image {
@@ -102,6 +105,17 @@ FocusScope {
             id: content
             anchors { right: blade.right; rightMargin: bladeRightMargin }
             width: blade.width; height: blade.height
+        }
+        MouseArea {
+            anchors.fill: parent
+            onPressed: {
+                if(bladeInterface.state == "open") {
+                    bladeInterface.closed()
+                } else {
+                    bladeInterface.opened()
+                }
+                mouse.accepted = false
+            }
         }
     }
 }

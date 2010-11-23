@@ -68,6 +68,18 @@ FocusScope {
                 target: selectedElement
                 state: "visible"
             }
+        },
+        State {
+            name: "showingSelectedElementMaximized"
+            PropertyChanges {
+                target: blade
+                state: "closed"
+                visibleContent: selectedElement.bladeContent
+            }
+            PropertyChanges {
+                target: selectedElement
+                state: "maximized"
+            }
         }
     ]
 
@@ -80,17 +92,26 @@ FocusScope {
         }
     }
 
-    Keys.onEscapePressed:
-        confluence.state = "showingRootMenu"
+    Keys.onPressed: {
+        if(event.key == Qt.Key_Escape)
+            if(confluence.state == "showingSelectedElementMaximized")
+                confluence.state = "showingSelectedElement"
+            else
+                confluence.state = "showingRootMenu"
+        // Just convenience remove for real use!!!!!!!
+        else if(event.key == Qt.Key_Delete)
+            Qt.quit();
+        //FIXME: keyboard modifiers don't work?
+        //else if((event.key == Qt.Key_Enter) && (keys.modifiers == Qt.AltModifier))
+        else if(event.key == Qt.Key_F12)
+                if(confluence.state == "showingSelectedElement")
+                    confluence.state = "showingSelectedElementMaximized"
+    }
 
-    // Just convenience remove for real use!!!!!!!
-    Keys.onDeletePressed:
-        Qt.quit();
-
-//    Keys.onAsteriskPressed: {
-//        videoPlayer.source = "/home/jzellner/video/big_buck_bunny_1080p_surround.avi";
-//        videoPlayer.play();
-//    }
+    //    Keys.onAsteriskPressed: {
+    //        videoPlayer.source = "/home/jzellner/video/big_buck_bunny_1080p_surround.avi";
+    //        videoPlayer.play();
+    //    }
 
     Component.onCompleted: {
         var customCursorLoader = Qt.createComponent("components/Cursor.qml")
@@ -98,7 +119,7 @@ FocusScope {
             customCursorLoader.createObject(confluence)
         else if(customCursorLoader.status == Component.Error)
             console.log(customCursorLoader.errorString())
-        
+
         var weatherDialogLoader = Qt.createComponent("WeatherDialog.qml")
         if(weatherDialogLoader.status == Component.Ready)
             weatherDialogLoader.createObject(confluence)
@@ -136,9 +157,9 @@ FocusScope {
         source: themeResourcePath + "/media/Confluence_Logo.png"
     }
 
-//    BusyIndicator {
-//        on: true
-//        anchors.right: parent.right
-//        anchors.top: parent.top
-//    }
+    //    BusyIndicator {
+    //        on: true
+    //        anchors.right: parent.right
+    //        anchors.top: parent.top
+    //    }
 }
