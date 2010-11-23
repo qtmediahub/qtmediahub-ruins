@@ -24,60 +24,19 @@ import "components"
 
 //FIXME: polish this puppy
 
-Dashboard {
-    id: db
-    clip: true
-    anchors.fill: parent
-
-    state: "invisible"
-
-    widgetPath: generalResourcePath + "/widgets"
-
-    states: [
-        State {
-            name: "invisible"
-            PropertyChanges {
-                target: db
-                visible: false
-                opacity: 0.0
-            }
-        },
-        State {
-            name: "visible"
-            PropertyChanges {
-                target: db
-                visible: true
-                opacity: 1.0
-            }
-        }
-    ]
-
-    transitions: [
-        Transition {
-            to: "visible"
-            SequentialAnimation {
-                PropertyAction { target: db; property: "visible"; }
-                NumberAnimation { target: db; easing.type: Easing.OutQuad; property: "opacity"; duration: 400 }
-            }
-        },
-        Transition {
-            to: "invisible"
-            SequentialAnimation {
-                NumberAnimation { target: db; easing.type: Easing.OutQuad; property: "opacity"; duration: 400 }
-                PropertyAction { target: db; property: "visible"; }
-            }
-        }
-    ]
-
-    Rectangle {
-        id: curtain
-        color: "black"
-        opacity: 0.8
+Dialog {
+    id: dashboardDialog
+    defaultWidth: confluence.width; defaultHeight: confluence.height
+    Dashboard {
+        id: db
+        clip: true
         anchors.fill: parent
-        radius: 0.5
-    }
 
-    /* FIXME: constrained widgets
+        state: "invisible"
+
+        widgetPath: generalResourcePath + "/widgets"
+
+        /* FIXME: constrained widgets
     Grid {
         id: grid
         z: 1
@@ -95,20 +54,21 @@ Dashboard {
         }
     }*/
 
-    Component.onCompleted: {
-        var list  = db.discoverWidgets()
-        for(var i = 0; i < list.length; ++i) {
-            var dbComponent = Qt.createComponent("components/DashboardItem.qml")
-            if (dbComponent.status == Component.Error)
-                console.log(dbComponent.errorString())
-            var item = dbComponent.createObject(db)
+        Component.onCompleted: {
+            var list  = db.discoverWidgets()
+            for(var i = 0; i < list.length; ++i) {
+                var dbComponent = Qt.createComponent("components/DashboardItem.qml")
+                if (dbComponent.status == Component.Error)
+                    console.log(dbComponent.errorString())
+                var item = dbComponent.createObject(db)
 
-            var widget = Qt.createComponent(list[i])
-            if(widget.status == Component.Ready)
-                widget.createObject(item.container)
-            else if(widget.status == Component.Error)
-                console.log(widget.errorString())
+                var widget = Qt.createComponent(list[i])
+                if(widget.status == Component.Ready)
+                    widget.createObject(item.container)
+                else if(widget.status == Component.Error)
+                    console.log(widget.errorString())
+            }
+            backend.engine("dashboard").visualElement = dashboardDialog
         }
-        backend.engine("dashboard").visualElement = db
     }
 }
