@@ -99,6 +99,15 @@ FocusScope {
         id: frame
         source: themeResourcePath + "/media/ContentPanel.png"
         anchors.fill: parent
+        border { left: 30; top: 30; right: 30; bottom: 30 }
+
+        BorderImage {
+            id: frameTitle
+            source: themeResourcePath + "/media/GlassTitleBar.png"
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top:  parent.top
+            anchors.topMargin: 10
+        }
     }
 
     function onHideTransitionStarted() {
