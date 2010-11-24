@@ -32,6 +32,7 @@ FocusScope {
 
     property variant selectedElement
     property variant videoPlayer
+    property variant qtcube
 
     //Will scale if loading 720p theme at different res
     height: 720; width: 1280
@@ -51,6 +52,10 @@ FocusScope {
                 target: blade
                 state: "open"
                 visibleContent: rootMenu
+            }
+            PropertyChanges {
+                target: qtcube
+                x: confluence.width - qtcube.width
             }
             PropertyChanges {
                 target: ticker
@@ -142,10 +147,10 @@ FocusScope {
         }
         var qtCubeLoader = Qt.createComponent(generalResourcePath + "/misc/cube/cube.qml")
         if(qtCubeLoader.status == Component.Ready) {
-            var cube = qtCubeLoader.createObject(confluence)
-            cube.anchors.right = confluence.right
-            cube.anchors.top = confluence.top
-            cube.z = 1000
+            qtcube = qtCubeLoader.createObject(confluence)
+            qtcube.x = confluence.width
+            qtcube.anchors.top = confluence.top
+            qtcube.z = 1000
         }
         else if(qtCubeLoader.status == Component.Error)
             console.log(qtCubeLoader.errorString())

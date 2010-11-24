@@ -44,7 +44,6 @@ import Qt3D.Shapes 1.0
 
 Viewport {
     width: 100; height: 100
-
     Cube {
         scale: 1.5
 
