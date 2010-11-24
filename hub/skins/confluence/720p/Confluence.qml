@@ -43,8 +43,6 @@ FocusScope {
         color: "black"
     }
 
-    state: "showingRootMenu"
-
     states: [
         State {
             name: "showingRootMenu"
@@ -151,9 +149,10 @@ FocusScope {
             qtcube.x = confluence.width
             qtcube.anchors.top = confluence.top
             qtcube.z = 1000
-        }
-        else if(qtCubeLoader.status == Component.Error)
+        } else if(qtCubeLoader.status == Component.Error)
             console.log(qtCubeLoader.errorString())
+
+        confluence.state = "showingRootMenu"
     }
 
     Background{
