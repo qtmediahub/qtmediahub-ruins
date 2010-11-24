@@ -75,6 +75,7 @@ FocusScope {
                 target: blade
                 state: "closed"
                 visibleContent: selectedElement.bladeContent
+                x: -blade.bladePeek
             }
             PropertyChanges {
                 target: selectedElement
@@ -85,11 +86,7 @@ FocusScope {
 
     transitions: Transition {
         reversible: true
-        NumberAnimation {
-            properties: "x,y"
-            easing.type: confluenceEasingCurve
-            duration: confluenceAnimationDuration
-        }
+        NumberAnimation { properties: "x,y"; easing.type: confluenceEasingCurve; duration: confluenceAnimationDuration }
     }
 
     Keys.onPressed: {

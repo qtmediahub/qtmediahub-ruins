@@ -28,8 +28,11 @@ FocusScope {
     opacity: 0; visible: false
     scale: 0
 
+    property int marginOffset: 20
     property int defaultWidth: 1024
     property int defaultHeight: 512
+    property int maximizedWidth: confluence.width + 2*marginOffset
+    property int maximizedHeight: confluence.height + 2*marginOffset
     width: defaultWidth; height: defaultHeight
 
     property alias defaultDecoration: frame.visible
@@ -55,8 +58,8 @@ FocusScope {
                 visible: true
                 opacity: 1
                 scale: 1
-                width: confluence.width
-                height: confluence.height
+                width: maximizedWidth
+                height: maximizedHeight
             }
         }
     ]
@@ -88,10 +91,7 @@ FocusScope {
         },
         Transition {
             reversible: true
-            ParallelAnimation {
-                NumberAnimation { property: "width"; duration: 500; easing.type: Easing.InOutQuad }
-                NumberAnimation { property: "height"; duration: 500; easing.type: Easing.InOutQuad }
-            }
+            NumberAnimation { properties: "width,height"; duration: 500; easing.type: Easing.InOutQuad }
         }
     ]
 
