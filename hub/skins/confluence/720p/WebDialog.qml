@@ -67,5 +67,6 @@ Dialog {
     }
 
     Engine { name: "Web"; role: "web"; visualElement: webDialog; visualElementProperties: ["url", defaultUrl] }
+    Engine { name: "Store"; role: "web"; visualElement: webDialog; visualElementProperties: ["url", "http://store.ovi.com/"] }
     Engine { name: "Maps"; role: "maps"; visualElement: webDialog; visualElementProperties: ["url", generalResourcePath + "/Google\ Maps/Nokia.html"] }
 }
