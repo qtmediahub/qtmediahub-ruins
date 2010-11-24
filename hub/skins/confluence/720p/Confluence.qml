@@ -141,8 +141,12 @@ FocusScope {
             console.log(dashboardLoader.errorString())
         }
         var qtCubeLoader = Qt.createComponent(generalResourcePath + "/misc/cube/cube.qml")
-        if(qtCubeLoader.status == Component.Ready)
-            qtCubeLoader.createObject(confluence)
+        if(qtCubeLoader.status == Component.Ready) {
+            var cube = qtCubeLoader.createObject(confluence)
+            cube.anchors.right = confluence.right
+            cube.anchors.top = confluence.top
+            cube.z = 1000
+        }
         else if(qtCubeLoader.status == Component.Error)
             console.log(qtCubeLoader.errorString())
     }

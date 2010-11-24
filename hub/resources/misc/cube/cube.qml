@@ -38,18 +38,20 @@
 **
 ****************************************************************************/
 
-import Qt 4.7
+import QtQuick 1.0
 import Qt3D 1.0
 import Qt3D.Shapes 1.0
 
 Viewport {
-    width: 640; height: 480
+    width: 100; height: 100
 
     Cube {
         scale: 1.5
 
+        NumberAnimation { target: rotate; running: true; loops: Animation.Infinite; property: "angle"; to : 360.0; duration: 3000; }
+
         transform: Rotation3D {
-            angle: 45
+            id: rotate
             axis: Qt.vector3d(1, 1, 1)
         }
 
