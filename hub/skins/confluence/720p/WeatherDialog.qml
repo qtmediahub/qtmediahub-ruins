@@ -21,15 +21,10 @@ import QtQuick 1.0
 import "components"
 
 
-FocusScope {
+Dialog {
     id: root
-
-    anchors.fill: parent
-
-    visible: false
-    opacity: 0
-    scale: 0
-    z: 1
+    clip: false
+    defaultDecoration: false
 
     property string city: "munich"
 
@@ -219,16 +214,6 @@ FocusScope {
         XmlRole { name: "icon"; query: "icon/@data/string()" }
         XmlRole { name: "condition"; query: "condition/@data/string()" }
 
-    }
-
-    states: State {
-        name: "visible"
-        PropertyChanges {
-            target: root
-            visible: true
-            opacity: 1
-            scale: 1
-        }
     }
 
     Engine { name: "Weather"; role: "weather"; visualElement: root }

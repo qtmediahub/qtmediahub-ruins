@@ -23,6 +23,7 @@ FocusScope {
     id: dialog
     clip: true
 
+    z: 1
     anchors.centerIn: parent
 
     opacity: 0; visible: false
