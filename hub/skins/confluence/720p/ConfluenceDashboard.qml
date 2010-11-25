@@ -26,7 +26,7 @@ import "components"
 
 Dialog {
     id: dashboardDialog
-    defaultWidth: confluence.width; defaultHeight: confluence.height
+    defaultWidth: maximizedWidth; defaultHeight: maximizedHeight
     Dashboard {
         id: db
         clip: true
