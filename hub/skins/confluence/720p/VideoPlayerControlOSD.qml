@@ -23,6 +23,8 @@ import "components"
 FocusScope {
     id: root
 
+    property variant video
+
     width: parent.width
     height: content.height
 
@@ -48,12 +50,12 @@ FocusScope {
             Item { width: 100; height: 1; }
             PixmapButton { basePixmap: "OSDPrevTrackNF"; focusedPixmap: "OSDPrevTrackFO" }
             PixmapButton { basePixmap: "OSDRewindNF"; focusedPixmap: "OSDRewindFO"; onClicked: root.decreasePlaybackRate() }
-            PixmapButton { basePixmap: "OSDStopNF"; focusedPixmap: "OSDStopFO"; onClicked: videoItem.stop();}
+            PixmapButton { basePixmap: "OSDStopNF"; focusedPixmap: "OSDStopFO"; onClicked: video.stop();}
             PixmapButton {
                 id: playPauseButton
-                basePixmap: !videoItem.playing || videoItem.paused ? "OSDPlayNF" : "OSDPauseNF"
-                focusedPixmap: !videoItem.playing || videoItem.paused ? "OSDPlayFO" : "OSDPauseFO"
-                onClicked: videoItem.togglePlayPause()
+                basePixmap: !video.playing || video.paused ? "OSDPlayNF" : "OSDPauseNF"
+                focusedPixmap: !video.playing || video.paused ? "OSDPlayFO" : "OSDPauseFO"
+                onClicked: video.togglePlayPause()
             }
             PixmapButton { basePixmap: "OSDForwardNF"; focusedPixmap: "OSDForwardFO"; onClicked: root.increasePlaybackRate() }
             PixmapButton { basePixmap: "OSDNextTrackNF"; focusedPixmap: "OSDNextTrackFO" }
@@ -82,17 +84,17 @@ FocusScope {
 
     function increasePlaybackRate()
     {
-        if (videoItem.playbackRate <= 1)
-            videoItem.playbackRate = 2
-        else if (videoItem.playbackRate != 16)
-            videoItem.playbackRate *= 2
+        if (video.playbackRate <= 1)
+            video.playbackRate = 2
+        else if (video.playbackRate != 16)
+            video.playbackRate *= 2
     }
 
     function decreasePlaybackRate()
     {
-        if (videoItem.playbackRate >= 1)
-            videoItem.playbackRate = -2
-        else if (videoItem.playbackRate != -16)
-            videoItem.playbackRate *= 2
+        if (video.playbackRate >= 1)
+            video.playbackRate = -2
+        else if (video.playbackRate != -16)
+            video.playbackRate *= 2
     }
 }

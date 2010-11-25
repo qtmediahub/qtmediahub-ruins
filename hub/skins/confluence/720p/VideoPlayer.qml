@@ -49,13 +49,10 @@ FocusScope {
     Timer {
         id: osdTimer
         interval: 3000
-        running: (controlOSD.state == "visible" || infoOSD.state == "visible")
+        running: controlOSD.state == "visible"
 
         repeat: false
-        onTriggered: {
-            controlOSD.state = "";
-            infoOSD.state = "";
-        }
+        onTriggered: controlOSD.state = ""
     }
 
     Video {
@@ -80,10 +77,13 @@ FocusScope {
 
     VideoPlayerControlOSD {
         id: controlOSD
+        video: videoItem
     }
 
     VideoPlayerInfoOSD {
         id: infoOSD
+        video: videoItem
+        state: (videoItem.paused || videoItem.playbackRate != 1) ? "visible" : ""
     }
 
     states: [
@@ -124,7 +124,6 @@ FocusScope {
     function showOSD() {
         if (root.state == "maximized") {
             controlOSD.state = "visible";
-            infoOSD.state = "visible";
         }
     }
 }
