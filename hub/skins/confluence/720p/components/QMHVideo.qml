@@ -109,7 +109,7 @@ FocusScope {
 
         transitions: [
             Transition {
-                NumberAnimation { property: "topMargin"; duration: 500; easing.type: Easing.InOutQuad }
+                NumberAnimation { property: "topMargin"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
             }
         ]
     }
@@ -204,7 +204,7 @@ FocusScope {
 
         transitions: [
             Transition {
-                NumberAnimation { property: "bottomMargin"; duration: 500; easing.type: Easing.InOutQuad }
+                NumberAnimation { property: "bottomMargin"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
             }
         ]
     }

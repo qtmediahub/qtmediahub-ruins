@@ -70,8 +70,8 @@ FocusScope {
             SequentialAnimation {
                 ScriptAction { script: onHideTransitionStarted() }
                 ParallelAnimation {
-                    NumberAnimation { property: "opacity"; duration: 500; easing.type: Easing.InOutQuad }
-                    NumberAnimation { property: "scale"; duration: 500; easing.type: Easing.InOutQuad }
+                    NumberAnimation { property: "opacity"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
+                    NumberAnimation { property: "scale"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
                 }
                 PropertyAction { target: dialog; property: "visible"; value: false }
             }
@@ -82,8 +82,8 @@ FocusScope {
             SequentialAnimation {
                 PropertyAction { target: dialog; property: "visible"; value: true }
                 ParallelAnimation {
-                    NumberAnimation { property: "opacity"; duration: 500; easing.type: Easing.InOutQuad }
-                    NumberAnimation { property: "scale"; duration: 500; easing.type: Easing.InOutQuad }
+                    NumberAnimation { property: "opacity"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
+                    NumberAnimation { property: "scale"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
                 }
                 ScriptAction { script: onVisibleTransitionComplete() }
                 ScriptAction { script: dialog.forceActiveFocus() }
@@ -91,7 +91,7 @@ FocusScope {
         },
         Transition {
             reversible: true
-            NumberAnimation { properties: "width,height"; duration: 500; easing.type: Easing.InOutQuad }
+            NumberAnimation { properties: "width,height"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
         }
     ]
 

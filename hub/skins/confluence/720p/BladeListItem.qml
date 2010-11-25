@@ -59,8 +59,8 @@ Item {
         SequentialAnimation {
             PropertyAction { target: entry; property: "smooth"; value: "false" }
             ParallelAnimation {
-                NumberAnimation { property: "scale"; duration: 300; easing.type: Easing.InOutQuad }
-                NumberAnimation { property: "opacity"; duration: 300; easing.type: Easing.InOutQuad }
+                NumberAnimation { property: "scale"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
+                NumberAnimation { property: "opacity"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
             }
             PropertyAction { target: entry; property: "smooth"; value: "true" }
         }

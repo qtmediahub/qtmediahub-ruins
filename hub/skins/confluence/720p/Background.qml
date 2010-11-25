@@ -24,7 +24,7 @@ Item {
     property string backgroundPath: themeResourcePath + "/backgrounds/"
     property string imageFilename
 
-    onTransition: PropertyAnimation { target: temp; properties: "opacity"; to: 0; duration:500; easing.type: Easing.InOutQuad }
+    onTransition: PropertyAnimation { target: temp; properties: "opacity"; to: 0; duration:500; easing.type: confluenceEasingCurve }
     
     Timer {
         id: staggeredTimer
