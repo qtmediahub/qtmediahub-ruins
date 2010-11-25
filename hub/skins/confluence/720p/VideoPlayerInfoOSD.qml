@@ -18,112 +18,22 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 ****************************************************************************/
 
 import QtQuick 1.0
-import QtMultimediaKit 1.1
+import "components"
 
-//This serves to isolate import failures if QtMultimedia is not present
 FocusScope {
     id: root
 
-    property alias video : videoItem
+    width: 450
+    height: 100
 
-    anchors.fill: parent
-
-    Keys.onEscapePressed: {
-        if (controlOSD.state != "visible") {
-            showOSD();
-            event.accepted = true;
-        } else {
-            root.z = 0;
-        }
-    }
-
-    MouseArea {
-        anchors.fill: parent
-        hoverEnabled: true
-
-        onPositionChanged: showOSD();
-    }
-
-    Timer {
-        id: osdTimer
-        interval: 2000
-        running: (controlOSD.state == "visible" || infoOSD.state == "visible")
-                && !(controlOSDMouseArea.containsMouse || infoOSDMouseArea.containsMouse)
-
-        repeat: false
-        onTriggered: {
-            controlOSD.state = "";
-            infoOSD.state = "";
-        }
-    }
-
-    Video {
-        id: videoItem
-        anchors.fill: parent
-    }
+    anchors.bottom: parent.bottom
+    anchors.right: parent.right
+    anchors.bottomMargin: -content.height
 
     BorderImage {
-        id: controlOSD
-        source: themeResourcePath + "/media/MediaInfoBackUpper.png"
-
-        width: parent.width
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: parent.top
-        anchors.topMargin: -controlOSD.height
-
-        MouseArea {
-            id: controlOSDMouseArea
-            anchors.fill: parent
-            hoverEnabled: true
-        }
-
-        ButtonList {
-            id: controlOSDButtonList
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 20
-            anchors.horizontalCenter: parent.horizontalCenter
-            spacing: 5
-
-            PixmapButton { basePixmap: "OSDBookmarksNF"; focusedPixmap: "OSDBookmarksFO" }
-            PixmapButton { basePixmap: "OSDAudioNF"; focusedPixmap: "OSDAudioFO" }
-            PixmapButton { basePixmap: "OSDVideoNF"; focusedPixmap: "OSDVideoFO" }
-            PixmapButton { basePixmap: "OSDPrevTrackNF"; focusedPixmap: "OSDPrevTrackFO" }
-            PixmapButton { basePixmap: "OSDRewindNF"; focusedPixmap: "OSDRewindFO"; onClicked: videoItem.playbackRate = -2 }
-            PixmapButton { basePixmap: "OSDPauseNF"; focusedPixmap: "OSDPauseFO"; onClicked: videoItem.pause();}
-            PixmapButton { basePixmap: "OSDPlayNF"; focusedPixmap: "OSDPlayFO"; onClicked: { videoItem.play(); videoItem.playbackRate = 1 } }
-            PixmapButton { basePixmap: "OSDForwardNF"; focusedPixmap: "OSDForwardFO"; onClicked: videoItem.playbackRate = 2}
-            PixmapButton { basePixmap: "OSDNextTrackNF"; focusedPixmap: "OSDNextTrackFO" }
-            PixmapButton { basePixmap: "OSDDvdNF"; focusedPixmap: "OSDDvdFO" }
-            PixmapButton { basePixmap: "OSDRecordNF"; focusedPixmap: "OSDRecordFO" }
-        }
-
-        states: [
-            State {
-                name: "visible"
-                PropertyChanges {
-                    target: controlOSD.anchors
-                    topMargin: -controlOSD.height + controlOSDButtonList.height + controlOSDButtonList.anchors.bottomMargin
-                }
-            }
-        ]
-
-        transitions: [
-            Transition {
-                NumberAnimation { property: "topMargin"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
-            }
-        ]
-    }
-
-    BorderImage {
-        id: infoOSD
+        id: content
         source: themeResourcePath + "/media/InfoMessagePanel.png"
-
-        anchors.bottom: parent.bottom
-        anchors.right: parent.right
-        anchors.bottomMargin: -infoOSD.height
-
-        width: 450
-        height: 100
+        anchors.fill: parent
 
         border { left: 30; top: 30; right: 30; bottom: 30 }
 
@@ -142,7 +52,7 @@ FocusScope {
                 anchors.verticalCenter: seekOSD.verticalCenter
 
                 Text {
-                    text: videoItem.paused ? "Paused" : "Playing"
+                    text: videoItem.playbackRate == 0 ? "Paused" : "Playing"
                     color: "steelblue"
                 }
                 Text {
@@ -165,7 +75,7 @@ FocusScope {
                     source:  themeResourcePath + "/media/OSDSeekRewind.png"
                     anchors.left: parent.left
                     anchors.verticalCenter: seekOSDCentral.verticalCenter
-                    opacity: videoItem.playbackRate < 0 ? 1 : 0.5
+                    opacity: videoItem.playbackRate < 0 ? 1 : 0.2
                 }
 
                 Image {
@@ -182,32 +92,86 @@ FocusScope {
                     anchors.left: seekOSDCentral.right
                     anchors.leftMargin: -10
                     anchors.verticalCenter: seekOSDCentral.verticalCenter
-                    opacity: videoItem.playbackRate > 1 ? 1 : 0.5
+                    opacity: videoItem.playbackRate > 1 ? 1 : 0.2
                 }
 
                 Image {
-                    source: videoItem.paused ? themeResourcePath + "/media/OSDPause.png" : themeResourcePath + "/media/OSDPlay.png"
+                    id: statusIcon
                     anchors.centerIn: seekOSDCentral
+
+                    states: [
+                        State {
+                            when: videoItem.playing && !videoItem.paused && videoItem.playbackRate == 1
+                            PropertyChanges {
+                                target: statusIcon
+                                source: themeResourcePath + "/media/OSDPlay.png"
+                            }
+                        },
+                        State {
+                            when: videoItem.paused
+                            PropertyChanges {
+                                target: statusIcon
+                                source: themeResourcePath + "/media/OSDPause.png"
+                            }
+                        },
+                        State {
+                            when: videoItem.playing && !videoItem.paused && Math.abs(videoItem.playbackRate) == 2
+                            PropertyChanges {
+                                target: statusIcon
+                                source: themeResourcePath + "/media/OSD2x.png"
+                            }
+                        },
+                        State {
+                            when: videoItem.playing && !videoItem.paused && Math.abs(videoItem.playbackRate) == 4
+                            PropertyChanges {
+                                target: statusIcon
+                                source: themeResourcePath + "/media/OSD4x.png"
+                            }
+                        },
+                        State {
+                            when: videoItem.playing && !videoItem.paused && Math.abs(videoItem.playbackRate) == 8
+                            PropertyChanges {
+                                target: statusIcon
+                                source: themeResourcePath + "/media/OSD8x.png"
+                            }
+                        },
+                        State {
+                            when: videoItem.playing && !videoItem.paused && Math.abs(videoItem.playbackRate) == 16
+                            PropertyChanges {
+                                target: statusIcon
+                                source: themeResourcePath + "/media/OSD16x.png"
+                            }
+                        },
+                        State {
+                            when: videoItem.playing && !videoItem.paused && Math.abs(videoItem.playbackRate) == 32
+                            PropertyChanges {
+                                target: statusIcon
+                                source: themeResourcePath + "/media/OSD32x.png"
+                            }
+                        }
+                    ]
                 }
             }
         }
 
-        states: [
-            State {
-                name: "visible"
-                PropertyChanges {
-                    target: infoOSD.anchors
-                    bottomMargin: -5
-                }
-            }
-        ]
 
-        transitions: [
-            Transition {
-                NumberAnimation { property: "bottomMargin"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
-            }
-        ]
     }
+
+    states: [
+        State {
+            name: "visible"
+            PropertyChanges {
+                target: root.anchors
+                bottomMargin: -5
+            }
+        }
+    ]
+
+    transitions: [
+        Transition {
+            NumberAnimation { property: "bottomMargin"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
+        }
+    ]
 
     function ms2string(ms)
     {
@@ -230,10 +194,5 @@ FocusScope {
         ret += s < 10 ? "0" + s : s + "";
 
         return ret;
-    }
-
-    function showOSD() {
-        controlOSD.state = "visible";
-        infoOSD.state = "visible";
     }
 }

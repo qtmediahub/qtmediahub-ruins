@@ -59,6 +59,10 @@ FocusScope {
                 target: ticker
                 y: confluence.height - ticker.height
             }
+            PropertyChanges {
+                target: videoPlayer
+                state: "background"
+            }
         },
         State {
             name: "showingSelectedElement"
@@ -70,6 +74,10 @@ FocusScope {
             PropertyChanges {
                 target: selectedElement
                 state: "visible"
+            }
+            PropertyChanges {
+                target: videoPlayer
+                state: "background"
             }
         },
         State {
@@ -84,7 +92,26 @@ FocusScope {
                 target: selectedElement
                 state: "maximized"
             }
+            PropertyChanges {
+                target: videoPlayer
+                state: "hidden"
+            }
+        },
+        State {
+            name: "showingVideoPlayer"
+            PropertyChanges {
+                target: blade
+                state: "closed"
+                visibleContent: selectedElement.bladeContent
+                x: -blade.bladePeek
+            }
+            PropertyChanges {
+                target: videoPlayer
+                state: "maximized"
+            }
+            StateChangeScript { script: videoPlayer.forceActiveFocus() }
         }
+
     ]
 
     transitions: Transition {
@@ -108,13 +135,6 @@ FocusScope {
                 confluence.state = "showingSelectedElementMaximized"
     }
 
-//    Keys.onAsteriskPressed: {
-//        videoPlayer.video.source = "/home/jzellner/video/big_buck_bunny_1080p_surround.avi";
-//        videoPlayer.z = 1000;
-//        videoPlayer.forceActiveFocus();
-//        videoPlayer.video.play();
-//    }
-
     Component.onCompleted: {
         var customCursorLoader = Qt.createComponent("components/Cursor.qml")
         if(customCursorLoader.status == Component.Ready)
@@ -128,10 +148,12 @@ FocusScope {
         else if(weatherDialogLoader.status == Component.Error)
             console.log(weatherDialogLoader.errorString())
 
-        var videoPlayerComponent = Qt.createComponent("components/QMHVideo.qml");
+        var videoPlayerComponent = Qt.createComponent("VideoPlayer.qml");
         if(videoPlayerComponent.status == Component.Ready) {
             videoPlayer = videoPlayerComponent.createObject(confluence)
-            videoPlayer.z = 0
+            // FIXME: nothing to get video-path during runtime, yet
+            videoPlayer.video.source = "/home/jzellner/video/big_buck_bunny_1080p_surround.avi";
+            videoPlayer.state = "hidden"
         } else if (videoPlayerComponent.status == Component.Error) {
             console.log(videoPlayerComponent.errorString())
         }

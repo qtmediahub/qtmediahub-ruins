@@ -76,7 +76,13 @@ FocusScope {
             mainBladeList.focus = true
         }
 
-        PixmapButton { basePixmap: "home-playmedia"; focusedPixmap: "home-playmedia-FO" }
+        PixmapButton {
+            basePixmap: "home-playmedia"
+            focusedPixmap: "home-playmedia-FO"
+            onClicked: {
+                confluence.state = "showingVideoPlayer"
+            }
+        }
         PixmapButton { basePixmap: "home-favourites"; focusedPixmap: "home-favourites-FO" }
         PixmapButton {
             basePixmap: "home-power";
