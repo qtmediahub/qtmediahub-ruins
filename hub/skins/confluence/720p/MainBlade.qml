@@ -63,8 +63,8 @@ Blade {
             var subBladeMenuLoader = Qt.createComponent("SubBladeMenu.qml")
             if(subBladeMenuLoader.status == Component.Ready)
                 subMenuList = subBladeMenuLoader.createObject(subBlade.bladeContent)
-            else if (SubBladeMenuLoader.status == Component.Ready)
-                console.log(subMenuLoader.errorString())
+            else if (subBladeMenuLoader.status == Component.Error)
+                console.log(subBladeMenuLoader.errorString())
         }
     }
 }
