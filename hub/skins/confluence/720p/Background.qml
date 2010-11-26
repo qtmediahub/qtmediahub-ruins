@@ -20,16 +20,17 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 import QtQuick 1.0
 
 Item {
-    signal transition
     property string backgroundPath: themeResourcePath + "/backgrounds/"
     property string imageFilename
 
-    onTransition: PropertyAnimation { target: temp; properties: "opacity"; to: 0; duration:500; easing.type: confluenceEasingCurve }
-    
     Timer {
         id: staggeredTimer
         interval: 1000; running: false; repeat: false
-        onTriggered: setImage(imageFilename)
+        onTriggered: SequentialAnimation {
+            PropertyAction { target: temp; property: "source"; value: primary.source }
+            PropertyAction { target: primary; property: "source"; value: backgroundPath + imageFilename }
+            PropertyAnimation { target: temp; properties: "opacity"; from: 1; to: 0; duration:500; easing.type: confluenceEasingCurve }
+        }
     }
 
     Image {
@@ -48,13 +49,6 @@ Item {
         //console.log("Getting image for " + role)
         imageFilename = bgmap[role]
         staggeredTimer.start()
-    }
-
-    function setImage(fileName) {
-        temp.source = primary.source
-        primary.source = backgroundPath + fileName
-        temp.opacity = 1
-        transition()
     }
 
     //FIXME: Can't decide whether this is genius or idiocy, please let me know
