@@ -51,8 +51,8 @@ Item {
         staggeredTimer.start()
     }
 
-    //FIXME: Can't decide whether this is genius or idiocy, please let me know
-    Item {
+    // FIXME: Ideally get this through the plugin interface
+    QtObject {
         id: bgmap
         property string music: "music.jpg"
         property string videos: "videos.jpg"
