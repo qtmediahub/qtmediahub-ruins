@@ -216,5 +216,5 @@ Dialog {
 
     }
 
-    Engine { name: "Weather"; role: "weather"; visualElement: root }
+    Engine { name: qsTr("Weather"); role: "weather"; visualElement: root }
 }
