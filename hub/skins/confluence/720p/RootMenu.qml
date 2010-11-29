@@ -17,6 +17,9 @@ FocusScope {
         } else if (clickComponent.status == Component.Error) {
             console.log(clickComponent.errorString())
         }
+
+        console.log('setting the current index')
+        mainBladeList.currentIndex = 0;
     }
 
     Keys.onLeftPressed:
@@ -46,8 +49,8 @@ FocusScope {
         delegate:
             BladeListItem { }
 
-        onItemSelected: {
-            background.asyncSetRole(currentItem.role)
+        onCurrentIndexChanged: {
+            background.role = currentItem.role
             if(menuSoundEffect != undefined) {
                 menuSoundEffect.play()
             }

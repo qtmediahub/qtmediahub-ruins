@@ -179,6 +179,7 @@ FocusScope {
 
     Background{
         id: background
+        anchors.fill: parent;
         z: 1
         visible: !videoPlayer.video.playing
     }

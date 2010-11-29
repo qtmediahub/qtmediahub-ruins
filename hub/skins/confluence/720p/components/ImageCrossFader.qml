@@ -18,31 +18,37 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 ****************************************************************************/
 
 import QtQuick 1.0
-import "components"
 
 Item {
-    property string role
+    id: imageCrossFader
+    property string source
 
-    ImageCrossFader {
-        property string backgroundPath: themeResourcePath + "/backgrounds/"
-
-        id: imageCrossFader;
+    Image {
+        id: primary
         anchors.fill: parent;
-        source: if (bgmap[role] != undefined) backgroundPath + bgmap[role]
     }
 
-    // FIXME: Ideally get this through the plugin interface
-    QtObject {
-        id: bgmap
-        property string music: "music.jpg"
-        property string videos: "videos.jpg"
-        property string scripts: "programs.jpg"
-        property string weather: "weather.jpg"
-        property string pictures: "pictures.jpg"
-        property string programs: "programs.jpg"
-        property string system: "system.jpg"
-        property string web: "system.jpg"
-        property string maps: "system.jpg"
-        property string dashboard: "system.jpg"
+    Image {
+        id: secondary
+        anchors.fill: parent;
     }
+
+    Timer {
+        id: staggeredTimer
+        interval: 1000; running: false; repeat: false
+        onTriggered: SequentialAnimation {
+            PropertyAction { target: secondary; property: "source"; value: primary.source }
+            PropertyAction { target: primary; property: "source"; value: imageCrossFader.source }
+            PropertyAnimation { target: secondary; properties: "opacity"; from: 1; to: 0; duration:500; easing.type: confluenceEasingCurve }
+        }
+    }
+
+    onSourceChanged: {
+        if (primary.source == "") {
+            primary.source = imageCrossFader.source; 
+        } else {
+            staggeredTimer.start();
+        }
+                     }
 }
+
