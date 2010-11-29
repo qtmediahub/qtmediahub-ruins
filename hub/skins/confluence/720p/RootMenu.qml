@@ -8,11 +8,15 @@ FocusScope {
 
     property variant menuSoundEffect
     property string name: "rootmenu"
+    property alias currentItem: mainBladeList.currentItem
+    property alias currentIndex: mainBladeList.currentIndex
+
+    signal openSubMenu
 
     Component.onCompleted: {
         var clickComponent = Qt.createComponent("components/QMHAudio.qml");
         if(clickComponent.status == Component.Ready) {
-            menuSoundEffect = clickComponent.createObject(mainBlade)
+            menuSoundEffect = clickComponent.createObject(parent)
             menuSoundEffect.source = themeResourcePath + "/sounds/click.wav"
         } else if (clickComponent.status == Component.Error) {
             console.log(clickComponent.errorString())
@@ -59,18 +63,13 @@ FocusScope {
             currentItem.trigger()
         Keys.onReturnPressed:
             currentItem.trigger()
-        Keys.onRightPressed: {
-            if(currentItem.hasSubBlade) {
-                mainBlade.subMenu.state = "open";
-                // not really nice should be also a property of the currentItem, but I don't know how to add a QList<QObject*> property
-                mainBlade.subMenuList.model = backend.engines[currentIndex].childItems;
-            }
-        }
+        Keys.onRightPressed:
+            rootMenu.openSubMenu()
     }
 
     ButtonList {
         id: buttonGrid
-        x: mainBlade.bladeX + 5 + bladeRightMargin; y: parent.height - height;
+        x: mainBlade.bladeX + 5 + bladeRightMargin; y: parent.height - height; // # FIXME: Should not access mainBlade
         spacing: 2
         width: parent.width
 
