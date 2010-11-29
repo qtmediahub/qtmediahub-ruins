@@ -8,8 +8,8 @@ FocusScope {
 
     property variant menuSoundEffect
     property string name: "rootmenu"
-    property alias currentItem: mainBladeList.currentItem
-    property alias currentIndex: mainBladeList.currentIndex
+    property alias currentItem: rootMenuList.currentItem
+    property alias currentIndex: rootMenuList.currentIndex
 
     signal openSubMenu
 
@@ -22,7 +22,7 @@ FocusScope {
             console.log(clickComponent.errorString())
         }
 
-        mainBladeList.currentIndex = 0;
+        rootMenuList.currentIndex = 0;
     }
 
     Keys.onLeftPressed:
@@ -34,7 +34,7 @@ FocusScope {
     }
 
     ListView {
-        id: mainBladeList
+        id: rootMenuList
 
         signal itemSelected
 
@@ -50,7 +50,7 @@ FocusScope {
 
         model: backend.engines //menuList
         delegate:
-            BladeListItem { }
+            RootMenuListItem { }
 
         onCurrentIndexChanged: {
             background.role = currentItem.role
@@ -74,7 +74,7 @@ FocusScope {
         width: parent.width
 
         onUpperBoundExceeded: {
-            mainBladeList.focus = true
+            rootMenuList.focus = true
         }
 
         PixmapButton {
