@@ -67,11 +67,7 @@ Item {
     }
 
     function trigger() {
-        confluence.selectedElement = model.modelData.visualElement
-        var elementProperties = model.modelData.visualElementProperties
-        for(var i = 0; i + 2 <= elementProperties.length; i += 2)
-            confluence.selectedElement[elementProperties[i]] = elementProperties[i+1]
-        confluence.state = "showingSelectedElement"
+        confluence.setActiveEngine(model.modelData)
     }
 
     ConfluenceText {

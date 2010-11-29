@@ -179,6 +179,15 @@ FocusScope {
         confluence.state = "showingRootMenu"
     }
 
+    function setActiveEngine(engine)
+    {
+        selectedElement = engine.visualElement
+        var elementProperties = engine.visualElementProperties
+        for(var i = 0; i + 2 <= elementProperties.length; i += 2)
+            selectedElement[elementProperties[i]] = elementProperties[i+1]
+        state = "showingSelectedElement"
+    }
+
     Background{
         id: background
         anchors.fill: parent;
