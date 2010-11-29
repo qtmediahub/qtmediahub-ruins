@@ -33,6 +33,7 @@ Blade {
     RootMenu {
         id: rootMenu
         parent: mainBlade.bladeContent
+        buttonGridX: bladeX + 5 + bladeRightMargin; 
         onOpenSubMenu: {
             if (currentItem.hasSubBlade) {
                 subMenu.state = "open";

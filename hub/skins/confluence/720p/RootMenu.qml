@@ -10,6 +10,7 @@ FocusScope {
     property string name: "rootmenu"
     property alias currentItem: rootMenuList.currentItem
     property alias currentIndex: rootMenuList.currentIndex
+    property alias buttonGridX : buttonGrid.x
 
     signal openSubMenu
 
@@ -69,7 +70,7 @@ FocusScope {
 
     ButtonList {
         id: buttonGrid
-        x: mainBlade.bladeX + 5 + bladeRightMargin; y: parent.height - height; // # FIXME: Should not access mainBlade
+        y: parent.height - height; // # FIXME: Should not access mainBlade
         spacing: 2
         width: parent.width
 
