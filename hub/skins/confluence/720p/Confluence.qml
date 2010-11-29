@@ -98,6 +98,8 @@ FocusScope {
             }
         },
         State {
+            //FIXME: This is hopefully temporary and can be merged into the
+            //above state
             name: "showingVideoPlayer"
             PropertyChanges {
                 target: blade
