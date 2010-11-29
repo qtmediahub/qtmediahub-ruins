@@ -26,9 +26,8 @@ Item {
     ImageCrossFader {
         property string backgroundPath: themeResourcePath + "/backgrounds/"
 
-        id: imageCrossFader;
         anchors.fill: parent;
-        source: if (bgmap[role] != undefined) backgroundPath + bgmap[role]
+        source: bgmap[role] ? backgroundPath + bgmap[role] : ""
     }
 
     // FIXME: Ideally get this through the plugin interface
