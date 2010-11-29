@@ -25,7 +25,6 @@ Blade {
     clip: false
 
     property alias subMenu : subMenu
-    property alias subMenuList : subMenuList
     property alias rootMenu: rootMenu
 
     bladeWidth: 400
