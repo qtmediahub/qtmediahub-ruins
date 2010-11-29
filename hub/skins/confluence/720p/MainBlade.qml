@@ -25,6 +25,7 @@ Blade {
     clip: false
 
     property alias subMenu : subBlade
+    property bool open : false
     property variant rootMenu
     property variant subMenuList
 
@@ -40,8 +41,8 @@ Blade {
             console.log(rootMenuLoader.errorString())
     }
 
-    onOpened:
-        confluence.state = "showingRootMenu"
+    onOpened: open = true;
+    onClosed: open = false;
 
     Blade {
         id: subBlade
