@@ -40,6 +40,13 @@ BorderImage {
         XmlRole { name: "description"; query: "description/string()" }
     }
 
+    Timer {
+        interval: 100;
+        running: confluence.state == "showingRootMenu";
+        repeat: true
+        onTriggered: list.contentX++
+    }
+
     ListView {
         id: list
         clip: true
