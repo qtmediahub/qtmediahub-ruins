@@ -18,7 +18,6 @@ FocusScope {
             console.log(clickComponent.errorString())
         }
 
-        console.log('setting the current index')
         mainBladeList.currentIndex = 0;
     }
 
