@@ -68,7 +68,7 @@ Dialog {
                 else if(widget.status == Component.Error)
                     console.log(widget.errorString())
             }
-            // backend.engine("dashboard").visualElement = dashboardDialog
+            dashboardEngine.visualElement = dashboardDialog
         }
     }
 }
