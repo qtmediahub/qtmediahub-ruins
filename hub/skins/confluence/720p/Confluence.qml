@@ -46,7 +46,6 @@ FocusScope {
     states: [
         State {
             name: "showingRootMenu"
-            when: blade.open
             PropertyChanges {
                 target: blade
                 state: "open"
