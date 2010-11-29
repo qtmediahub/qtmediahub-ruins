@@ -60,7 +60,7 @@ Blade {
 
         SubBladeMenu {
             id: subMenuList
-            parent: subBlade.bladeContent
+            parent: subMenu.bladeContent
         }
     }
 }
