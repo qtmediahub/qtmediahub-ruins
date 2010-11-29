@@ -184,7 +184,12 @@ FocusScope {
         visible: !videoPlayer.video.playing
     }
 
-    MainBlade { id: blade; z: 1; focus: true }
+    MainBlade { 
+        id: blade; 
+        z: 1; 
+        focus: true 
+        onOpened: confluence.state = "showingRootMenu"
+    }
 
     ExitDialog { id: exitDialog; z: 1 }
 

@@ -36,9 +36,6 @@ Blade {
         parent: mainBlade.bladeContent
     }
 
-    onOpened:
-        confluence.state = "showingRootMenu"
-
     Blade {
         id: subMenu
 
