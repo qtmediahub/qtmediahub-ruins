@@ -40,7 +40,7 @@ Item {
             name: 'selected'
             when: activeFocus && ListView.isCurrentItem && mainBlade.subMenu.state == "closed"
             PropertyChanges { target: menuItem; scale: 1; opacity:  1 }
-            StateChangeScript { script: mainBladeList.itemSelected() }
+            StateChangeScript { script: rootMenuList.itemSelected() }
             PropertyChanges { target: subIndicator; opacity: 1 }
         },
         State {
@@ -88,8 +88,8 @@ Item {
             hoverEnabled: true
 
             onEntered: {
-                mainBladeList.currentIndex = index
-                mainBladeList.forceActiveFocus()
+                rootMenuList.currentIndex = index
+                rootMenuList.forceActiveFocus()
             }
             onClicked: {
                 trigger()
