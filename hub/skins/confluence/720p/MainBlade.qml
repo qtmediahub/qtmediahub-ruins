@@ -24,27 +24,23 @@ Blade {
     id: mainBlade
     clip: false
 
-    property alias subMenu : subBlade
-    property variant rootMenu
-    property variant subMenuList
+    property alias subMenu : subMenu
+    property alias subMenuList : subMenuList
+    property alias rootMenu: rootMenu
 
     bladeWidth: 400
     bladePixmap: themeResourcePath + "/media/HomeBlade.png"
 
-    Component.onCompleted: {
-        //Want root item parented to mainBlade.bladeContent not mainBlade
-        var rootMenuLoader = Qt.createComponent("RootMenu.qml")
-        if(rootMenuLoader.status == Component.Ready)
-            rootMenu = rootMenuLoader.createObject(mainBlade.bladeContent)
-        else if(rootMenuLoader.status == Component.Error)
-            console.log(rootMenuLoader.errorString())
+    RootMenu {
+        id: rootMenu
+        parent: mainBlade.bladeContent
     }
 
     onOpened:
         confluence.state = "showingRootMenu"
 
     Blade {
-        id: subBlade
+        id: subMenu
 
         bladePeek: 10
         bladeWidth: 200
@@ -58,13 +54,10 @@ Blade {
             state = "closed"
             rootMenu.forceActiveFocus()
         }
-        Component.onCompleted: {
-            //Want root item parented to mainBlade.bladeContent not mainBlade
-            var subBladeMenuLoader = Qt.createComponent("SubBladeMenu.qml")
-            if(subBladeMenuLoader.status == Component.Ready)
-                subMenuList = subBladeMenuLoader.createObject(subBlade.bladeContent)
-            else if (subBladeMenuLoader.status == Component.Error)
-                console.log(subBladeMenuLoader.errorString())
+
+        SubBladeMenu {
+            id: subMenuList
+            parent: subBlade.bladeContent
         }
     }
 }
