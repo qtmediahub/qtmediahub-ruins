@@ -34,14 +34,8 @@ FocusScope {
     property variant videoPlayer
     property variant qtcube
 
-    //Will scale if loading 720p theme at different res
     height: 720; width: 1280
     focus: true; clip: true
-
-    Rectangle {
-        anchors.fill: parent
-        color: "black"
-    }
 
     states: [
         State {
