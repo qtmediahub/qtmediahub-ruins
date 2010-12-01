@@ -4,5 +4,5 @@ import QMHPlugin 1.0
 QMHPlugin {
     id: engine
     Component.onCompleted:
-        backend.registerEngine(engine)
+        backend.advertizeEngine(engine)
 }
