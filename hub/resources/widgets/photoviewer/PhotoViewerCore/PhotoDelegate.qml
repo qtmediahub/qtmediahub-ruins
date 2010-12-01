@@ -119,7 +119,8 @@ Package {
             states: [
             State {
                 name: 'stacked'; when: albumWrapper.state == ''
-                ParentChange { target: photoWrapper; parent: stackItem; x: 10; y: 10 }
+                // Girish: Commented out below since it throws a lot of warnings
+                // ParentChange { target: photoWrapper; parent: stackItem; x: 10; y: 10 }
                 PropertyChanges { target: photoWrapper; opacity: stackItem.PathView.onPath ? 1.0 : 0.0 }
             },
             State {
