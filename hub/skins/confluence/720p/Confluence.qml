@@ -144,6 +144,12 @@ FocusScope {
         else if(weatherDialogLoader.status == Component.Error)
             console.log(weatherDialogLoader.errorString())
 
+        var musicDialogLoader = Qt.createComponent("MusicDialog.qml")
+        if(musicDialogLoader.status == Component.Ready)
+            musicDialogLoader.createObject(confluence)
+        else if(musicDialogLoader.status == Component.Error)
+            console.log(musicDialogLoader.errorString())
+
         var videoPlayerComponent = Qt.createComponent("VideoPlayer.qml");
         if(videoPlayerComponent.status == Component.Ready) {
             videoPlayer = videoPlayerComponent.createObject(confluence)
