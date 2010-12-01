@@ -32,12 +32,12 @@ FocusScope {
     property int marginOffset: 20
     property int defaultWidth: 1024
     property int defaultHeight: 512
-    property int maximizedWidth: confluence.width + 2*marginOffset
-    property int maximizedHeight: confluence.height + 2*marginOffset
+    property int maximizedWidth: parent.width + 2*marginOffset
+    property int maximizedHeight: parent.height + 2*marginOffset
     width: defaultWidth; height: defaultHeight
 
     property alias defaultDecoration: frame.visible
-
+    property alias defaultTitleBar: frameTitle.visible
 
     //useful for focus debugging
     //onActiveFocusChanged: console.log(idtext + " just " + (activeFocus ? "got" : "lost") + " focus")
@@ -101,14 +101,17 @@ FocusScope {
         source: themeResourcePath + "/media/ContentPanel.png"
         anchors.fill: parent
         border { left: 30; top: 30; right: 30; bottom: 30 }
+    }
 
-        BorderImage {
-            id: frameTitle
-            source: themeResourcePath + "/media/GlassTitleBar.png"
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.top:  parent.top
-            anchors.topMargin: 10
-        }
+    // This is a child of the frame but written as a top-level child only
+    // to expose the frameTitle.visible property
+    BorderImage {
+        id: frameTitle
+        parent: frame
+        source: themeResourcePath + "/media/GlassTitleBar.png"
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.top:  parent.top
+        anchors.topMargin: 10
     }
 
     function onHideTransitionStarted() {
