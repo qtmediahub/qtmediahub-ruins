@@ -144,6 +144,8 @@ FocusScope {
         else if(weatherDialogLoader.status == Component.Error)
             console.log(weatherDialogLoader.errorString())
 
+        // ## This should probably not be here
+        musicEngine.pluginProperties.musicModel.setThemeResourcePath(confluence.themeResourcePath);
         var musicDialogLoader = Qt.createComponent("MusicDialog.qml")
         if(musicDialogLoader.status == Component.Ready)
             musicDialogLoader.createObject(confluence)
