@@ -40,13 +40,6 @@ BorderImage {
         XmlRole { name: "description"; query: "description/string()" }
     }
 
-    Timer {
-        interval: 100;
-        running: confluence.state == "showingRootMenu";
-        repeat: true
-        onTriggered: list.contentX++
-    }
-
     ListView {
         id: list
         clip: true
@@ -75,6 +68,13 @@ BorderImage {
                 }
             }
             ConfluenceText { anchors.left: tickerTitle.right; text: " - "; color: "blue" }
+        }
+
+        Timer {
+            interval: 100;
+            running: confluence.state == "showingRootMenu" && !list.flicking
+            repeat: true
+            onTriggered: list.contentX++
         }
     }
 
