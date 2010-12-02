@@ -133,17 +133,13 @@ FocusScope {
     }
 
     Component.onCompleted: {
+        //Create items which may or may not be present
+
         var customCursorLoader = Qt.createComponent("components/Cursor.qml")
         if(customCursorLoader.status == Component.Ready)
             customCursorLoader.createObject(confluence)
         else if(customCursorLoader.status == Component.Error)
             console.log(customCursorLoader.errorString())
-
-        var weatherDialogLoader = Qt.createComponent("WeatherDialog.qml")
-        if(weatherDialogLoader.status == Component.Ready)
-            weatherDialogLoader.createObject(confluence)
-        else if(weatherDialogLoader.status == Component.Error)
-            console.log(weatherDialogLoader.errorString())
 
         // ## This should probably not be here
         musicEngine.pluginProperties.musicModel.setThemeResourcePath(confluence.themeResourcePath);
@@ -201,16 +197,15 @@ FocusScope {
 
     MainBlade { 
         id: blade; 
-        z: 1; 
         focus: true 
         onOpened: confluence.state = "showingRootMenu"
     }
 
-    ExitDialog { id: exitDialog; z: 1 }
+    ExitDialog { id: exitDialog }
 
     Ticker { id: ticker; y: confluence.height; z: 1; anchors { right: parent.right } }
 
-    WebDialog { id: webDialog; z: 1 }
+    WebDialog { id: webDialog }
 
     Image {
         id: banner
@@ -219,10 +214,12 @@ FocusScope {
     }
 
     SystemDialog {
-        id: system
+        id: systemDialog
         Component.onCompleted:
-            systemEngine.visualElement = system
+            systemEngine.visualElement = systemDialog
     }
+
+    WeatherDialog { id: weatherDialog; }
 
     //    BusyIndicator {
     //        on: true

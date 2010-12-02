@@ -64,7 +64,7 @@ BorderImage {
                 onEntered:  tickerTitle.color = "blue"
                 onExited:  tickerTitle.color = "white"
                 onClicked: {
-                    webDialog.loadPage(link)
+                    webDialog ? webDialog.loadPage(link) : 0
                 }
             }
             ConfluenceText { anchors.left: tickerTitle.right; text: " - "; color: "blue" }
