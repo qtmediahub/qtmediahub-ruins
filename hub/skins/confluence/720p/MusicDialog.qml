@@ -49,6 +49,10 @@ Dialog {
                 color: ListView.isCurrentItem ? "red" : "green"
                 ConfluenceText { id: sourceText; text: model.fileName; }
             }
+            onCurrentIndexChanged: {
+                sourcesArt.source = model.decorationUrl(sourcesList.currentIndex);
+                                   }
+
         }
     }
 
@@ -63,6 +67,11 @@ Dialog {
 
         width: 342
         height: 348
+
+        ImageCrossFader {
+            id: sourcesArt
+            anchors.fill: parent;
+        }
     }
 
     Component.onCompleted: {
