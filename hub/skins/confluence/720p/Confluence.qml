@@ -146,6 +146,7 @@ FocusScope {
 
         // ## This should probably not be here
         musicEngine.pluginProperties.musicModel.setThemeResourcePath(confluence.themeResourcePath);
+        musicEngine.pluginProperties.musicModel.start();
         var musicDialogLoader = Qt.createComponent("MusicDialog.qml")
         if(musicDialogLoader.status == Component.Ready)
             musicDialogLoader.createObject(confluence)
