@@ -69,4 +69,11 @@ Dialog {
     Engine { name: qsTr("Web"); role: "web"; visualElement: webDialog; visualElementProperties: ["url", defaultUrl] }
     Engine { name: qsTr("Store"); role: "ovi-store"; visualElement: webDialog; visualElementProperties: ["url", "http://store.ovi.com/"] }
     Engine { name: qsTr("Maps"); role: "maps"; visualElement: webDialog; visualElementProperties: ["url", generalResourcePath + "/Google\ Maps/Nokia.html"] }
+
+    /*back: Rectangle{ anchors.fill:parent; color:  "blue" }
+    MouseArea {
+        anchors.fill: parent
+        onClicked:
+            webDialog.state = "flipped"
+    }*/
 }

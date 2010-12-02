@@ -19,7 +19,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 import QtQuick 1.0
 
-Flipable {
+FocusScope {
     id: root
     clip: true
 
@@ -30,7 +30,7 @@ Flipable {
     scale: 0
 
     property int angle: 0
-    property bool flipable: false//state == "visible"
+    property bool isFlipable: false//state == "visible"
     property bool flipped: false
 
     property int marginOffset: 20
@@ -38,7 +38,11 @@ Flipable {
     property int defaultHeight: 512
     property int maximizedWidth: parent.width + 2*marginOffset
     property int maximizedHeight: parent.height + 2*marginOffset
+
     width: defaultWidth; height: defaultHeight
+
+    property alias front: flipable.front
+    property alias back: flipable.back
 
     property alias defaultDecoration: frame.visible
     property alias defaultTitleBar: frameTitle.visible
@@ -105,50 +109,56 @@ Flipable {
 
     ]
 
-    transform: Rotation {
-        origin.x: root.width/2; origin.y: root.height/2
-        axis.x: 0; axis.y: 1; axis.z: 0     // rotate depends on non-NOTIFYable propertiesaround y-axis
-        angle: root.angle
-    }
-
-    front:
-        FocusScope {
-        anchors.fill: parent
-
-        BorderImage {
-            id: frame
-            source: themeResourcePath + "/media/ContentPanel.png"
-            anchors.fill: parent
-            border { left: 30; top: 30; right: 30; bottom: 30 }
-        }
-
-        // This is a child of the frame but written as a top-level child only
-        // to expose the frameTitle.visible property
-        BorderImage {
-            id: frameTitle
-            parent: frame
-            source: themeResourcePath + "/media/GlassTitleBar.png"
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.top:  parent.top
-            anchors.topMargin: 10
-        }
-    }
-
     onChildrenChanged: {
         //All future children silently reparented to front
         for (var i = 0; i < children.length; ++i)
-            children[i] != front && children[i] != back ? children[i].parent = front : 0
+            children[i] != flipable ? children[i].parent = flipable.front : 0
     }
 
     Component.onCompleted:
         //Tried binding but (back != null) is not notifiable?
-        root.flipable = (root.back != null)
+        isFlipable = (root.back != null)
 
     function onHideTransitionStarted() {
         //Any other way of extending generalized states/transitions?
     }
     function onVisibleTransitionComplete() {
         //Any other way of extending generalized states/transitions?
+    }
+
+    Flipable {
+        id: flipable
+        anchors.fill: parent
+
+        transform: Rotation {
+            origin.x: root.width/2; origin.y: root.height/2
+            axis.x: 0; axis.y: 1; axis.z: 0     // rotate depends on non-NOTIFYable propertiesaround y-axis
+            angle: root.angle
+        }
+
+        front:
+            FocusScope {
+            focus: true
+            anchors.fill: parent
+
+            BorderImage {
+                id: frame
+                source: themeResourcePath + "/media/ContentPanel.png"
+                anchors.fill: parent
+                border { left: 30; top: 30; right: 30; bottom: 30 }
+            }
+
+            // This is a child of the frame but written as a top-level child only
+            // to expose the frameTitle.visible property
+            BorderImage {
+                id: frameTitle
+                parent: frame
+                source: themeResourcePath + "/media/GlassTitleBar.png"
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.top:  parent.top
+                anchors.topMargin: 10
+            }
+        }
     }
 
     Behavior on angle {
@@ -162,12 +172,4 @@ Flipable {
     Behavior on height {
         NumberAnimation { duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
     }
-
-    /*
-    back: Rectangle{ anchors.fill:parent; color:  "blue" }
-    MouseArea {
-        anchors.fill: parent
-        onClicked:
-            root.state = "flipped"
-    }*/
 }
