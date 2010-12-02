@@ -20,7 +20,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 import QtQuick 1.0
 
 Flipable {
-    id: dialog
+    id: root
     clip: true
 
     z: 1
@@ -50,7 +50,7 @@ Flipable {
         State {
             name: "visible"
             PropertyChanges {
-                target: dialog
+                target: root
                 visible: true
                 opacity: 1
                 scale: 1
@@ -58,18 +58,16 @@ Flipable {
         },
         State {
             name: "flipped"
+            extend: "visible"
             PropertyChanges {
-                target: dialog
-                visible: true
-                opacity: 1
-                scale: 1
+                target: root
                 angle: 180
             }
         },
         State {
             name: "maximized"
             PropertyChanges {
-                target: dialog
+                target: root
                 visible: true
                 opacity: 1
                 scale: 1
@@ -88,29 +86,29 @@ Flipable {
                     NumberAnimation { property: "opacity"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
                     NumberAnimation { property: "scale"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
                 }
-                PropertyAction { target: dialog; property: "visible"; value: false }
+                PropertyAction { target: root; property: "visible"; value: false }
             }
         },
         Transition {
             from: ""
             to: "visible"
             SequentialAnimation {
-                PropertyAction { target: dialog; property: "visible"; value: true }
+                PropertyAction { target: root; property: "visible"; value: true }
                 ParallelAnimation {
                     NumberAnimation { property: "opacity"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
                     NumberAnimation { property: "scale"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
                 }
                 ScriptAction { script: onVisibleTransitionComplete() }
-                ScriptAction { script: dialog.forceActiveFocus() }
+                ScriptAction { script: root.forceActiveFocus() }
             }
         }
 
     ]
 
     transform: Rotation {
-        origin.x: dialog.width/2; origin.y: dialog.height/2
+        origin.x: root.width/2; origin.y: root.height/2
         axis.x: 0; axis.y: 1; axis.z: 0     // rotate depends on non-NOTIFYable propertiesaround y-axis
-        angle: dialog.angle
+        angle: root.angle
     }
 
     front:
@@ -144,7 +142,7 @@ Flipable {
 
     Component.onCompleted:
         //Tried binding but (back != null) is not notifiable?
-        dialog.flipable = (dialog.back != null)
+        root.flipable = (root.back != null)
 
     function onHideTransitionStarted() {
         //Any other way of extending generalized states/transitions?
@@ -164,4 +162,12 @@ Flipable {
     Behavior on height {
         NumberAnimation { duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
     }
+
+    /*
+    back: Rectangle{ anchors.fill:parent; color:  "blue" }
+    MouseArea {
+        anchors.fill: parent
+        onClicked:
+            root.state = "flipped"
+    }*/
 }

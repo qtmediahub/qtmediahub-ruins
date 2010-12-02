@@ -77,10 +77,9 @@ FocusScope {
         },
         State {
             name: "showingSelectedElementMaximized"
+            extend: "showingSelectedElement"
             PropertyChanges {
                 target: blade
-                state: "closed"
-                visibleContent: selectedElement.bladeContent
                 x: -blade.bladePeek
             }
             PropertyChanges {
