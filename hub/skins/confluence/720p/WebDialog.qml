@@ -22,7 +22,7 @@ import QtWebKit 1.0
 import "components"
 
 Dialog {
-    id: webDialog
+    id: root
     property alias url: webView.url
     property string defaultUrl: "http://www.google.com"
 
@@ -34,7 +34,7 @@ Dialog {
         webView.url = url
         webViewport.contentY = 0
 
-        confluence.selectedElement = webDialog
+        confluence.selectedElement = root
         confluence.state = "showingSelectedElement"
     }
 
@@ -44,14 +44,14 @@ Dialog {
         boundsBehavior: Flickable.StopAtBounds
         flickableDirection:  Flickable.VerticalFlick
         //revolting magical numbers, god bless non symmetrical pixmaps
-        width: webDialog.width - 60; height: webDialog.height - 40
+        width: root.width - 60; height: root.height - 40
         contentWidth: webView.width; contentHeight: webView.height
         anchors.centerIn: parent
         WebView {
             id: webView
             anchors.centerIn: parent
             //FIXME: is this expensive at all?
-            width: webDialog.width
+            width: root.width
             url: defaultUrl
             opacity: progress == 1 ? 1 : 0.5
 
@@ -66,14 +66,14 @@ Dialog {
         on: webView.progress != 1
     }
 
-    Engine { name: qsTr("Web"); role: "web"; visualElement: webDialog; visualElementProperties: ["url", defaultUrl] }
-    Engine { name: qsTr("Store"); role: "ovi-store"; visualElement: webDialog; visualElementProperties: ["url", "http://store.ovi.com/"] }
-    Engine { name: qsTr("Maps"); role: "maps"; visualElement: webDialog; visualElementProperties: ["url", generalResourcePath + "/Google\ Maps/Nokia.html"] }
+    Engine { name: qsTr("Web"); role: "web"; visualElement: root; visualElementProperties: ["url", defaultUrl] }
+    Engine { name: qsTr("Store"); role: "ovi-store"; visualElement: root; visualElementProperties: ["url", "http://store.ovi.com/"] }
+    Engine { name: qsTr("Maps"); role: "maps"; visualElement: root; visualElementProperties: ["url", generalResourcePath + "/Google\ Maps/Nokia.html"] }
 
     /*back: Rectangle{ anchors.fill:parent; color:  "blue" }
     MouseArea {
         anchors.fill: parent
         onClicked:
-            webDialog.state = "flipped"
+            root.state = "flipped"
     }*/
 }
