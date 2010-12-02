@@ -216,7 +216,7 @@ FocusScope {
 
     WeatherDialog { id: weatherDialog; }
 
-    AboutDialog {}
+    AboutDialog { id: aboutDialog }
 
     //    BusyIndicator {
     //        on: true

@@ -3,7 +3,20 @@ import "components"
 
 Dialog {
     id: root
-    Engine { name: qsTr("About"); role: "about"; visualElement: root; }
+
+    property variant startupAnimationComponent
+
+    onVisibleChanged: {
+        if(visible == true) {
+            startupAnimationComponent = Qt.createComponent(generalResourcePath + "/qml-startup/startup.qml")
+            if(startupAnimationComponent.status == Component.Ready)
+                back = startupAnimationComponent.createObject(root)
+        } else {
+            startupAnimationComponent.destroy()
+            back.destroy()
+            back = startupAnimationComponent.createObject(root)
+        }
+    }
 
     Flow {
         anchors.centerIn: parent
@@ -29,5 +42,12 @@ Dialog {
         }
         ConfluenceText { anchors.horizontalCenter: parent.horizontalCenter; text: "http://xbmc.org/"}
         ConfluenceText { anchors.horizontalCenter: parent.horizontalCenter; text: "QtMediaCenter is hosted at http://gitorious.org/qtmediahub"}
+    }
+
+    PropertyAnimation on angle {
+        loops: Animation.Infinite
+        duration: 10000
+        from: 0
+        to: 360
     }
 }
