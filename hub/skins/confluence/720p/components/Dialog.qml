@@ -30,6 +30,10 @@ FocusScope {
     scale: 0
 
     property int angle: 0
+
+    property bool maximized: false
+    property bool maximizable: false
+
     property bool isFlipable: false//state == "visible"
     property bool flipped: false
 
@@ -70,6 +74,7 @@ FocusScope {
         },
         State {
             name: "maximized"
+            when: maximized
             PropertyChanges {
                 target: root
                 visible: true

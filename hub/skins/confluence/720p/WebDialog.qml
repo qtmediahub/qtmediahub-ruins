@@ -23,6 +23,9 @@ import "components"
 
 Dialog {
     id: root
+
+    maximizable: true
+
     property alias url: webView.url
     property string defaultUrl: "http://www.google.com"
 

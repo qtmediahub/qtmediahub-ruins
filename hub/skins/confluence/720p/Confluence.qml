@@ -78,13 +78,10 @@ FocusScope {
         State {
             name: "showingSelectedElementMaximized"
             extend: "showingSelectedElement"
+            when: selectedElement.maximized
             PropertyChanges {
                 target: blade
                 x: -blade.bladePeek
-            }
-            PropertyChanges {
-                target: selectedElement
-                state: "maximized"
             }
             PropertyChanges {
                 target: videoPlayer
@@ -117,18 +114,14 @@ FocusScope {
 
     Keys.onPressed: {
         if(event.key == Qt.Key_Escape)
-            if(confluence.state == "showingSelectedElementMaximized")
-                confluence.state = "showingSelectedElement"
-            else
-                confluence.state = "showingRootMenu"
+            selectedElement && selectedElement.maximized ? selectedElement.maximized = false : confluence.state = "showingRootMenu"
         // Just convenience remove for real use!!!!!!!
         else if(event.key == Qt.Key_Delete)
             Qt.quit();
         //FIXME: keyboard modifiers don't work?
         //else if((event.key == Qt.Key_Enter) && (keys.modifiers == Qt.AltModifier))
         else if(event.key == Qt.Key_F12)
-            if(confluence.state == "showingSelectedElement")
-                confluence.state = "showingSelectedElementMaximized"
+                selectedElement && selectedElement.maximizable && (selectedElement.maximized = true);
     }
 
     Component.onCompleted: {
@@ -219,6 +212,8 @@ FocusScope {
     }
 
     WeatherDialog { id: weatherDialog; }
+
+    AboutDialog {}
 
     //    BusyIndicator {
     //        on: true
