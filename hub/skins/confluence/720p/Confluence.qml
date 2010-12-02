@@ -78,10 +78,13 @@ FocusScope {
         State {
             name: "showingSelectedElementMaximized"
             extend: "showingSelectedElement"
-            when: selectedElement.maximized
             PropertyChanges {
                 target: blade
                 x: -blade.bladePeek
+            }
+            PropertyChanges {
+                target: selectedElement
+                state: "maximized"
             }
             PropertyChanges {
                 target: videoPlayer

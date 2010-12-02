@@ -54,6 +54,9 @@ FocusScope {
     //useful for focus debugging
     //onActiveFocusChanged: console.log(idtext + " just " + (activeFocus ? "got" : "lost") + " focus")
 
+    onMaximizedChanged:
+        confluence.state = root.maximized ? "showingSelectedElementMaximized" : "showingSelectedElement"
+
     states: [
         State {
             name: "visible"
@@ -74,7 +77,7 @@ FocusScope {
         },
         State {
             name: "maximized"
-            when: maximized
+            //when: maximized
             PropertyChanges {
                 target: root
                 visible: true
