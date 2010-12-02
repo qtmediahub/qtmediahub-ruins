@@ -44,15 +44,12 @@ Dialog {
             model: musicEngine.pluginProperties.musicModel
             focus: true;
             delegate: Rectangle {
+                property variant itemdata : model
                 width: sourcesList.width
                 height: sourceText.height
                 color: ListView.isCurrentItem ? "red" : "green"
                 ConfluenceText { id: sourceText; text: model.fileName; }
             }
-            onCurrentIndexChanged: {
-                sourcesArt.source = model.decorationUrl(sourcesList.currentIndex);
-                                   }
-
         }
     }
 
@@ -71,6 +68,7 @@ Dialog {
         ImageCrossFader {
             id: sourcesArt
             anchors.fill: parent;
+            source: sourcesList.currentItem.itemdata.decorationUrl
         }
     }
 
