@@ -32,7 +32,6 @@ Blade {
 
     RootMenu {
         id: rootMenu
-        parent: mainBlade.bladeContent
         buttonGridX: bladeX + 5 + bladeRightMargin; 
         onOpenSubMenu: {
             if (currentItem.hasSubBlade) {
@@ -61,7 +60,6 @@ Blade {
 
         SubBladeMenu {
             id: subMenuList
-            parent: subMenu.bladeContent
         }
     }
 }

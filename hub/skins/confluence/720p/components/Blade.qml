@@ -20,7 +20,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 import QtQuick 1.0
 
 FocusScope {
-    id: bladeInterface
+    id: root
     z: 10
     width: blade.width + blade.x; height: parent.height
 
@@ -80,6 +80,12 @@ FocusScope {
     onVisibleContentChanged:
         setCurrentContent(visibleContent)
 
+    onChildrenChanged: {
+        //Always want new content parented to content region
+        for (var i = 0; i < children.length; ++i)
+            children[i] != blade ? children[i].parent = content : 0
+    }
+
     function setCurrentContent(contentName)
     {
         for(var i = 0; i < content.children.length; ++i)
@@ -109,11 +115,7 @@ FocusScope {
         MouseArea {
             anchors.fill: parent
             onPressed: {
-                if(bladeInterface.state == "open") {
-                    bladeInterface.closed()
-                } else {
-                    bladeInterface.opened()
-                }
+                root.state == "open" ? root.closed() : root.opened()
                 mouse.accepted = false
             }
         }
