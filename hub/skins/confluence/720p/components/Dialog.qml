@@ -141,19 +141,6 @@ Flipable {
         for (var i = 0; i < children.length; ++i)
             children[i] != front && children[i] != back ? children[i].parent = front : 0
     }
-    Component.onCompleted:
-        //Tried binding but (back != null) is not notifiable?
-        dialog.flipable = (dialog.back != null)
-
-    function onHideTransitionStarted() {
-        //Any other way of extending generalized states/transitions?
-    }
-    function onVisibleTransitionComplete() {
-        //Any other way of extending generalized states/transitions?
-    }
-
-    onAngleChanged:
-        console.log("Angle changing")
 
     Component.onCompleted:
         //Tried binding but (back != null) is not notifiable?
