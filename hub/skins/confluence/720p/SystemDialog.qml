@@ -21,4 +21,14 @@ import QtQuick 1.0
 import "components"
 
 Dialog {
+    states: State {
+        name: "back"
+        PropertyChanges { target: flipable; angle: 180 }
+        when: flipable.flipped
+    }
+    Flipable {
+        id: flipable
+        anchors.fill: parent
+
+    }
 }

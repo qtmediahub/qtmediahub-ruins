@@ -19,7 +19,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 import QtQuick 1.0
 
-FocusScope {
+Flipable {
     id: dialog
     clip: true
 
@@ -28,6 +28,10 @@ FocusScope {
 
     opacity: 0; visible: false
     scale: 0
+
+    property int angle: 0
+    property bool flipable: false//state == "visible"
+    property bool flipped: false
 
     property int marginOffset: 20
     property int defaultWidth: 1024
@@ -50,6 +54,16 @@ FocusScope {
                 visible: true
                 opacity: 1
                 scale: 1
+            }
+        },
+        State {
+            name: "flipped"
+            PropertyChanges {
+                target: dialog
+                visible: true
+                opacity: 1
+                scale: 1
+                angle: 180
             }
         },
         State {
@@ -89,35 +103,78 @@ FocusScope {
                 ScriptAction { script: onVisibleTransitionComplete() }
                 ScriptAction { script: dialog.forceActiveFocus() }
             }
-        },
-        Transition {
-            reversible: true
-            NumberAnimation { properties: "width,height"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
         }
+
     ]
 
-    BorderImage {
-        id: frame
-        source: themeResourcePath + "/media/ContentPanel.png"
-        anchors.fill: parent
-        border { left: 30; top: 30; right: 30; bottom: 30 }
+    transform: Rotation {
+        origin.x: dialog.width/2; origin.y: dialog.height/2
+        axis.x: 0; axis.y: 1; axis.z: 0     // rotate depends on non-NOTIFYable propertiesaround y-axis
+        angle: dialog.angle
     }
 
-    // This is a child of the frame but written as a top-level child only
-    // to expose the frameTitle.visible property
-    BorderImage {
-        id: frameTitle
-        parent: frame
-        source: themeResourcePath + "/media/GlassTitleBar.png"
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top:  parent.top
-        anchors.topMargin: 10
+    front:
+        FocusScope {
+        anchors.fill: parent
+        BorderImage {
+            id: frame
+            source: themeResourcePath + "/media/ContentPanel.png"
+            anchors.fill: parent
+            border { left: 30; top: 30; right: 30; bottom: 30 }
+        }
+
+        // This is a child of the frame but written as a top-level child only
+        // to expose the frameTitle.visible property
+        BorderImage {
+            id: frameTitle
+            parent: frame
+            source: themeResourcePath + "/media/GlassTitleBar.png"
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top:  parent.top
+            anchors.topMargin: 10
+        }
     }
+
+    back: Rectangle { anchors.fill: parent; color: "red"}
+
+    onChildrenChanged: {
+        for (var i = 0; i < children.length; ++i)
+            children[i] != front && children[i] != back ? children[i].parent = front : 0
+    }
+    Component.onCompleted:
+        //Tried binding but (back != null) is not notifiable?
+        dialog.flipable = (dialog.back != null)
 
     function onHideTransitionStarted() {
         //Any other way of extending generalized states/transitions?
     }
     function onVisibleTransitionComplete() {
         //Any other way of extending generalized states/transitions?
+    }
+
+    onAngleChanged:
+        console.log("Angle changing")
+
+    Component.onCompleted:
+        //Tried binding but (back != null) is not notifiable?
+        dialog.flipable = (dialog.back != null)
+
+    function onHideTransitionStarted() {
+        //Any other way of extending generalized states/transitions?
+    }
+    function onVisibleTransitionComplete() {
+        //Any other way of extending generalized states/transitions?
+    }
+
+    Behavior on angle {
+        NumberAnimation { duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
+    }
+
+    Behavior on width {
+        NumberAnimation { duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
+    }
+
+    Behavior on height {
+        NumberAnimation { duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
     }
 }

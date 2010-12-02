@@ -29,6 +29,7 @@ FocusScope {
     //FIXME: QML const equivalent?
     property variant confluenceEasingCurve: Easing.InOutQuad
     property variant confluenceAnimationDuration: 350
+    property variant confluenceTransformDuration: 1000
 
     property variant selectedElement
     property variant videoPlayer
@@ -215,6 +216,12 @@ FocusScope {
         id: banner
         z: 1000
         source: themeResourcePath + "/media/Confluence_Logo.png"
+    }
+
+    SystemDialog {
+        id: system
+        Component.onCompleted:
+            systemEngine.visualElement = system
     }
 
     //    BusyIndicator {
