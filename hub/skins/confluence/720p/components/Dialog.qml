@@ -116,6 +116,7 @@ Flipable {
     front:
         FocusScope {
         anchors.fill: parent
+
         BorderImage {
             id: frame
             source: themeResourcePath + "/media/ContentPanel.png"
@@ -135,9 +136,8 @@ Flipable {
         }
     }
 
-    back: Rectangle { anchors.fill: parent; color: "red"}
-
     onChildrenChanged: {
+        //All future children silently reparented to front
         for (var i = 0; i < children.length; ++i)
             children[i] != front && children[i] != back ? children[i].parent = front : 0
     }

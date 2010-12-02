@@ -21,6 +21,7 @@ import QtQuick 1.0
 import "components"
 
 Dialog {
+    id: root
     Keys.onUpPressed:
         closeButton.focus = true
 
