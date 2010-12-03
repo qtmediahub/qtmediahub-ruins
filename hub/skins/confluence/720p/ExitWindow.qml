@@ -31,8 +31,8 @@ Window {
     PixmapButton {
         id: closeButton
         anchors.right: parent.right;
-        basePixmap: "WindowCloseButton";
-        focusedPixmap: "WindowCloseButton-focus"
+        basePixmap: "DialogCloseButton";
+        focusedPixmap: "DialogCloseButton-focus"
         onClicked:
             confluence.state = "showingRootMenu"
         Keys.onDownPressed:

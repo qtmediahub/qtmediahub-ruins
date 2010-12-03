@@ -166,6 +166,7 @@ FocusScope {
         } else if (dashboardLoader.status == Component.Error) {
             console.log(dashboardLoader.errorString())
         }
+
         var qtCubeLoader = Qt.createComponent(generalResourcePath + "/misc/cube/cube.qml")
         if(qtCubeLoader.status == Component.Ready) {
             qtcube = qtCubeLoader.createObject(confluence)
@@ -195,7 +196,7 @@ FocusScope {
         visible: false
     }
 
-    Background{
+    Background {
         id: background
         anchors.fill: parent;
         z: 1
