@@ -67,7 +67,9 @@ Dialog {
        ListView {
             id: sourcesListView
             anchors.fill: parent;
+            anchors.margins: 30 // FIXME: This should get autopositioned by the Dialog code
             model: sourcesModel
+            clip: true
             focus: true;
         }
     }
@@ -88,6 +90,7 @@ Dialog {
             id: sourcesArt
             anchors.fill: parent;
             source: sourcesListView.currentItem.itemdata.decorationUrl
+            anchors.margins: 30 // FIXME: This should get autopositioned by the Dialog code
         }
     }
 
