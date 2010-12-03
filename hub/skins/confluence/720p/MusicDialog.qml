@@ -38,18 +38,37 @@ Dialog {
         height: 650
         anchors.centerIn: undefined
 
-        ListView {
-            id: sourcesList
-            anchors.fill: parent;
+        VisualDataModel {
+            id: sourcesModel
             model: musicEngine.pluginProperties.musicModel
-            focus: true;
-            delegate: Rectangle {
+            delegate : Rectangle {
                 property variant itemdata : model
-                width: sourcesList.width
+                width: sourcesListView.width
                 height: sourceText.height
                 color: ListView.isCurrentItem ? "red" : "green"
-                ConfluenceText { id: sourceText; text: model.fileName; }
+                ConfluenceText { id: sourceText; text: model.display; }
+
+                MouseArea {
+                    anchors.fill: parent;
+                    onClicked: {
+                        if (model.hasModelChildren)
+                            sourcesModel.rootIndex = sourcesModel.modelIndex(index)
+                        else if (model.display == qsTr("Add new source")) {
+                            console.log("Ask the user to enter a new source now");
+                            sourcesModel.model.addSearchPath("/home/girish/research/qtmediahub/hub/", "hub");
+                            sourcesModel.model.start();
+                        } else
+                            console.log('no model children, cannot enter');
+                               }
+                }
             }
+        }
+
+       ListView {
+            id: sourcesListView
+            anchors.fill: parent;
+            model: sourcesModel
+            focus: true;
         }
     }
 
@@ -68,7 +87,7 @@ Dialog {
         ImageCrossFader {
             id: sourcesArt
             anchors.fill: parent;
-            source: sourcesList.currentItem.itemdata.decorationUrl
+            source: sourcesListView.currentItem.itemdata.decorationUrl
         }
     }
 
