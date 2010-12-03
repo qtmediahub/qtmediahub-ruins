@@ -6,6 +6,8 @@ FocusScope {
 
     property alias model : list.model
 
+    anchors.fill: parent
+
     ListView {
         id: list
         anchors.fill: parent

@@ -47,6 +47,7 @@ Blade {
 
         bladePeek: 10
         bladeWidth: 200
+        bladeRightMargin: 8
 
         //Magical pixmap offset again
         anchors { left: mainBlade.right; leftMargin: -10 }
