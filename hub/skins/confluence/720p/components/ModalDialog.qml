@@ -18,67 +18,76 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 ****************************************************************************/
 
 import QtQuick 1.0
-import "components"
 
-Dialog {
+Item {
     id: root
-    clip: false
-    x: 0
-    y: 0
-    anchors.centerIn: undefined
-    defaultDecoration: false
+    width: 640
+    height: 480
+    x: confluence.width/2 - width/2
+    y: confluence.height/2 - height/2
 
-    Loader {
-        id: addSourceDialogLoader
-        z: 100 // ##
+    property alias title : titleBarText.text
+    property alias content : content.children
+    signal accept
+    signal reject
+
+    function close() {
+        opacity = 0;
+    }
+        
+    MouseArea {
+        parent: confluence
+        anchors.fill: parent
     }
 
-    Dialog {
-        id: sourcesDialog
-        state: root.state
-        defaultTitleBar: false
-        x: 60
-        y: 80
-        width: 700
-        height: 650
-        anchors.centerIn: undefined
+    BorderImage {
+        id: panel
+        source: themeResourcePath + "/media/OverlayDialogBackground.png"
+        border { top: 20; left: 20; bottom: 20; right: 20; }
+        anchors.fill: parent
+    }
 
-       TreeView {
-            id: sourcesListView
+    Item {
+        id: content
+        anchors.top: glassTitleBar.bottom
+        anchors.bottom: panel.bottom
+        anchors.left: panel.left;
+        anchors.right: panel.right
+        anchors.leftMargin : panel.border.left
+        anchors.bottomMargin : panel.border.bottom
+        anchors.rightMargin : panel.border.right
+    }
+
+    Image {
+        id: glassTitleBar
+        source: themeResourcePath + "/media/GlassTitleBar.png"
+        anchors.top: panel.top
+        width: panel.width
+    }
+
+    Text {
+        id: titleBarText
+        parent: glassTitleBar
+        anchors.horizontalCenter: glassTitleBar.horizontalCenter
+        anchors.top: glassTitleBar.top
+        color: "white"
+        text: "Default dialog title"
+        font.bold: true
+        font.pointSize: 14
+    }
+
+    Image {
+        id: closeButton
+        source: themeResourcePath + "/media/" + (closeButtonMouseArea.pressed ? "DialogCloseButton-focus.png" : "DialogCloseButton.png")
+        anchors.top: panel.top
+        anchors.right: panel.right
+        anchors { rightMargin: 40; topMargin: 5; }
+        MouseArea {
+            id: closeButtonMouseArea
             anchors.fill: parent;
-            anchors.margins: 30 // FIXME: This should get autopositioned by the Dialog code
-            treeModel: musicEngine.pluginProperties.musicModel
-            clip: true
-            focus: true;
-            onClicked: {
-                if (currentItem.itemdata.display == qsTr("Add new source"))
-                    addSourceDialogLoader.source = "AddMusicSource.qml";
-                       }
+
+            onClicked: root.reject();
         }
-    }
-
-    Dialog {
-        id: sourceArtDialog
-        state: root.state
-        defaultTitleBar: false
-        anchors.left: sourcesDialog.right;
-        anchors.leftMargin: 65;
-        anchors.bottom: sourcesDialog.bottom;
-        anchors.centerIn: undefined
-
-        width: 342
-        height: 348
-
-        ImageCrossFader {
-            id: sourcesArt
-            anchors.fill: parent;
-            source: sourcesListView.currentItem.itemdata.decorationUrl
-            anchors.margins: 30 // FIXME: This should get autopositioned by the Dialog code
-        }
-    }
-
-    Component.onCompleted: {
-        musicEngine.visualElement = root;
     }
 }
 
