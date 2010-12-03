@@ -29,6 +29,7 @@ FocusScope {
     signal opened
     signal closed
 
+    property bool windowingComponent: true
     property int bladePeek: 30
     property alias bladeWidth: blade.width
     property int bladeRestingPosition: -bladeWidth + bladePeek
@@ -83,7 +84,7 @@ FocusScope {
     onChildrenChanged: {
         //Always want new content parented to content region
         for (var i = 0; i < children.length; ++i)
-            children[i] != blade ? children[i].parent = content : 0
+            children[i] != blade && !children[i].windowingComponent ? children[i].parent = content : 0
     }
 
     function setCurrentContent(contentName)
