@@ -41,12 +41,23 @@ Dialog {
         VisualDataModel {
             id: sourcesModel
             model: musicEngine.pluginProperties.musicModel
-            delegate : Rectangle {
+            delegate : Item {
                 property variant itemdata : model
                 width: sourcesListView.width
-                height: sourceText.height
-                color: ListView.isCurrentItem ? "red" : "green"
-                ConfluenceText { id: sourceText; text: model.display; }
+                height: sourceText.height + 8
+                Image {
+                    id: backgroundImage
+                    anchors.fill: parent; 
+                    source: themeResourcePath + "/media/" + (ListView.isCurrentItem ? "MenuItemFO.png" : "MenuItemNF.png");
+                }
+                Text {
+                    id: sourceText
+                    anchors.verticalCenter: parent.verticalCenter
+                    z: 1 // ensure it is above the background
+                    text: model.display
+                    font.pointSize: 16
+                    color: "white"
+                }
 
                 MouseArea {
                     anchors.fill: parent;
