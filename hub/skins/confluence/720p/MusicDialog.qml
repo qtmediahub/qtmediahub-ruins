@@ -61,6 +61,9 @@ Dialog {
 
                 MouseArea {
                     anchors.fill: parent;
+                    hoverEnabled: true
+                    onEntered:
+                        sourcesListView.currentIndex = index
                     onClicked: {
                         if (model.hasModelChildren)
                             sourcesModel.rootIndex = sourcesModel.modelIndex(index)
