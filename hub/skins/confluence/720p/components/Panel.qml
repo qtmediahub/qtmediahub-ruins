@@ -18,65 +18,27 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 ****************************************************************************/
 
 import QtQuick 1.0
-import QtWebKit 1.0
-import "components"
 
-Dialog {
-    id: root
+//tried declaring this component inline
+//could not resolve themeResourcePath
+FocusScope {
+    property alias decorateFrame: frame.visible
+    property alias decorateTitlebar: titlebar.visible
 
-    maximizable: true
+    focus: true
+    anchors.fill: parent
 
-    property alias url: webView.url
-    property string defaultUrl: "http://www.google.com"
-
-    function onVisibleTransitionComplete() {
-        webView.forceActiveFocus()
-    }
-
-    function loadPage(url) {
-        webView.url = url
-        webViewport.contentY = 0
-
-        confluence.selectedElement = root
-        confluence.state = "showingSelectedElement"
-    }
-
-    Flickable {
-        id: webViewport
-        clip: true
-        boundsBehavior: Flickable.StopAtBounds
-        flickableDirection:  Flickable.VerticalFlick
-        //revolting magical numbers, god bless non symmetrical pixmaps
-        width: root.width - 60; height: root.height - 40
-        contentWidth: webView.width; contentHeight: webView.height
-        anchors.centerIn: parent
-        WebView {
-            id: webView
-            anchors.centerIn: parent
-            //FIXME: is this expensive at all?
-            width: root.width
-            url: defaultUrl
-            opacity: progress == 1 ? 1 : 0.5
-
-            Behavior on opacity {
-                NumberAnimation{}
-            }
+    BorderImage {
+        id: frame
+        source: themeResourcePath + "/media/ContentPanel.png"
+        anchors.fill: parent
+        border { left: 30; top: 30; right: 30; bottom: 30 }
+        BorderImage {
+            id: titlebar
+            source: themeResourcePath + "/media/GlassTitleBar.png"
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top:  parent.top
+            anchors.topMargin: 10
         }
     }
-
-    BusyIndicator {
-        anchors.centerIn: parent
-        on: webView.progress != 1
-    }
-
-    Engine { name: qsTr("Web"); role: "web"; visualElement: root; visualElementProperties: ["url", defaultUrl] }
-    Engine { name: qsTr("Store"); role: "ovi-store"; visualElement: root; visualElementProperties: ["url", "http://store.ovi.com/"] }
-    Engine { name: qsTr("Maps"); role: "maps"; visualElement: root; visualElementProperties: ["url", generalResourcePath + "/Google\ Maps/Nokia.html"] }
-
-    /*backContent: Rectangle{ anchors.fill:parent; color:  "blue" }
-    MouseArea {
-        anchors.fill: parent
-        onClicked:
-            isFlipable ? root.state = "flipped" : 0
-    }*/
 }

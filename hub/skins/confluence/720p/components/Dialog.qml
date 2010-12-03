@@ -34,22 +34,23 @@ FocusScope {
     property bool maximized: false
     property bool maximizable: false
 
-    property bool isFlipable: false//state == "visible"
+    property alias frontContent: frontContainer.children
+    property alias backContent: backContainer.children
+
+    //FIXME: Hard coded this to default child count of DialogContainer
+    property bool isFlipable: backContainer.children.length > 1 && state == "visible"
     property bool flipped: false
 
     property int marginOffset: 20
-    property int defaultWidth: 1024
-    property int defaultHeight: 512
+    property int defaultWidth: 984
+    property int defaultHeight: 472
     property int maximizedWidth: parent.width + 2*marginOffset
     property int maximizedHeight: parent.height + 2*marginOffset
 
-    width: defaultWidth; height: defaultHeight
+    width: defaultWidth + 2*marginOffset; height: defaultHeight + 2*marginOffset
 
-    property alias front: flipable.front
-    property alias back: flipable.back
-
-    property alias defaultDecoration: frame.visible
-    property alias defaultTitleBar: frameTitle.visible
+    property alias defaultDecoration: frontContainer.decorateFrame
+    property alias defaultTitleBar: frontContainer.decorateTitlebar
 
     //useful for focus debugging
     //onActiveFocusChanged: console.log(idtext + " just " + (activeFocus ? "got" : "lost") + " focus")
@@ -118,14 +119,13 @@ FocusScope {
     ]
 
     onChildrenChanged: {
-        //All future children silently reparented to front
-        for (var i = 0; i < children.length; ++i)
-            children[i] != flipable ? children[i].parent = flipable.front : 0
+        for (var i = 0; i < children.length; ++i) {
+            //All future children silently reparented to front
+            //by default
+            var element = children[i];
+            element != flipable ? children[i].parent = frontContainer : 0
+        }
     }
-
-    Component.onCompleted:
-        //Tried binding but (back != null) is not notifiable?
-        isFlipable = (root.back != null)
 
     function onHideTransitionStarted() {
         //Any other way of extending generalized states/transitions?
@@ -145,28 +145,9 @@ FocusScope {
         }
 
         front:
-            FocusScope {
-            focus: true
-            anchors.fill: parent
-
-            BorderImage {
-                id: frame
-                source: themeResourcePath + "/media/ContentPanel.png"
-                anchors.fill: parent
-                border { left: 30; top: 30; right: 30; bottom: 30 }
-            }
-
-            // This is a child of the frame but written as a top-level child only
-            // to expose the frameTitle.visible property
-            BorderImage {
-                id: frameTitle
-                parent: frame
-                source: themeResourcePath + "/media/GlassTitleBar.png"
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.top:  parent.top
-                anchors.topMargin: 10
-            }
-        }
+            Panel { id: frontContainer }
+        back:
+            Panel { id: backContainer }
     }
 
     Behavior on angle {

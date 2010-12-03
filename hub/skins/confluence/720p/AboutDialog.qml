@@ -24,20 +24,40 @@ Dialog {
     id: root
 
     property variant startupAnimationComponent
+    property variant startupAnimation
+
+    defaultWidth: frontContainer.width; defaultHeight: frontContainer.height
+    //angle: 180
+
+    Rectangle {
+        id: frontContainer
+        width: childrenRect.width; height: childrenRect.height
+        anchors.centerIn: parent
+    }
 
     onVisibleChanged: {
         if(visible == true) {
             startupAnimationComponent = Qt.createComponent(generalResourcePath + "/qml-startup/startup.qml")
             if(startupAnimationComponent.status == Component.Ready)
-                back = startupAnimationComponent.createObject(root)
+                startupAnimation = startupAnimationComponent.createObject(frontContainer)
         } else {
+            //We don't want to hold on to these objects
             startupAnimationComponent.destroy()
-            back.destroy()
-            back = startupAnimationComponent.createObject(root)
+            startupAnimation.destroy()
         }
     }
 
-    Flow {
+    PropertyAnimation on angle {
+        loops: Animation.Infinite
+        duration: 10000
+        from: 0
+        to: 360
+        running: visible
+    }
+
+    //RotationAnimation on angle { running: visible; loops: Animation.Infinite; duration: 1000; direction: RotationAnimation.Counterclockwise }
+
+    backContent : Flow {
         anchors.centerIn: parent
         //width: childrenRect.width; height: childrenRect.height
         flow:  Flow.TopToBottom
@@ -59,12 +79,5 @@ Dialog {
         }
         ConfluenceText { text: "http://xbmc.org/"}
         ConfluenceText { text: "QtMediaCenter is hosted at http://gitorious.org/qtmediahub"}
-    }
-
-    PropertyAnimation on angle {
-        loops: Animation.Infinite
-        duration: 10000
-        from: 0
-        to: 360
     }
 }
