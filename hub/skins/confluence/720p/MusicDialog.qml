@@ -68,7 +68,9 @@ Dialog {
                             console.log("Ask the user to enter a new source now");
                             sourcesModel.model.addSearchPath("/home/girish/research/qtmediahub/hub/", "hub");
                             sourcesModel.model.start();
-                        } else
+                        } else if (model.display == qsTr(".."))
+                            sourcesModel.rootIndex = sourcesModel.parentModelIndex(index);
+                        else
                             sourcesListView.currentIndex = index;
                     }
                 }
