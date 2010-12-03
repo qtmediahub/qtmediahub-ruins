@@ -69,8 +69,8 @@ Dialog {
                             sourcesModel.model.addSearchPath("/home/girish/research/qtmediahub/hub/", "hub");
                             sourcesModel.model.start();
                         } else
-                            console.log('no model children, cannot enter');
-                               }
+                            sourcesListView.currentIndex = index;
+                    }
                 }
             }
         }
