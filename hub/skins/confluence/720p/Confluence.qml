@@ -126,7 +126,7 @@ FocusScope {
         else if(event.key == Qt.Key_F12)
                 selectedElement && selectedElement.maximizable && (selectedElement.maximized = true);
         else if(event.key == Qt.Key_F11) {
-            confluence.selectedElement = aboutDialog
+            confluence.selectedElement = aboutWindow
             confluence.state = "showingSelectedElement"
         }
     }
@@ -143,11 +143,11 @@ FocusScope {
         // ## This should probably not be here
         musicEngine.pluginProperties.musicModel.setThemeResourcePath(confluence.themeResourcePath);
         musicEngine.pluginProperties.musicModel.start();
-        var musicDialogLoader = Qt.createComponent("MusicDialog.qml")
-        if(musicDialogLoader.status == Component.Ready)
-            musicDialogLoader.createObject(confluence)
-        else if(musicDialogLoader.status == Component.Error)
-            console.log(musicDialogLoader.errorString())
+        var musicWindowLoader = Qt.createComponent("MusicWindow.qml")
+        if(musicWindowLoader.status == Component.Ready)
+            musicWindowLoader.createObject(confluence)
+        else if(musicWindowLoader.status == Component.Error)
+            console.log(musicWindowLoader.errorString())
 
         var videoPlayerComponent = Qt.createComponent("VideoPlayer.qml");
         if(videoPlayerComponent.status == Component.Ready) {
@@ -159,7 +159,7 @@ FocusScope {
             console.log(videoPlayerComponent.errorString())
         }
 
-        var dashboardLoader = Qt.createComponent("ConfluenceDashboard.qml");
+        var dashboardLoader = Qt.createComponent("DashboardWindow.qml");
         if(dashboardLoader.status == Component.Ready) {
             var dashboard = dashboardLoader.createObject(confluence)
             dashboard.z = 1
@@ -208,7 +208,7 @@ FocusScope {
         onOpened: confluence.state = "showingRootMenu"
     }
 
-    ExitDialog { id: exitDialog }
+    ExitWindow { id: exitWindow }
 
     Ticker {
         id: ticker;
@@ -218,11 +218,11 @@ FocusScope {
         active: confluence.state == "showingRootMenu"
 
         onLinkClicked: {
-            webDialog ? webDialog.loadPage(link) : 0
+            webWindow ? webWindow.loadPage(link) : 0
         }
     }
 
-    WebDialog { id: webDialog }
+    WebWindow { id: webWindow }
 
     Image {
         id: banner
@@ -230,13 +230,13 @@ FocusScope {
         source: themeResourcePath + "/media/Confluence_Logo.png"
     }
 
-    SystemDialog {
-        id: systemDialog
+    SystemWindow {
+        id: systemWindow
         Component.onCompleted:
-            systemEngine.visualElement = systemDialog
+            systemEngine.visualElement = systemWindow
     }
 
-    WeatherDialog { id: weatherDialog; }
+    WeatherWindow { id: weatherWindow; }
 
-    AboutDialog { id: aboutDialog; clip: false }
+    AboutWindow { id: aboutWindow; clip: false }
 }

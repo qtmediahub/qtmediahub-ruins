@@ -20,7 +20,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 import QtQuick 1.0
 import "components"
 
-Dialog {
+Window {
     id: root
 
     property variant startupAnimationComponent

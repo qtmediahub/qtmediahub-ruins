@@ -19,146 +19,75 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 import QtQuick 1.0
 
-FocusScope {
+Item {
     id: root
-    clip: true
+    width: 640
+    height: 480
+    x: confluence.width/2 - width/2
+    y: confluence.height/2 - height/2
 
-    z: 1
-    anchors.centerIn: parent
+    property alias title : titleBarText.text
+    property alias content : content.children
+    signal accept
+    signal reject
 
-    opacity: 0; visible: false
-    scale: 0
-
-    property int angle: 0
-
-    property bool maximized: false
-    property bool maximizable: false
-
-    property alias frontContent: frontContainer.children
-    property alias backContent: backContainer.children
-
-    //FIXME: Hard coded this to default child count of DialogContainer
-    property bool isFlipable: backContainer.children.length > 1 && state == "visible"
-    property bool flipped: false
-
-    property int marginOffset: 20
-    property int defaultWidth: 984
-    property int defaultHeight: 472
-    property int maximizedWidth: parent.width + 2*marginOffset
-    property int maximizedHeight: parent.height + 2*marginOffset
-
-    width: defaultWidth + 2*marginOffset; height: defaultHeight + 2*marginOffset
-
-    property alias defaultDecoration: frontContainer.decorateFrame
-    property alias defaultTitleBar: frontContainer.decorateTitlebar
-
-    //useful for focus debugging
-    //onActiveFocusChanged: console.log(idtext + " just " + (activeFocus ? "got" : "lost") + " focus")
-
-    onMaximizedChanged:
-        confluence.state = root.maximized ? "showingSelectedElementMaximized" : "showingSelectedElement"
-
-    states: [
-        State {
-            name: "visible"
-            PropertyChanges {
-                target: root
-                visible: true
-                opacity: 1
-                scale: 1
-            }
-        },
-        State {
-            name: "flipped"
-            extend: "visible"
-            PropertyChanges {
-                target: root
-                angle: 180
-            }
-        },
-        State {
-            name: "maximized"
-            //when: maximized
-            PropertyChanges {
-                target: root
-                visible: true
-                opacity: 1
-                scale: 1
-                width: maximizedWidth
-                height: maximizedHeight
-            }
-        }
-    ]
-
-    transitions: [
-        Transition {
-            to: ""
-            SequentialAnimation {
-                ScriptAction { script: onHideTransitionStarted() }
-                ParallelAnimation {
-                    NumberAnimation { property: "opacity"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
-                    NumberAnimation { property: "scale"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
-                }
-                PropertyAction { target: root; property: "visible"; value: false }
-            }
-        },
-        Transition {
-            from: ""
-            to: "visible"
-            SequentialAnimation {
-                PropertyAction { target: root; property: "visible"; value: true }
-                ParallelAnimation {
-                    NumberAnimation { property: "opacity"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
-                    NumberAnimation { property: "scale"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
-                }
-                ScriptAction { script: onVisibleTransitionComplete() }
-                ScriptAction { script: root.forceActiveFocus() }
-            }
-        }
-
-    ]
-
-    onChildrenChanged: {
-        for (var i = 0; i < children.length; ++i) {
-            //All future children silently reparented to front
-            //by default
-            var element = children[i];
-            element != flipable ? children[i].parent = frontContainer : 0
-        }
+    function close() {
+        opacity = 0;
     }
-
-    function onHideTransitionStarted() {
-        //Any other way of extending generalized states/transitions?
-    }
-    function onVisibleTransitionComplete() {
-        //Any other way of extending generalized states/transitions?
-    }
-
-    Flipable {
-        id: flipable
+        
+    MouseArea {
+        parent: confluence
         anchors.fill: parent
+    }
 
-        transform: Rotation {
-            origin.x: root.width/2; origin.y: root.height/2
-            axis.x: 0; axis.y: 1; axis.z: 0     // rotate depends on non-NOTIFYable propertiesaround y-axis
-            angle: root.angle
+    BorderImage {
+        id: panel
+        source: themeResourcePath + "/media/OverlayWindowBackground.png"
+        border { top: 20; left: 20; bottom: 20; right: 20; }
+        anchors.fill: parent
+    }
+
+    Item {
+        id: content
+        anchors.top: glassTitleBar.bottom
+        anchors.bottom: panel.bottom
+        anchors.left: panel.left;
+        anchors.right: panel.right
+        anchors.leftMargin : panel.border.left
+        anchors.bottomMargin : panel.border.bottom
+        anchors.rightMargin : panel.border.right
+    }
+
+    Image {
+        id: glassTitleBar
+        source: themeResourcePath + "/media/GlassTitleBar.png"
+        anchors.top: panel.top
+        width: panel.width
+    }
+
+    Text {
+        id: titleBarText
+        parent: glassTitleBar
+        anchors.horizontalCenter: glassTitleBar.horizontalCenter
+        anchors.top: glassTitleBar.top
+        color: "white"
+        text: "Default dialog title"
+        font.bold: true
+        font.pointSize: 14
+    }
+
+    Image {
+        id: closeButton
+        source: themeResourcePath + "/media/" + (closeButtonMouseArea.pressed ? "WindowCloseButton-focus.png" : "WindowCloseButton.png")
+        anchors.top: panel.top
+        anchors.right: panel.right
+        anchors { rightMargin: 40; topMargin: 5; }
+        MouseArea {
+            id: closeButtonMouseArea
+            anchors.fill: parent;
+
+            onClicked: root.reject();
         }
-
-        front:
-            Panel { id: frontContainer }
-        back:
-            Panel { id: backContainer }
-    }
-
-    Behavior on angle {
-        NumberAnimation { duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
-    }
-
-    Behavior on width {
-        NumberAnimation { duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
-    }
-
-    Behavior on height {
-        NumberAnimation { duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
     }
 }
+

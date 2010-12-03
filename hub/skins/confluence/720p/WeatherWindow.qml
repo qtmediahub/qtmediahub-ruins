@@ -21,7 +21,7 @@ import QtQuick 1.0
 import "components"
 
 
-Dialog {
+Window {
     id: root
     clip: false
     defaultDecoration: false
@@ -35,7 +35,7 @@ Dialog {
     Row {
         anchors.centerIn: parent
         spacing: 100
-        Dialog {
+        Window {
             id: dialog1
             width: 480
             height: 600
@@ -116,7 +116,7 @@ Dialog {
             }
         }
 
-        Dialog {
+        Window {
             id: dialog0
             width: 480
             height: 600

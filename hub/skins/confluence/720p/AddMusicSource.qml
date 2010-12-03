@@ -21,7 +21,7 @@ import QtQuick 1.0
 import "components"
 import DirModel 1.0
 
-ModalDialog {
+Dialog {
     id: root
     title: qsTr("Add Music source")
 
@@ -61,7 +61,7 @@ ModalDialog {
                 text: " "
                 color: "white"
             }
-            DialogButtonBox {
+            WindowButtonBox {
                 id: buttonBox
                 anchors.horizontalCenter: parent.horizontalCenter
                 onAccept: {

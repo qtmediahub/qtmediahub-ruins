@@ -21,7 +21,7 @@ import QtQuick 1.0
 import QtWebKit 1.0
 import "components"
 
-Dialog {
+Window {
     id: root
 
     maximizable: true

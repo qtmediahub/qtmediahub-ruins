@@ -18,34 +18,57 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 ****************************************************************************/
 
 import QtQuick 1.0
+import Dashboard 1.0
+
 import "components"
 
-Dialog {
-    id: root
-    Keys.onUpPressed:
-        closeButton.focus = true
+//FIXME: polish this puppy
 
-    onVisibleChanged:
-        buttonList.resetFocus()
+Window {
+    id: dashboardWindow
+    defaultWidth: maximizedWidth; defaultHeight: maximizedHeight
+    Dashboard {
+        id: db
+        clip: true
+        anchors.fill: parent
 
-    PixmapButton {
-        id: closeButton
-        anchors.right: parent.right;
-        basePixmap: "DialogCloseButton";
-        focusedPixmap: "DialogCloseButton-focus"
-        onClicked:
-            confluence.state = "showingRootMenu"
-        Keys.onDownPressed:
-            buttonList.giveFocus()
-    }
+        state: "invisible"
 
-    ButtonList {
+        widgetPath: generalResourcePath + "/widgets"
+
+        /* FIXME: constrained widgets
+    Grid {
+        id: grid
+        z: 1
+        scale: scaleFactor()
+        columns: Math.sqrt(children.length)
+        spacing: 50
+        anchors.margins: spacing
         anchors.centerIn: parent
-        id: buttonList
-        PixmapButton { basePixmap: "ButtonMenuExitNF"; focusedPixmap: "ButtonMenuExitFO"; focus: true; onClicked: Qt.quit() }
-        PixmapButton { basePixmap: "ButtonMenuRestartNF"; focusedPixmap: "ButtonMenuRestartFO" }
-        PixmapButton { basePixmap: "ButtonMenuShutdownNF"; focusedPixmap: "ButtonMenuShutdownFO" }
-        PixmapButton { basePixmap: "ButtonMenuLogOffNF"; focusedPixmap: "ButtonMenuLogOffFO" }
-        PixmapButton { basePixmap: "ButtonMenuSleepNF"; focusedPixmap: "ButtonMenuSleepFO" }
+
+        function scaleFactor() {
+            var widthRatio = (db.width - (columns+1)*spacing)/childrenRect.width
+            var heightRatio = (db.height - (rows+1)*spacing)/childrenRect.height
+            var scale = widthRatio < heightRatio ? widthRatio : heightRatio
+            return scale
+        }
+    }*/
+
+        Component.onCompleted: {
+            var list  = db.discoverWidgets()
+            for(var i = 0; i < list.length; ++i) {
+                var dbComponent = Qt.createComponent("components/DashboardItem.qml")
+                if (dbComponent.status == Component.Error)
+                    console.log(dbComponent.errorString())
+                var item = dbComponent.createObject(db)
+
+                var widget = Qt.createComponent(list[i])
+                if(widget.status == Component.Ready)
+                    widget.createObject(item.container)
+                else if(widget.status == Component.Error)
+                    console.log(widget.errorString())
+            }
+            dashboardEngine.visualElement = dashboardWindow
+        }
     }
 }

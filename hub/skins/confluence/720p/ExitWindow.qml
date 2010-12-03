@@ -20,15 +20,32 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 import QtQuick 1.0
 import "components"
 
-Dialog {
-    states: State {
-        name: "back"
-        PropertyChanges { target: flipable; angle: 180 }
-        when: flipable.flipped
-    }
-    Flipable {
-        id: flipable
-        anchors.fill: parent
+Window {
+    id: root
+    Keys.onUpPressed:
+        closeButton.focus = true
 
+    onVisibleChanged:
+        buttonList.resetFocus()
+
+    PixmapButton {
+        id: closeButton
+        anchors.right: parent.right;
+        basePixmap: "WindowCloseButton";
+        focusedPixmap: "WindowCloseButton-focus"
+        onClicked:
+            confluence.state = "showingRootMenu"
+        Keys.onDownPressed:
+            buttonList.giveFocus()
+    }
+
+    ButtonList {
+        anchors.centerIn: parent
+        id: buttonList
+        PixmapButton { basePixmap: "ButtonMenuExitNF"; focusedPixmap: "ButtonMenuExitFO"; focus: true; onClicked: Qt.quit() }
+        PixmapButton { basePixmap: "ButtonMenuRestartNF"; focusedPixmap: "ButtonMenuRestartFO" }
+        PixmapButton { basePixmap: "ButtonMenuShutdownNF"; focusedPixmap: "ButtonMenuShutdownFO" }
+        PixmapButton { basePixmap: "ButtonMenuLogOffNF"; focusedPixmap: "ButtonMenuLogOffFO" }
+        PixmapButton { basePixmap: "ButtonMenuSleepNF"; focusedPixmap: "ButtonMenuSleepFO" }
     }
 }

@@ -20,65 +20,15 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 import QtQuick 1.0
 import "components"
 
-Dialog {
-    id: root
-    clip: false
-    x: 0
-    y: 0
-    anchors.centerIn: undefined
-    defaultDecoration: false
-
-    Loader {
-        id: addSourceDialogLoader
-        z: 100 // ##
+Window {
+    states: State {
+        name: "back"
+        PropertyChanges { target: flipable; angle: 180 }
+        when: flipable.flipped
     }
+    Flipable {
+        id: flipable
+        anchors.fill: parent
 
-    Dialog {
-        id: sourcesDialog
-        state: root.state
-        defaultTitleBar: false
-        x: 60
-        y: 80
-        width: 700
-        height: 650
-        anchors.centerIn: undefined
-
-       TreeView {
-            id: sourcesListView
-            anchors.fill: parent;
-            anchors.margins: 30 // FIXME: This should get autopositioned by the Dialog code
-            treeModel: musicEngine.pluginProperties.musicModel
-            clip: true
-            focus: true;
-            onClicked: {
-                if (currentItem.itemdata.display == qsTr("Add new source"))
-                    addSourceDialogLoader.source = "AddMusicSource.qml";
-                       }
-        }
-    }
-
-    Dialog {
-        id: sourceArtDialog
-        state: root.state
-        defaultTitleBar: false
-        anchors.left: sourcesDialog.right;
-        anchors.leftMargin: 65;
-        anchors.bottom: sourcesDialog.bottom;
-        anchors.centerIn: undefined
-
-        width: 342
-        height: 348
-
-        ImageCrossFader {
-            id: sourcesArt
-            anchors.fill: parent;
-            source: sourcesListView.currentItem.itemdata.decorationUrl
-            anchors.margins: 30 // FIXME: This should get autopositioned by the Dialog code
-        }
-    }
-
-    Component.onCompleted: {
-        musicEngine.visualElement = root;
     }
 }
-
