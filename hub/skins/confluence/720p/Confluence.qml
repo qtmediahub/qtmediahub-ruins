@@ -144,7 +144,6 @@ FocusScope {
         // ## This should probably not be here
         musicEngine.pluginProperties.musicModel.setThemeResourcePath(confluence.themeResourcePath);
         //FIXME: function failing here simply skips rest of init, wish they had exceptions
-        //musicEngine.pluginProperties.musicModel.start();
         var musicWindowLoader = Qt.createComponent("MusicWindow.qml")
         if(musicWindowLoader.status == Component.Ready)
             musicWindowLoader.createObject(confluence)
