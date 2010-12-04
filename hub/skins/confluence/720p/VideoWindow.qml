@@ -20,28 +20,64 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 import QtQuick 1.0
 import "components"
 
-Item {
-    property string role
+Window {
+    id: root
+    clip: false
+    x: 0
+    y: 0
+    anchors.centerIn: undefined
+    defaultDecoration: false
 
-    ImageCrossFader {
-        property string backgroundPath: themeResourcePath + "/backgrounds/"
-
-        anchors.fill: parent;
-        source: bgmap[role] ? backgroundPath + bgmap[role] : ""
+    Loader {
+        id: addSourceWindowLoader
+        z: 100 // ##
     }
 
-    // FIXME: Ideally get this through the plugin interface
-    QtObject {
-        id: bgmap
-        property string music: "music.jpg"
-        property string video: "videos.jpg"
-        property string scripts: "programs.jpg"
-        property string weather: "weather.jpg"
-        property string pictures: "pictures.jpg"
-        property string programs: "programs.jpg"
-        property string system: "system.jpg"
-        property string web: "system.jpg"
-        property string maps: "system.jpg"
-        property string dashboard: "system.jpg"
+    Window {
+        id: sourcesWindow
+        state: root.state
+        defaultTitleBar: false
+        x: 60
+        y: 80
+        width: 700
+        height: 650
+        anchors.centerIn: undefined
+
+       TreeView {
+            id: sourcesListView
+            anchors.fill: parent;
+            anchors.margins: 30 // FIXME: This should get autopositioned by the Window code
+            treeModel: videoEngine.pluginProperties.videoModel
+            clip: true
+            focus: true;
+            onClicked: {
+                videoEngine.pluginProperties.videoModel.addSearchPath("/home/jzellner/video/", "Source");
+            }
+        }
+    }
+
+    Window {
+        id: sourceArtWindow
+        state: root.state
+        defaultTitleBar: false
+        anchors.left: sourcesWindow.right;
+        anchors.leftMargin: 65;
+        anchors.bottom: sourcesWindow.bottom;
+        anchors.centerIn: undefined
+
+        width: 342
+        height: 348
+
+        ImageCrossFader {
+            id: sourcesArt
+            anchors.fill: parent;
+            source: sourcesListView.currentItem.itemdata.decorationUrl
+            anchors.margins: 30 // FIXME: This should get autopositioned by the Window code
+        }
+    }
+
+    Component.onCompleted: {
+        videoEngine.visualElement = root;
     }
 }
+
