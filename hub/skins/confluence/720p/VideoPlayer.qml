@@ -34,7 +34,7 @@ FocusScope {
             showOSD();
             event.accepted = true;
         } else {
-            confluence.state = "showingRootMenu"
+            confluence.state = "showingRootBlade"
         }
     }
 

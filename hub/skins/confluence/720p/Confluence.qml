@@ -40,7 +40,7 @@ FocusScope {
 
     states: [
         State {
-            name: "showingRootMenu"
+            name: "showingRootBlade"
             PropertyChanges {
                 target: blade
                 state: "open"
@@ -58,6 +58,7 @@ FocusScope {
                 target: videoPlayer
                 state: "background"
             }
+            StateChangeScript { script: blade.forceActiveFocus() }
         },
         State {
             name: "showingSelectedElement"
@@ -74,6 +75,7 @@ FocusScope {
                 target: videoPlayer
                 state: "background"
             }
+            StateChangeScript { script: selectedElement.forceActiveFocus() }
         },
         State {
             name: "showingSelectedElementMaximized"
@@ -117,7 +119,7 @@ FocusScope {
 
     Keys.onPressed: {
         if(event.key == Qt.Key_Escape)
-            selectedElement && selectedElement.maximized ? selectedElement.maximized = false : confluence.state = "showingRootMenu"
+            selectedElement && selectedElement.maximized ? selectedElement.maximized = false : confluence.state = "showingRootBlade"
         // Just convenience remove for real use!!!!!!!
         else if(event.key == Qt.Key_Delete)
             Qt.quit();
@@ -133,7 +135,6 @@ FocusScope {
 
     Component.onCompleted: {
         //Create items which may or may not be present
-
         var customCursorLoader = Qt.createComponent("components/Cursor.qml")
         if(customCursorLoader.status == Component.Ready)
             customCursorLoader.createObject(confluence)
@@ -142,7 +143,8 @@ FocusScope {
 
         // ## This should probably not be here
         musicEngine.pluginProperties.musicModel.setThemeResourcePath(confluence.themeResourcePath);
-        musicEngine.pluginProperties.musicModel.start();
+        //FIXME: function failing here simply skips rest of init, wish they had exceptions
+        //musicEngine.pluginProperties.musicModel.start();
         var musicWindowLoader = Qt.createComponent("MusicWindow.qml")
         if(musicWindowLoader.status == Component.Ready)
             musicWindowLoader.createObject(confluence)
@@ -178,7 +180,7 @@ FocusScope {
             qtcube = dummyItem
         }
 
-        confluence.state = "showingRootMenu"
+        confluence.state = "showingRootBlade"
     }
 
     function setActiveEngine(engine)
@@ -206,7 +208,7 @@ FocusScope {
     MainBlade { 
         id: blade; 
         focus: true 
-        onOpened: confluence.state = "showingRootMenu"
+        onOpened: confluence.state = "showingRootBlade"
     }
 
     ExitWindow { id: exitWindow }
@@ -216,7 +218,7 @@ FocusScope {
         y: confluence.height;
         z: 1;
         anchors { right: parent.right }
-        active: confluence.state == "showingRootMenu"
+        active: confluence.state == "showingRootBlade"
 
         onLinkClicked: {
             webWindow ? webWindow.loadPage(link) : 0

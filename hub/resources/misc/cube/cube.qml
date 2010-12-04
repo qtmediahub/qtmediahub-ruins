@@ -60,4 +60,9 @@ Viewport {
             decal: true
         }
     }
+    MouseArea {
+        anchors.fill: parent
+//        onClicked:
+//            confluence.setEngine(aboutRole)
+    }
 }
