@@ -42,7 +42,7 @@ Item {
 
     BorderImage {
         id: panel
-        source: themeResourcePath + "/media/OverlayWindowBackground.png"
+        source: themeResourcePath + "/media/OverlayDialogBackground.png"
         border { top: 20; left: 20; bottom: 20; right: 20; }
         anchors.fill: parent
     }
@@ -78,7 +78,7 @@ Item {
 
     Image {
         id: closeButton
-        source: themeResourcePath + "/media/" + (closeButtonMouseArea.pressed ? "WindowCloseButton-focus.png" : "WindowCloseButton.png")
+        source: themeResourcePath + "/media/" + (closeButtonMouseArea.pressed ? "DialogCloseButton-focus.png" : "DialogCloseButton.png")
         anchors.top: panel.top
         anchors.right: panel.right
         anchors { rightMargin: 40; topMargin: 5; }

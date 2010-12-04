@@ -61,7 +61,7 @@ Dialog {
                 text: " "
                 color: "white"
             }
-            WindowButtonBox {
+            DialogButtonBox {
                 id: buttonBox
                 anchors.horizontalCenter: parent.horizontalCenter
                 onAccept: {
