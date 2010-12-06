@@ -37,7 +37,7 @@ Item {
         property string video: "videos.jpg"
         property string scripts: "programs.jpg"
         property string weather: "weather.jpg"
-        property string pictures: "pictures.jpg"
+        property string picture: "pictures.jpg"
         property string programs: "programs.jpg"
         property string system: "system.jpg"
         property string web: "system.jpg"
