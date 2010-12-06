@@ -26,9 +26,6 @@ Window {
     property variant startupAnimationComponent
     property variant startupAnimation
 
-    defaultWidth: frontContainer.width; defaultHeight: frontContainer.height
-    //angle: 180
-
     Rectangle {
         id: frontContainer
         width: childrenRect.width; height: childrenRect.height

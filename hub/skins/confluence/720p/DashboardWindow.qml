@@ -26,7 +26,6 @@ import "components"
 
 Window {
     id: dashboardWindow
-    defaultWidth: maximizedWidth; defaultHeight: maximizedHeight
     Dashboard {
         id: db
         clip: true

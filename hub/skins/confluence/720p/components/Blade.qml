@@ -30,7 +30,7 @@ FocusScope {
     signal closed
 
     property bool windowingComponent: true
-    property int bladePeek: 30
+    property int bladePeek: 30 // if you change this, change Window.qml too
     property alias bladeWidth: blade.width
     property int bladeRestingPosition: -bladeWidth + bladePeek
 

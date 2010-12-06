@@ -24,7 +24,6 @@ FocusScope {
     clip: true
 
     z: 1
-    anchors.centerIn: parent
 
     opacity: 0; visible: false
     scale: 0
@@ -41,13 +40,14 @@ FocusScope {
     property bool isFlipable: backContainer.children.length > 1 && state == "visible"
     property bool flipped: false
 
-    property int marginOffset: 20
-    property int defaultWidth: 984
-    property int defaultHeight: 472
-    property int maximizedWidth: parent.width + 2*marginOffset
-    property int maximizedHeight: parent.height + 2*marginOffset
+    property int bladePeek: 30 // if you change this, change Blade.qml too
+    property int maximizedWidth: parent.width
+    property int maximizedHeight: parent.height
 
-    width: defaultWidth + 2*marginOffset; height: defaultHeight + 2*marginOffset
+    x: bladePeek
+    y: 0
+    width: parent.width - bladePeek
+    height: parent.height
 
     property alias defaultDecoration: frontContainer.decorateFrame
     property alias defaultTitleBar: frontContainer.decorateTitleBar
