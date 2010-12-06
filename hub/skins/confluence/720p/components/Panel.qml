@@ -26,7 +26,6 @@ FocusScope {
     property alias decorateTitleBar: titlebar.visible
 
     focus: true
-    anchors.fill: parent
 
     BorderImage {
         id: frame
@@ -42,3 +41,4 @@ FocusScope {
         }
     }
 }
+

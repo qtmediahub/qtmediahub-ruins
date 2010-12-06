@@ -26,7 +26,7 @@ Window {
     property variant startupAnimationComponent
     property variant startupAnimation
 
-    Rectangle {
+    Item {
         id: frontContainer
         width: childrenRect.width; height: childrenRect.height
         anchors.centerIn: parent
@@ -44,37 +44,39 @@ Window {
         }
     }
 
-    PropertyAnimation on angle {
-        loops: Animation.Infinite
-        duration: 10000
-        from: 0
-        to: 360
-        running: visible && backend.transforms
-    }
+//    PropertyAnimation on angle {
+//        loops: Animation.Infinite
+//        duration: 10000
+//        from: 0
+//        to: 360
+//        running: visible && backend.transforms
+//    }
 
     //RotationAnimation on angle { running: visible; loops: Animation.Infinite; duration: 1000; direction: RotationAnimation.Counterclockwise }
 
-    backContent : Flow {
-        anchors.centerIn: parent
-        //width: childrenRect.width; height: childrenRect.height
-        flow:  Flow.TopToBottom
-        Item {
-            width: childrenRect.width; height: childrenRect.height
-            ConfluenceText { id: confTxt; text: qsTr("All resources and style from ") }
-            Image {
-                anchors { left: confTxt.right; verticalCenter: confTxt.verticalCenter }
-                source: themeResourcePath + "/media/Confluence_Logo.png"
+    FlipablePanel {
+        backContent : Flow {
+            anchors.centerIn: parent
+            //width: childrenRect.width; height: childrenRect.height
+            flow:  Flow.TopToBottom
+            Item {
+                width: childrenRect.width; height: childrenRect.height
+                ConfluenceText { id: confTxt; text: qsTr("All resources and style from ") }
+                Image {
+                    anchors { left: confTxt.right; verticalCenter: confTxt.verticalCenter }
+                    source: themeResourcePath + "/media/Confluence_Logo.png"
+                }
             }
-        }
-        Item {
-            width: childrenRect.width; height: childrenRect.height
-            ConfluenceText { id: xbmcTxt; text: qsTr("Inspired by ") }
-            Image {
-                anchors { left: xbmcTxt.right; verticalCenter: xbmcTxt.verticalCenter }
-                source: themeResourcePath + "/media/XBMC_Logo.png"
+            Item {
+                width: childrenRect.width; height: childrenRect.height
+                ConfluenceText { id: xbmcTxt; text: qsTr("Inspired by ") }
+                Image {
+                    anchors { left: xbmcTxt.right; verticalCenter: xbmcTxt.verticalCenter }
+                    source: themeResourcePath + "/media/XBMC_Logo.png"
+                }
             }
+            ConfluenceText { text: "http://xbmc.org/"}
+            ConfluenceText { text: "QtMediaCenter is hosted at http://gitorious.org/qtmediahub"}
         }
-        ConfluenceText { text: "http://xbmc.org/"}
-        ConfluenceText { text: "QtMediaCenter is hosted at http://gitorious.org/qtmediahub"}
     }
 }

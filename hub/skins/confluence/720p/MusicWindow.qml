@@ -22,18 +22,14 @@ import "components"
 
 Window {
     id: root
-    defaultTitleBar: false
-    defaultDecoration: false
 
     Loader {
         id: addSourceWindowLoader
         z: 100 // ##
     }
 
-    Window {
+    Panel {
         id: sourcesWindow
-        state: root.state
-        defaultTitleBar: false
         x: 60
         y: 80
         width: 700
@@ -53,10 +49,8 @@ Window {
         }
     }
 
-    Window {
+    Panel {
         id: sourceArtWindow
-        state: root.state
-        defaultTitleBar: false
         anchors.left: sourcesWindow.right;
         anchors.leftMargin: 65;
         anchors.bottom: sourcesWindow.bottom;

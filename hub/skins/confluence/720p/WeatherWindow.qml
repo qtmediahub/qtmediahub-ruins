@@ -20,11 +20,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 import QtQuick 1.0
 import "components"
 
-
 Window {
     id: root
-    clip: false
-    defaultDecoration: false
 
     property string city: "munich"
 
@@ -35,12 +32,10 @@ Window {
     Row {
         anchors.centerIn: parent
         spacing: 100
-        Window {
+        Panel {
             id: dialog1
             width: 480
             height: 600
-            anchors.centerIn: undefined
-            state: root.state
 
             Column {
                 anchors.fill: parent
@@ -116,12 +111,10 @@ Window {
             }
         }
 
-        Window {
+        Panel {
             id: dialog0
             width: 480
             height: 600
-            anchors.centerIn: undefined
-            state: root.state
 
             Column {
                 anchors.fill: parent

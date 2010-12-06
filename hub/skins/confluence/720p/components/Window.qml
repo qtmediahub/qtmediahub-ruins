@@ -28,17 +28,8 @@ FocusScope {
     opacity: 0; visible: false
     scale: 0
 
-    property int angle: 0
-
     property bool maximized: false
     property bool maximizable: false
-
-    property alias frontContent: frontContainer.children
-    property alias backContent: backContainer.children
-
-    //FIXME: Hard coded this to default child count of WindowContainer
-    property bool isFlipable: backContainer.children.length > 1 && state == "visible"
-    property bool flipped: false
 
     property int bladePeek: 30 // if you change this, change Blade.qml too
     property int maximizedWidth: parent.width
@@ -48,9 +39,6 @@ FocusScope {
     y: 0
     width: parent.width - bladePeek
     height: parent.height
-
-    property alias defaultDecoration: frontContainer.decorateFrame
-    property alias defaultTitleBar: frontContainer.decorateTitleBar
 
     //useful for focus debugging
     //onActiveFocusChanged: console.log(idtext + " just " + (activeFocus ? "got" : "lost") + " focus")
@@ -66,14 +54,6 @@ FocusScope {
                 visible: true
                 opacity: 1
                 scale: 1
-            }
-        },
-        State {
-            name: "flipped"
-            extend: "visible"
-            PropertyChanges {
-                target: root
-                angle: 180
             }
         },
         State {
@@ -118,40 +98,11 @@ FocusScope {
 
     ]
 
-    onChildrenChanged: {
-        for (var i = 0; i < children.length; ++i) {
-            //All future children silently reparented to front
-            //by default
-            var element = children[i];
-            element != flipable ? children[i].parent = frontContainer : 0
-        }
-    }
-
     function onHideTransitionStarted() {
         //Any other way of extending generalized states/transitions?
     }
     function onVisibleTransitionComplete() {
         //Any other way of extending generalized states/transitions?
-    }
-
-    Flipable {
-        id: flipable
-        anchors.fill: parent
-
-        transform: Rotation {
-            origin.x: root.width/2; origin.y: root.height/2
-            axis.x: 0; axis.y: 1; axis.z: 0     // rotate depends on non-NOTIFYable propertiesaround y-axis
-            angle: root.angle
-        }
-
-        front:
-            Panel { id: frontContainer }
-        back:
-            Panel { id: backContainer }
-    }
-
-    Behavior on angle {
-        NumberAnimation { duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
     }
 
     Behavior on width {

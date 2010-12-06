@@ -72,11 +72,4 @@ Window {
     Engine { name: qsTr("Web"); role: "web"; visualElement: root; visualElementProperties: ["url", defaultUrl] }
     Engine { name: qsTr("Store"); role: "ovi-store"; visualElement: root; visualElementProperties: ["url", "http://store.ovi.com/"] }
     Engine { name: qsTr("Maps"); role: "maps"; visualElement: root; visualElementProperties: ["url", generalResourcePath + "/Google\ Maps/Nokia.html"] }
-
-    /*backContent: Rectangle{ anchors.fill:parent; color:  "blue" }
-    MouseArea {
-        anchors.fill: parent
-        onClicked:
-            isFlipable ? root.state = "flipped" : 0
-    }*/
 }
