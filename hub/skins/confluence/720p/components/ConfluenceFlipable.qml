@@ -2,13 +2,7 @@ import QtQuick 1.0
 
 Flipable {
     id: root
-    anchors.fill: parent
 
-    property alias frontContent: frontContainer.children
-    property alias backContent: backContainer.children
-
-    //FIXME: Hard coded this to default child count of WindowContainer
-    property bool isFlipable: backContainer.children.length > 1 && state == "visible"
     property bool flipped: false
 
     transform: Rotation {
@@ -22,15 +16,10 @@ Flipable {
         }
     }
 
-    State {
-        name: "flipped"
+    states: State {
+        name: "back"
         PropertyChanges { target: rotation; angle: 180; }
-        when: root.flipped
+        when: root.flipped == true
     }
-
-    front:
-        Panel { id: frontContainer }
-    back:
-        Panel { id: backContainer }
 }
 

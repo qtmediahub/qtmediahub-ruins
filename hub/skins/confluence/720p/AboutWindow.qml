@@ -26,56 +26,61 @@ Window {
     property variant startupAnimationComponent
     property variant startupAnimation
 
-    Panel {
-        id: frontContainer
+    ConfluenceFlipable {
+        id: flipable
         anchors.centerIn: parent
+        width: frontPanel.width
+        height: frontPanel.height
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: flipable.flipped = !flipable.flipped;
+        }
+
+        front: Panel { 
+            id: frontPanel 
+        }
+        back: Panel { 
+            id: backPanel
+            // ## Why does anchors.fill: parent cause an anchor loop?
+            width: frontPanel.width
+            height: frontPanel.height
+            Flow {
+                anchors.centerIn: parent
+                flow:  Flow.TopToBottom
+                Item {
+                    width: childrenRect.width; height: childrenRect.height
+                    ConfluenceText { id: confTxt; text: qsTr("All resources and style from ") }
+                    Image {
+                        anchors { left: confTxt.right; verticalCenter: confTxt.verticalCenter }
+                        source: themeResourcePath + "/media/Confluence_Logo.png"
+                    }
+                }
+                Item {
+                    width: childrenRect.width; height: childrenRect.height
+                    ConfluenceText { id: xbmcTxt; text: qsTr("Inspired by ") }
+                    Image {
+                        anchors { left: xbmcTxt.right; verticalCenter: xbmcTxt.verticalCenter }
+                        source: themeResourcePath + "/media/XBMC_Logo.png"
+                    }
+                }
+                ConfluenceText { text: "http://xbmc.org/"}
+                ConfluenceText { text: "QtMediaCenter is hosted at http://gitorious.org/qtmediahub"}
+            }
+        }
     }
 
     onVisibleChanged: {
-        if(visible == true) {
+        if (visible == true) {
             startupAnimationComponent = Qt.createComponent(generalResourcePath + "/qml-startup/startup.qml")
-            if(startupAnimationComponent.status == Component.Ready)
-                startupAnimation = startupAnimationComponent.createObject(frontContainer.contentItem)
+            if (startupAnimationComponent.status == Component.Ready) {
+                startupAnimation = startupAnimationComponent.createObject(frontPanel.contentItem)
+            }
         } else {
             //We don't want to hold on to these objects
             startupAnimationComponent.destroy()
             startupAnimation.destroy()
         }
     }
-
-//    PropertyAnimation on angle {
-//        loops: Animation.Infinite
-//        duration: 10000
-//        from: 0
-//        to: 360
-//        running: visible && backend.transforms
-//    }
-
-    //RotationAnimation on angle { running: visible; loops: Animation.Infinite; duration: 1000; direction: RotationAnimation.Counterclockwise }
-
-    FlipablePanel {
-        backContent : Flow {
-            anchors.centerIn: parent
-            //width: childrenRect.width; height: childrenRect.height
-            flow:  Flow.TopToBottom
-            Item {
-                width: childrenRect.width; height: childrenRect.height
-                ConfluenceText { id: confTxt; text: qsTr("All resources and style from ") }
-                Image {
-                    anchors { left: confTxt.right; verticalCenter: confTxt.verticalCenter }
-                    source: themeResourcePath + "/media/Confluence_Logo.png"
-                }
-            }
-            Item {
-                width: childrenRect.width; height: childrenRect.height
-                ConfluenceText { id: xbmcTxt; text: qsTr("Inspired by ") }
-                Image {
-                    anchors { left: xbmcTxt.right; verticalCenter: xbmcTxt.verticalCenter }
-                    source: themeResourcePath + "/media/XBMC_Logo.png"
-                }
-            }
-            ConfluenceText { text: "http://xbmc.org/"}
-            ConfluenceText { text: "QtMediaCenter is hosted at http://gitorious.org/qtmediahub"}
-        }
-    }
 }
+
