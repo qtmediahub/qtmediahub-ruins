@@ -50,7 +50,7 @@ FocusScope {
     width: defaultWidth + 2*marginOffset; height: defaultHeight + 2*marginOffset
 
     property alias defaultDecoration: frontContainer.decorateFrame
-    property alias defaultTitleBar: frontContainer.decorateTitlebar
+    property alias defaultTitleBar: frontContainer.decorateTitleBar
 
     //useful for focus debugging
     //onActiveFocusChanged: console.log(idtext + " just " + (activeFocus ? "got" : "lost") + " focus")

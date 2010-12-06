@@ -23,7 +23,7 @@ import QtQuick 1.0
 //could not resolve themeResourcePath
 FocusScope {
     property alias decorateFrame: frame.visible
-    property alias decorateTitlebar: titlebar.visible
+    property alias decorateTitleBar: titlebar.visible
 
     focus: true
     anchors.fill: parent
