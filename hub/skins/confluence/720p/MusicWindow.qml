@@ -22,10 +22,7 @@ import "components"
 
 Window {
     id: root
-    clip: false
-    x: 0
-    y: 0
-    anchors.centerIn: undefined
+    defaultTitleBar: false
     defaultDecoration: false
 
     Loader {
@@ -41,7 +38,6 @@ Window {
         y: 80
         width: 700
         height: 650
-        anchors.centerIn: undefined
 
        TreeView {
             id: sourcesListView
@@ -64,7 +60,6 @@ Window {
         anchors.left: sourcesWindow.right;
         anchors.leftMargin: 65;
         anchors.bottom: sourcesWindow.bottom;
-        anchors.centerIn: undefined
 
         width: 342
         height: 348
