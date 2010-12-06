@@ -43,7 +43,7 @@ FocusScope {
         hoverEnabled: true
 
         onPositionChanged: showOSD();
-        onClicked: videoItem.togglePlayPause();
+        onClicked: root.state == "maximized" ? videoItem.togglePlayPause() : undefined;
     }
 
     Timer {
@@ -83,7 +83,7 @@ FocusScope {
     VideoPlayerInfoOSD {
         id: infoOSD
         video: videoItem
-        state: (videoItem.paused || videoItem.playbackRate != 1) ? "visible" : ""
+        state: (videoItem.paused || videoItem.playbackRate != 1) && root.state == "maximized" ? "visible" : ""
     }
 
     states: [
