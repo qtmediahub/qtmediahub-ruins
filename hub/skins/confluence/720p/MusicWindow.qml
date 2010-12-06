@@ -43,7 +43,7 @@ Window {
             focus: true;
             onClicked: {
                 if (currentItem.itemdata.display == qsTr("Add new source"))
-                    addSourceWindowLoader.source = "AddMusicSource.qml";
+                    addSourceWindowLoader.source = "AddMediaSource.qml";
                        }
         }
     }

@@ -23,7 +23,11 @@ import DirModel 1.0
 
 Dialog {
     id: root
+
+    property variant engineModel : musicEngine.pluginProperties.musicModel
+
     title: qsTr("Add Music source")
+
 
     content : Item {
         anchors.fill: parent
@@ -65,7 +69,7 @@ Dialog {
                 id: buttonBox
                 anchors.horizontalCenter: parent.horizontalCenter
                 onAccept: {
-                    musicEngine.pluginProperties.musicModel.addSearchPath(fileSystemView.treeModel.filePath(fileSystemView.rootIndex), sourceNameInput.text);
+                    root.engineModel.addSearchPath(fileSystemView.treeModel.filePath(fileSystemView.rootIndex), sourceNameInput.text);
                     root.close()
                 }
                 onReject: {

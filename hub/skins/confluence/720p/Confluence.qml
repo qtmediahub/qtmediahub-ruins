@@ -164,7 +164,6 @@ FocusScope {
         if(videoPlayerComponent.status == Component.Ready) {
             videoPlayer = videoPlayerComponent.createObject(confluence)
             // FIXME: nothing to get video-path during runtime, yet
-            videoPlayer.video.source = "/home/jzellner/video/big_buck_bunny_1080p_surround.avi";
             videoPlayer.state = "hidden"
         } else if (videoPlayerComponent.status == Component.Error) {
             console.log(videoPlayerComponent.errorString())

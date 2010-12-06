@@ -55,6 +55,12 @@ FocusScope {
         onTriggered: controlOSD.state = ""
     }
 
+    Rectangle {
+        id: backgroundFiller
+        anchors.fill: parent
+        color: "black"
+    }
+
     Video {
         id: videoItem
         anchors.fill: parent
@@ -125,5 +131,21 @@ FocusScope {
         if (root.state == "maximized") {
             controlOSD.state = "visible";
         }
+    }
+
+    function play(uri) {
+        video.stop();
+        video.source = uri;
+        video.play();
+    }
+
+    function playForeground(uri) {
+        root.state = "maximized";
+        root.play(uri);
+    }
+
+    function playBackground(uri) {
+        root.state = "background";
+        root.play(uri);
     }
 }

@@ -23,9 +23,8 @@ import "components"
 Window {
     id: root
 
-    Loader {
-        id: addSourceWindowLoader
-        z: 100 // ##
+    Component.onCompleted: {
+        videoEngine.visualElement = root;
     }
 
     Panel {
@@ -43,7 +42,12 @@ Window {
             clip: true
             focus: true;
             onClicked: {
-                videoEngine.pluginProperties.videoModel.addSearchPath("/home/jzellner/video/", "Source");
+                if (currentItem.itemdata.display == qsTr("Add new source"))
+                    addSourceDialog.visible = true;
+                else {
+                    if (videoPlayer != undefined)
+                        videoPlayer.playForeground(currentItem.itemdata.filePath);
+                }
             }
         }
     }
@@ -64,8 +68,11 @@ Window {
         }
     }
 
-    Component.onCompleted: {
-        videoEngine.visualElement = root;
+    AddMediaSource {
+        id: addSourceDialog
+        engineModel: videoEngine.pluginProperties.videoModel
+        visible: false
+        title: qsTr("Add Video source")
     }
 }
 
