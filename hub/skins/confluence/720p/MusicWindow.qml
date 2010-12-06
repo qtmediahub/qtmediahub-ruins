@@ -48,7 +48,7 @@ Window {
         }
     }
 
-    Panel {
+    Item {
         id: sourceArtWindow
         anchors.left: sourcesWindow.right;
         anchors.leftMargin: 65;
