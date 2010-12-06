@@ -31,13 +31,13 @@ FocusScope {
     property bool maximized: false
     property bool maximizable: false
 
-    property int bladePeek: 30 // if you change this, change Blade.qml too
     property int maximizedWidth: parent.width
     property int maximizedHeight: parent.height
 
-    x: bladePeek
+    //Windows need to know the bladePeek of a single instance
+    x: blade.bladePeek
     y: 0
-    width: parent.width - bladePeek
+    width: parent.width - x
     height: parent.height
 
     //useful for focus debugging
@@ -58,14 +58,12 @@ FocusScope {
         },
         State {
             name: "maximized"
-            //when: maximized
+            extend: "visible"
             PropertyChanges {
                 target: root
-                visible: true
-                opacity: 1
-                scale: 1
                 width: maximizedWidth
                 height: maximizedHeight
+                x: 0
             }
         }
     ]
@@ -110,6 +108,10 @@ FocusScope {
     }
 
     Behavior on height {
+        NumberAnimation { duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
+    }
+
+    Behavior on x {
         NumberAnimation { duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
     }
 }

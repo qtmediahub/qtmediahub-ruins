@@ -41,6 +41,7 @@ Window {
         confluence.state = "showingSelectedElement"
     }
 
+    //Panel {
     Flickable {
         id: webViewport
         clip: true
@@ -68,6 +69,7 @@ Window {
         anchors.centerIn: parent
         on: webView.progress != 1
     }
+    //}
 
     Engine { name: qsTr("Web"); role: "web"; visualElement: root; visualElementProperties: ["url", defaultUrl] }
     Engine { name: qsTr("Store"); role: "ovi-store"; visualElement: root; visualElementProperties: ["url", "http://store.ovi.com/"] }
