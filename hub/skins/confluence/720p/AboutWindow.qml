@@ -26,9 +26,8 @@ Window {
     property variant startupAnimationComponent
     property variant startupAnimation
 
-    Item {
+    Panel {
         id: frontContainer
-        width: childrenRect.width; height: childrenRect.height
         anchors.centerIn: parent
     }
 
@@ -36,7 +35,7 @@ Window {
         if(visible == true) {
             startupAnimationComponent = Qt.createComponent(generalResourcePath + "/qml-startup/startup.qml")
             if(startupAnimationComponent.status == Component.Ready)
-                startupAnimation = startupAnimationComponent.createObject(frontContainer)
+                startupAnimation = startupAnimationComponent.createObject(frontContainer.contentItem)
         } else {
             //We don't want to hold on to these objects
             startupAnimationComponent.destroy()

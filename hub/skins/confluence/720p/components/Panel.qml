@@ -25,7 +25,12 @@ FocusScope {
     property alias decorateFrame: frame.visible
     property alias decorateTitleBar: titlebar.visible
     default property alias content : content.children
+    property alias contentItem : content
 
+    width: frame.border.left + frame.border.right + content.childrenRect.width
+    height: frame.border.top + frame.border.bottom + content.childrenRect.height
+
+    clip: true
     focus: true
 
     BorderImage {
