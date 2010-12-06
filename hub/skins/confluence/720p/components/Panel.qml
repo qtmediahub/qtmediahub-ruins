@@ -24,6 +24,7 @@ import QtQuick 1.0
 FocusScope {
     property alias decorateFrame: frame.visible
     property alias decorateTitleBar: titlebar.visible
+    default property alias content : content.children
 
     focus: true
 
@@ -38,6 +39,11 @@ FocusScope {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top:  parent.top
             anchors.topMargin: 10
+        }
+        Item {
+            id: content
+            anchors.fill: parent
+            anchors.margins: 30
         }
     }
 }

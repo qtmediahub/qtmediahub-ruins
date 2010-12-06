@@ -127,13 +127,14 @@ Window {
                 }
 
                 ListView {
+                    id: forecastListView
                     height: 500
                     width: parent.width
                     clip: true
                     model: weatherForecast
                     delegate: Item {
                         height: 120
-                        width: 400
+                        width: forecastListView.width
 
                         ConfluenceText {
                             id: dayofweek
