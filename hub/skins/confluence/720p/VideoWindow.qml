@@ -23,17 +23,12 @@ import "components"
 Window {
     id: root
 
-    Component.onCompleted: {
-        videoEngine.visualElement = root;
-    }
-
     Panel {
         id: sourcesWindow
         x: 60
         y: 80
         width: 700
         height: 650
-        anchors.centerIn: undefined
 
        TreeView {
             id: sourcesListView
@@ -43,11 +38,7 @@ Window {
             focus: true;
             onClicked: {
                 if (currentItem.itemdata.display == qsTr("Add new source"))
-                    addSourceDialog.visible = true;
-                else {
-                    if (videoPlayer != undefined)
-                        videoPlayer.playForeground(currentItem.itemdata.filePath);
-                }
+                    addMediaSourceDialog.visible = true;
             }
         }
     }
@@ -64,15 +55,19 @@ Window {
         ImageCrossFader {
             id: sourcesArt
             anchors.fill: parent;
-            source: sourcesListView.currentItem.itemdata.decorationUrl
+            source: sourcesListView.currentItem.itemdata.thumbnail
         }
     }
 
+    Component.onCompleted: {
+        videoEngine.visualElement = root;
+        videoEngine.pluginProperties.videoModel.setThemeResourcePath(themeResourcePath);
+    }
+
     AddMediaSource {
-        id: addSourceDialog
+        id: addMediaSourceDialog
         engineModel: videoEngine.pluginProperties.videoModel
         visible: false
-        title: qsTr("Add Video source")
     }
 }
 
