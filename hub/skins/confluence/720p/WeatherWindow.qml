@@ -34,11 +34,14 @@ Window {
         spacing: 100
         Panel {
             id: dialog1
-            width: 480
-            height: 600
 
+            content:
             Column {
-                anchors.fill: parent
+                anchors.centerIn: parent
+                width: 480
+                height: 600
+
+                //anchors.fill: parent
                 anchors.margins: 30
                 spacing: 5
                 ConfluenceText {
@@ -113,11 +116,13 @@ Window {
 
         Panel {
             id: dialog0
-            width: 480
-            height: 600
 
+            content:
             Column {
-                anchors.fill: parent
+                anchors.centerIn: parent
+                width: 480
+                height: 600
+                //anchors.fill: parent
                 anchors.margins: 30
                 spacing: 5
 
