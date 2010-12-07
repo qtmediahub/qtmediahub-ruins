@@ -32,7 +32,7 @@ FocusScope {
     property bool windowingComponent: true
     property int closedBladePeek: 30
 
-    property alias visibleWidth: blade.visibleWidth
+    property alias bladeVisibleWidth: blade.visibleWidth
     property alias bladeWidth: blade.width
     property alias bladePixmap: bladePixmap.source
     property alias bladeX: blade.x

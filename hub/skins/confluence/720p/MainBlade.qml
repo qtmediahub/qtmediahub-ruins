@@ -24,6 +24,11 @@ Blade {
     id: mainBlade
     clip: false
 
+    property int visibleWidth: mainBlade.bladeVisibleWidth
+                               + subMenu.bladeVisibleWidth
+    //FIXME: fudge factor below empirically derived
+    //media blade pixmap packing alpha
+                               - 12
     property alias subMenu : subMenu
     property alias rootMenu: rootMenu
 
