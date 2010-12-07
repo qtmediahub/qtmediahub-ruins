@@ -41,35 +41,35 @@ Window {
         confluence.state = "showingSelectedElement"
     }
 
-    //Panel {
-    Flickable {
-        id: webViewport
-        clip: true
-        boundsBehavior: Flickable.StopAtBounds
-        flickableDirection:  Flickable.VerticalFlick
-        //revolting magical numbers, god bless non symmetrical pixmaps
-        width: root.width - 60; height: root.height - 40
-        contentWidth: webView.width; contentHeight: webView.height
+    Panel {
         anchors.centerIn: parent
-        WebView {
-            id: webView
+        content: Flickable {
+            id: webViewport
+            clip: true
+            boundsBehavior: Flickable.StopAtBounds
+            flickableDirection:  Flickable.VerticalFlick
+            width: webView.width; height: root.height - 60
+            contentWidth: webView.width; contentHeight: webView.height
             anchors.centerIn: parent
-            //FIXME: is this expensive at all?
-            width: root.width
-            url: defaultUrl
-            opacity: progress == 1 ? 1 : 0.5
+            WebView {
+                id: webView
+                //anchors.centerIn: parent
+                //FIXME: is this expensive at all?
+                //width: root.width
+                url: defaultUrl
+                opacity: progress == 1 ? 1 : 0.5
 
-            Behavior on opacity {
-                NumberAnimation{}
+                Behavior on opacity {
+                    NumberAnimation{}
+                }
             }
         }
-    }
 
-    BusyIndicator {
-        anchors.centerIn: parent
-        on: webView.progress != 1
+        BusyIndicator {
+            anchors.centerIn: parent
+            on: webView.progress != 1
+        }
     }
-    //}
 
     Engine { name: qsTr("Web"); role: "web"; visualElement: root; visualElementProperties: ["url", defaultUrl] }
     Engine { name: qsTr("Store"); role: "ovi-store"; visualElement: root; visualElementProperties: ["url", "http://store.ovi.com/"] }

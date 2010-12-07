@@ -23,8 +23,6 @@ import "components"
 Window {
     id: root
 
-    anchors.centerIn: parent
-
     width: panel.width; height: panel.height;
 
     Keys.onUpPressed:
@@ -36,9 +34,9 @@ Window {
     Panel {
         id: panel
 
-        ButtonList {
-            //anchors.centerIn: parent
+        content: ButtonList {
             id: buttonList
+            anchors.centerIn: parent;
             PixmapButton { basePixmap: "ButtonMenuExitNF"; focusedPixmap: "ButtonMenuExitFO"; focus: true; onClicked: Qt.quit() }
             PixmapButton { basePixmap: "ButtonMenuRestartNF"; focusedPixmap: "ButtonMenuRestartFO" }
             PixmapButton { basePixmap: "ButtonMenuShutdownNF"; focusedPixmap: "ButtonMenuShutdownFO" }

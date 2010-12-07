@@ -25,10 +25,7 @@ FocusScope {
 
     z: 1
 
-    //anchors { horizontalCenter: parent.horizontalCenter; horizontalCenterOffset: state == "maximized" ? 0 : blade.closedBladePeek; verticalCenter: parent.verticalCenter }
-    //anchors.centerIn: parent
-    //Windows need to know the bladePeek of a single instance
-    //anchors.horizontalCenterOffset: blade.bladeVisibleWidth
+    anchors.centerIn: parent
 
     opacity: 0; visible: false
     scale: 0
@@ -39,9 +36,7 @@ FocusScope {
     property int maximizedWidth: confluence.width
     property int maximizedHeight: confluence.height
 
-    //x: confluence.bladePeek -  ; y: 0
-    //x: blade.bladeVisibleWidth
-    width: confluence.width - x
+    width: confluence.width - blade.visibleWidth
     height: confluence.height
 
     //useful for focus debugging
@@ -67,7 +62,6 @@ FocusScope {
                 target: root
                 width: maximizedWidth
                 height: maximizedHeight
-                x: 0
             }
         }
     ]
@@ -88,7 +82,7 @@ FocusScope {
             from: ""
             to: "visible"
             SequentialAnimation {
-                PropertyAction { target: root; property: "x"; value: blade.visibleWidth }
+                PropertyAction { target: root; property: "anchors.horizontalCenterOffset"; value: blade.visibleWidth/2 }
                 PropertyAction { target: root; property: "visible"; value: true }
                 ParallelAnimation {
                     NumberAnimation { property: "opacity"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
@@ -97,8 +91,10 @@ FocusScope {
                 ScriptAction { script: onVisibleTransitionComplete() }
                 ScriptAction { script: root.forceActiveFocus() }
             }
+        },
+        Transition {
+            PropertyAction { target: root; property: "anchors.horizontalCenterOffset"; value: 0 }
         }
-
     ]
 
     function onHideTransitionStarted() {
@@ -116,7 +112,8 @@ FocusScope {
         NumberAnimation { duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
     }
 
-    Behavior on x {
-        NumberAnimation { duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
-    }
+    //Don't want this everywhere since x determines width!
+    //Behavior on x {
+    //    NumberAnimation { duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
+    //}
 }

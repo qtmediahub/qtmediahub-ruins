@@ -45,11 +45,12 @@ FocusScope {
             anchors.top:  parent.top
             anchors.topMargin: 10
         }
-        Item {
-            id: content
-            anchors.fill: parent
-            anchors.margins: 30
-        }
+    }
+    Item {
+        id: content
+        //You can't dictate and rely on parent size simultaneously!
+        anchors.centerIn: parent
+        anchors.margins: 30
     }
 }
 
