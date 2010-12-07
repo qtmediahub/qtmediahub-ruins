@@ -66,6 +66,7 @@ Window {
 
     AddMediaSource {
         id: addMediaSourceDialog
+        title: qsTr("Add Music source")
         engineModel: musicEngine.pluginProperties.musicModel
         visible: false
     }

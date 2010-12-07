@@ -24,10 +24,7 @@ import DirModel 1.0
 Dialog {
     id: root
 
-    property variant engineModel : musicEngine.pluginProperties.musicModel
-
-    title: qsTr("Add Music source")
-
+    property variant engineModel
 
     content : Item {
         anchors.fill: parent

@@ -66,6 +66,7 @@ Window {
 
     AddMediaSource {
         id: addMediaSourceDialog
+        title: qsTr("Add Video source")
         engineModel: videoEngine.pluginProperties.videoModel
         visible: false
     }
