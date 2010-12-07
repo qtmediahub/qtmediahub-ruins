@@ -53,7 +53,7 @@ FocusScope {
                 anchors.verticalCenter: seekOSD.verticalCenter
 
                 Text {
-                    text: video.playbackRate == 0 ? "Paused" : "Playing"
+                    text: video.playbackRate == 0 ? qsTr("Paused") : qsTr("Playing")
                     color: "steelblue"
                 }
                 Text {
