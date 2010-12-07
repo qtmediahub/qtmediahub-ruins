@@ -26,7 +26,7 @@ Dialog {
 
     property variant engineModel
 
-    content : Item {
+    Item {
         anchors.fill: parent
 
         Column {

@@ -27,7 +27,7 @@ Item {
     y: confluence.height/2 - height/2
 
     property alias title : titleBarText.text
-    property alias content : content.children
+    default property alias content : content.children
     signal accept
     signal reject
 
