@@ -133,6 +133,7 @@ FocusScope {
         }
     }
 
+    //FIXME: function failing here simply skips rest of init, wish they had exceptions
     Component.onCompleted: {
         //Create items which may or may not be present
         var customCursorLoader = Qt.createComponent("components/Cursor.qml")
@@ -141,7 +142,7 @@ FocusScope {
         else if(customCursorLoader.status == Component.Error)
             console.log(customCursorLoader.errorString())
 
-        //FIXME: function failing here simply skips rest of init, wish they had exceptions
+        musicEngine.pluginProperties.musicModel.setThemeResourcePath(themeResourcePath); // ## Shouldn't be here
         var musicWindowLoader = Qt.createComponent("MusicWindow.qml")
         if(musicWindowLoader.status == Component.Ready)
             musicWindowLoader.createObject(confluence)
@@ -155,6 +156,7 @@ FocusScope {
         else if(videoWindowLoader.status == Component.Error)
             console.log(videoWindowLoader.errorString())
 
+        pictureEngine.pluginProperties.pictureModel.setThemeResourcePath(themeResourcePath); // ## Shouldn't be here
         var pictureWindowLoader = Qt.createComponent("PictureWindow.qml")
         if(pictureWindowLoader.status == Component.Ready)
             pictureWindowLoader.createObject(confluence)
