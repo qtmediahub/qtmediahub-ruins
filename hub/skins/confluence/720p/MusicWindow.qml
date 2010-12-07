@@ -23,11 +23,6 @@ import "components"
 Window {
     id: root
 
-    Loader {
-        id: addSourceWindowLoader
-        z: 100 // ##
-    }
-
     Panel {
         id: sourcesWindow
         x: 60
@@ -43,7 +38,7 @@ Window {
             focus: true;
             onClicked: {
                 if (currentItem.itemdata.display == qsTr("Add new source"))
-                    addSourceWindowLoader.source = "AddMediaSource.qml";
+                    addMediaSourceDialog.visible = true;
                        }
         }
     }
@@ -66,6 +61,13 @@ Window {
 
     Component.onCompleted: {
         musicEngine.visualElement = root;
+        musicEngine.pluginProperties.musicModel.setThemeResourcePath(themeResourcePath);
+    }
+
+    AddMediaSource {
+        id: addMediaSourceDialog
+        engineModel: musicEngine.pluginProperties.musicModel
+        visible: false
     }
 }
 

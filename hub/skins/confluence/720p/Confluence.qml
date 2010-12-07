@@ -141,8 +141,6 @@ FocusScope {
         else if(customCursorLoader.status == Component.Error)
             console.log(customCursorLoader.errorString())
 
-        // ## This should probably not be here
-        musicEngine.pluginProperties.musicModel.setThemeResourcePath(confluence.themeResourcePath);
         //FIXME: function failing here simply skips rest of init, wish they had exceptions
         var musicWindowLoader = Qt.createComponent("MusicWindow.qml")
         if(musicWindowLoader.status == Component.Ready)
@@ -150,15 +148,12 @@ FocusScope {
         else if(musicWindowLoader.status == Component.Error)
             console.log(musicWindowLoader.errorString())
 
-        // ## This should probably not be here
-//        videoEngine.pluginProperties.videoModel.setThemeResourcePath(confluence.themeResourcePath);
         //FIXME: function failing here simply skips rest of init, wish they had exceptions
         var videoWindowLoader = Qt.createComponent("VideoWindow.qml")
         if(videoWindowLoader.status == Component.Ready)
             videoWindowLoader.createObject(confluence)
         else if(videoWindowLoader.status == Component.Error)
             console.log(videoWindowLoader.errorString())
-
 
         var videoPlayerComponent = Qt.createComponent("VideoPlayer.qml");
         if(videoPlayerComponent.status == Component.Ready) {
