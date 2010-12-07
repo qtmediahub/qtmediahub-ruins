@@ -62,7 +62,7 @@ ListView {
                     if (model.hasModelChildren) {
                         visualDataModel.rootIndex = visualDataModel.modelIndex(index)
                         listView.rootIndexChanged();
-                    } else if (model.display == qsTr("..")) {
+                    } else if (model.type == "DotDot") { // FIXME: Make this MediaModel.DotDot when we put the model code in a library
                         visualDataModel.rootIndex = visualDataModel.parentModelIndex();
                         listView.rootIndexChanged();
                     } else {
