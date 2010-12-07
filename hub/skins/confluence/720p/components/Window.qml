@@ -25,9 +25,10 @@ FocusScope {
 
     z: 1
 
-    //anchors.centerIn: parent
+    //anchors { horizontalCenter: parent.horizontalCenter; horizontalCenterOffset: state == "maximized" ? 0 : blade.closedBladePeek; verticalCenter: parent.verticalCenter }
+    anchors.centerIn: parent
     //Windows need to know the bladePeek of a single instance
-    //anchors.leftMargin: blade.bladePeek - blade.x
+    //anchors.horizontalCenterOffset: blade.bladeVisibleWidth
 
     opacity: 0; visible: false
     scale: 0
@@ -39,7 +40,7 @@ FocusScope {
     property int maximizedHeight: confluence.height
 
     //x: confluence.bladePeek -  ; y: 0
-    x: blade.bladeVisibleWidth
+    //x: blade.bladeVisibleWidth
     width: confluence.width - x
     height: confluence.height
 

@@ -73,12 +73,10 @@ FocusScope {
     transitions: [
         Transition {
             to: "open"
-            //NumberAnimation { target: blade; properties: "x"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
             ScriptAction { script: forceActiveFocus() }
         }, Transition {
             to: "closed"
             ScriptAction { script: closed() }
-            //NumberAnimation { target: blade; properties: "x"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
         }
     ]
 
