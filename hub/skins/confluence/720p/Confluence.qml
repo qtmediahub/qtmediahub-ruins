@@ -155,6 +155,12 @@ FocusScope {
         else if(videoWindowLoader.status == Component.Error)
             console.log(videoWindowLoader.errorString())
 
+        var pictureWindowLoader = Qt.createComponent("PictureWindow.qml")
+        if(pictureWindowLoader.status == Component.Ready)
+            pictureWindowLoader.createObject(confluence)
+        else if(pictureWindowLoader.status == Component.Error)
+            console.log(pictureWindowLoader.errorString())
+
         var videoPlayerComponent = Qt.createComponent("VideoPlayer.qml");
         if(videoPlayerComponent.status == Component.Ready) {
             videoPlayer = videoPlayerComponent.createObject(confluence)
