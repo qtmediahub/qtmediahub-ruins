@@ -39,7 +39,7 @@ FocusScope {
     property int maximizedHeight: confluence.height
 
     //x: confluence.bladePeek -  ; y: 0
-    x: blade.x
+    x: blade.bladeVisibleWidth
     width: confluence.width - x
     height: confluence.height
 
