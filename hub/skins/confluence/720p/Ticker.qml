@@ -29,9 +29,13 @@ BorderImage {
     width: 850; //height: list.height
 
     property string currentFeed: "rss.news.yahoo.com/rss/topstories"
-    property bool active: false
+    property bool active: confluence.state == "showingRootBlade"
 
     signal linkClicked (string link);
+
+    onLinkClicked: {
+        browserWindow ? browserWindow.loadPage(link) : backend.openUrlExternally(link)
+    }
 
     XmlListModel {
         id: feedModel

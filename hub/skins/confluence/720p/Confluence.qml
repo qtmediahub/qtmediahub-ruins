@@ -181,6 +181,7 @@ FocusScope {
             console.log(dashboardLoader.errorString())
         }
 
+        //No webkit
         var webLoader = Qt.createComponent("WebWindow.qml");
         if(webLoader.status == Component.Ready) {
             browserWindow = webLoader.createObject(confluence)
@@ -188,6 +189,25 @@ FocusScope {
             console.log(webLoader.errorString())
         }
 
+        //No XML patterns
+        var weatherLoader = Qt.createComponent("WeatherWindow.qml");
+        if(weatherLoader.status == Component.Ready) {
+            weatherLoader.createObject(confluence)
+        } else if (weatherLoader.status == Component.Error) {
+            console.log(weatherLoader.errorString())
+        }
+
+        var tickerLoader = Qt.createComponent("Ticker.qml");
+        if(tickerLoader.status == Component.Ready) {
+            var ticker = tickerLoader.createObject(confluence)
+            ticker.y = confluence.height;
+            ticker.z = 1;
+            ticker.anchors.right = confluence.right
+        } else if (tickerLoader.status == Component.Error) {
+            console.log(tickerLoader.errorString())
+        }
+
+        //no qt3d
         var qtCubeLoader = Qt.createComponent(generalResourcePath + "/misc/cube/cube.qml")
         if(qtCubeLoader.status == Component.Ready) {
             qtcube = qtCubeLoader.createObject(confluence)
@@ -232,18 +252,6 @@ FocusScope {
 
     ExitWindow { id: exitWindow }
 
-    Ticker {
-        id: ticker;
-        y: confluence.height;
-        z: 1;
-        anchors { right: parent.right }
-        active: confluence.state == "showingRootBlade"
-
-        onLinkClicked: {
-            browserWindow ? browserWindow.loadPage(link) : backend.openUrlExternally(link)
-        }
-    }
-
     Image {
         id: banner
         z: 1000
@@ -255,8 +263,6 @@ FocusScope {
         Component.onCompleted:
             systemEngine.visualElement = systemWindow
     }
-
-    WeatherWindow { id: weatherWindow; }
 
     AboutWindow { id: aboutWindow; clip: false }
 }
