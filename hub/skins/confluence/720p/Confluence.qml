@@ -240,7 +240,7 @@ FocusScope {
         active: confluence.state == "showingRootBlade"
 
         onLinkClicked: {
-            browserWindow ? browserWindow.loadPage(link) : 0
+            browserWindow ? browserWindow.loadPage(link) : backend.openUrlExternally(link)
         }
     }
 
