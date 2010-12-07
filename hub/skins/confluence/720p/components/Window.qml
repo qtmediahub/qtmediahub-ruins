@@ -62,7 +62,14 @@ FocusScope {
                 target: root
                 width: maximizedWidth
                 height: maximizedHeight
+                anchors.horizontalCenterOffset: 0
             }
+            //Anchor changes better not extend to offsets!
+            //
+            //AnchorChanges {
+            //    target: root
+            //    anchors.horizontalCenterOffset: 0
+            //}
         }
     ]
 
@@ -93,7 +100,13 @@ FocusScope {
             }
         },
         Transition {
-            PropertyAction { target: root; property: "anchors.horizontalCenterOffset"; value: 0 }
+            reversible: true
+            from: "visible"
+            to: "maximized"
+            //FIXME: I had a dream...
+            //NumberAnimation { property: "x"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
+            //AnchorAnimation { duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
+            //PropertyAction { target: root; property: "anchors.horizontalCenterOffset"; value: 0 }
         }
     ]
 
