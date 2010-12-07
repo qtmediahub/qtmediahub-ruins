@@ -42,15 +42,18 @@ Window {
     }
 
     Panel {
-        anchors.centerIn: parent
-        content: Flickable {
+        id: panel
+        anchors.centerIn: parent;
+        decorateFrame: !root.maximized
+        Flickable {
             id: webViewport
             clip: true
             boundsBehavior: Flickable.StopAtBounds
             flickableDirection:  Flickable.VerticalFlick
-            width: webView.width; height: root.height - 60
-            contentWidth: webView.width; contentHeight: webView.height
-            anchors.centerIn: parent
+            width: root.maximized ? confluence.width : webView.width; 
+            height: root.maximized ? confluence.height : root.height - 60
+            contentWidth: webView.width; 
+            contentHeight: webView.height
             WebView {
                 id: webView
                 //anchors.centerIn: parent
@@ -62,13 +65,19 @@ Window {
                 Behavior on opacity {
                     NumberAnimation{}
                 }
+
+            }
+
+            Behavior on width {
+                NumberAnimation { }
             }
         }
 
         BusyIndicator {
-            anchors.centerIn: parent
+            anchors.centerIn: webViewport
             on: webView.progress != 1
         }
+
     }
 
     Engine { name: qsTr("Web"); role: "web"; visualElement: root; visualElementProperties: ["url", defaultUrl] }
