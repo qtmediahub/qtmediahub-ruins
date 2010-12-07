@@ -26,7 +26,7 @@ FocusScope {
     z: 1
 
     //anchors { horizontalCenter: parent.horizontalCenter; horizontalCenterOffset: state == "maximized" ? 0 : blade.closedBladePeek; verticalCenter: parent.verticalCenter }
-    anchors.centerIn: parent
+    //anchors.centerIn: parent
     //Windows need to know the bladePeek of a single instance
     //anchors.horizontalCenterOffset: blade.bladeVisibleWidth
 
@@ -88,6 +88,7 @@ FocusScope {
             from: ""
             to: "visible"
             SequentialAnimation {
+                PropertyAction { target: root; property: "x"; value: blade.visibleWidth }
                 PropertyAction { target: root; property: "visible"; value: true }
                 ParallelAnimation {
                     NumberAnimation { property: "opacity"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }

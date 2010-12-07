@@ -23,6 +23,8 @@ import "components"
 Window {
     id: root
 
+    anchors.centerIn: parent
+
     width: panel.width; height: panel.height;
 
     Keys.onUpPressed:
