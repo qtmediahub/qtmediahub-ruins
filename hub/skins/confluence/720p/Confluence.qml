@@ -35,6 +35,7 @@ FocusScope {
     property variant videoPlayer
     property variant qtcube
     property variant browserWindow
+    property variant ticker
 
     height: 720; width: 1280
     focus: true; clip: true
@@ -171,6 +172,7 @@ FocusScope {
             videoPlayer.state = "hidden"
         } else if (videoPlayerComponent.status == Component.Error) {
             console.log(videoPlayerComponent.errorString())
+            videoPlayer = dummyItem
         }
 
         var dashboardLoader = Qt.createComponent("DashboardWindow.qml");
@@ -199,12 +201,13 @@ FocusScope {
 
         var tickerLoader = Qt.createComponent("Ticker.qml");
         if(tickerLoader.status == Component.Ready) {
-            var ticker = tickerLoader.createObject(confluence)
+            ticker = tickerLoader.createObject(confluence)
             ticker.y = confluence.height;
             ticker.z = 1;
             ticker.anchors.right = confluence.right
         } else if (tickerLoader.status == Component.Error) {
             console.log(tickerLoader.errorString())
+            ticker = dummyItem
         }
 
         //no qt3d
@@ -241,7 +244,7 @@ FocusScope {
         id: background
         anchors.fill: parent;
         z: 1
-        visible: !videoPlayer.video.playing
+        visible: !(!!videoPlayer.video && videoPlayer.video.playing)
     }
 
     MainBlade { 
