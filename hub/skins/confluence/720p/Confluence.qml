@@ -82,7 +82,7 @@ FocusScope {
             extend: "showingSelectedElement"
             PropertyChanges {
                 target: blade
-                x: -blade.bladePeek
+                state: "hidden"
             }
             PropertyChanges {
                 target: selectedElement
@@ -126,7 +126,7 @@ FocusScope {
         //FIXME: keyboard modifiers don't work?
         //else if((event.key == Qt.Key_Enter) && (keys.modifiers == Qt.AltModifier))
         else if(event.key == Qt.Key_F12)
-                selectedElement && selectedElement.maximizable && (selectedElement.maximized = true);
+                selectedElement && state == "showingSelectedElement" && selectedElement.maximizable && (selectedElement.maximized = true);
         else if(event.key == Qt.Key_F11) {
             confluence.selectedElement = aboutWindow
             confluence.state = "showingSelectedElement"

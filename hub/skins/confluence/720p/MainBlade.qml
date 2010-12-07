@@ -45,7 +45,7 @@ Blade {
     Blade {
         id: subMenu
 
-        bladePeek: 10
+        closedBladePeek: 10
         bladeWidth: 200
         bladeRightMargin: 8
 

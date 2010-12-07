@@ -25,20 +25,23 @@ FocusScope {
 
     z: 1
 
+    //anchors.centerIn: parent
+    //Windows need to know the bladePeek of a single instance
+    //anchors.leftMargin: blade.bladePeek - blade.x
+
     opacity: 0; visible: false
     scale: 0
 
     property bool maximized: false
     property bool maximizable: false
 
-    property int maximizedWidth: parent.width
-    property int maximizedHeight: parent.height
+    property int maximizedWidth: confluence.width
+    property int maximizedHeight: confluence.height
 
-    //Windows need to know the bladePeek of a single instance
-    x: blade.bladePeek
-    y: 0
-    width: parent.width - x
-    height: parent.height
+    //x: confluence.bladePeek -  ; y: 0
+    x: blade.x
+    width: confluence.width - x
+    height: confluence.height
 
     //useful for focus debugging
     //onActiveFocusChanged: console.log(idtext + " just " + (activeFocus ? "got" : "lost") + " focus")

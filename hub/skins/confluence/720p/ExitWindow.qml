@@ -22,30 +22,36 @@ import "components"
 
 Window {
     id: root
+
+    width: panel.width; height: panel.height;
+
     Keys.onUpPressed:
         closeButton.focus = true
 
     onVisibleChanged:
         buttonList.resetFocus()
 
+    Panel {
+        id: panel
+
+        ButtonList {
+            //anchors.centerIn: parent
+            id: buttonList
+            PixmapButton { basePixmap: "ButtonMenuExitNF"; focusedPixmap: "ButtonMenuExitFO"; focus: true; onClicked: Qt.quit() }
+            PixmapButton { basePixmap: "ButtonMenuRestartNF"; focusedPixmap: "ButtonMenuRestartFO" }
+            PixmapButton { basePixmap: "ButtonMenuShutdownNF"; focusedPixmap: "ButtonMenuShutdownFO" }
+            PixmapButton { basePixmap: "ButtonMenuLogOffNF"; focusedPixmap: "ButtonMenuLogOffFO" }
+            PixmapButton { basePixmap: "ButtonMenuSleepNF"; focusedPixmap: "ButtonMenuSleepFO" }
+        }
+    }
     PixmapButton {
         id: closeButton
-        anchors.right: parent.right;
+        anchors { right: root.right; top: root.top }
         basePixmap: "DialogCloseButton";
         focusedPixmap: "DialogCloseButton-focus"
         onClicked:
             confluence.state = "showingRootBlade"
         Keys.onDownPressed:
             buttonList.giveFocus()
-    }
-
-    ButtonList {
-        anchors.centerIn: parent
-        id: buttonList
-        PixmapButton { basePixmap: "ButtonMenuExitNF"; focusedPixmap: "ButtonMenuExitFO"; focus: true; onClicked: Qt.quit() }
-        PixmapButton { basePixmap: "ButtonMenuRestartNF"; focusedPixmap: "ButtonMenuRestartFO" }
-        PixmapButton { basePixmap: "ButtonMenuShutdownNF"; focusedPixmap: "ButtonMenuShutdownFO" }
-        PixmapButton { basePixmap: "ButtonMenuLogOffNF"; focusedPixmap: "ButtonMenuLogOffFO" }
-        PixmapButton { basePixmap: "ButtonMenuSleepNF"; focusedPixmap: "ButtonMenuSleepFO" }
     }
 }

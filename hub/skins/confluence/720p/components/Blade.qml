@@ -30,10 +30,9 @@ FocusScope {
     signal closed
 
     property bool windowingComponent: true
-    property int bladePeek: 30
-    property alias bladeWidth: blade.width
-    property int bladeRestingPosition: -bladeWidth + bladePeek
+    property int closedBladePeek: 30
 
+    property alias bladeWidth: blade.width
     property alias bladePixmap: bladePixmap.source
     property alias bladeX: blade.x
     property alias bladeContent: content
@@ -49,15 +48,23 @@ FocusScope {
             name: "closed"
             PropertyChanges {
                 target: blade
-                x: bladeRestingPosition
                 clickToShow: true
+                visibleWidth: root.closedBladePeek
+            }
+        },
+        State {
+            name: "hidden"
+            PropertyChanges {
+                target: blade
+                clickToShow: false
+                visibleWidth: 0
             }
         },
         State {
             name: "open"
             PropertyChanges {
                 target: blade
-                x: 0
+                visibleWidth: width
             }
         }
     ]
@@ -65,12 +72,12 @@ FocusScope {
     transitions: [
         Transition {
             to: "open"
-            NumberAnimation { target: blade; properties: "x"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
+            //NumberAnimation { target: blade; properties: "x"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
             ScriptAction { script: forceActiveFocus() }
         }, Transition {
             to: "closed"
             ScriptAction { script: closed() }
-            NumberAnimation { target: blade; properties: "x"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
+            //NumberAnimation { target: blade; properties: "x"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
         }
     ]
 
@@ -101,6 +108,8 @@ FocusScope {
 
     Item {
         id: blade
+        x: -width + visibleWidth
+        property int visibleWidth
         property bool clickToShow: false
         clip: true
         height: parent.height
@@ -119,6 +128,9 @@ FocusScope {
                 root.state == "open" ? root.closed() : root.opened()
                 mouse.accepted = false
             }
+        }
+        Behavior on x {
+            NumberAnimation { duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
         }
     }
 }
