@@ -34,6 +34,7 @@ FocusScope {
     property variant selectedElement
     property variant videoPlayer
     property variant qtcube
+    property variant browserWindow
 
     height: 720; width: 1280
     focus: true; clip: true
@@ -180,6 +181,13 @@ FocusScope {
             console.log(dashboardLoader.errorString())
         }
 
+        var webLoader = Qt.createComponent("WebWindow.qml");
+        if(webLoader.status == Component.Ready) {
+            browserWindow = webLoader.createObject(confluence)
+        } else if (webLoader.status == Component.Error) {
+            console.log(webLoader.errorString())
+        }
+
         var qtCubeLoader = Qt.createComponent(generalResourcePath + "/misc/cube/cube.qml")
         if(qtCubeLoader.status == Component.Ready) {
             qtcube = qtCubeLoader.createObject(confluence)
@@ -232,11 +240,9 @@ FocusScope {
         active: confluence.state == "showingRootBlade"
 
         onLinkClicked: {
-            webWindow ? webWindow.loadPage(link) : 0
+            browserWindow ? browserWindow.loadPage(link) : 0
         }
     }
-
-    WebWindow { id: webWindow }
 
     Image {
         id: banner
