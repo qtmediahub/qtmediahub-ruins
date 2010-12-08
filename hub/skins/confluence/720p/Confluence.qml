@@ -262,11 +262,5 @@ FocusScope {
         source: themeResourcePath + "/media/Confluence_Logo.png"
     }
 
-    SystemWindow {
-        id: systemWindow
-        Component.onCompleted:
-            systemEngine.visualElement = systemWindow
-    }
-
     AboutWindow { id: aboutWindow; clip: false }
 }
