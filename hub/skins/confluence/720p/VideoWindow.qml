@@ -26,9 +26,9 @@ Window {
     Panel {
         id: sourcesWindow
         x: 60
-        y: 80
+        y: 360
         width: 700
-        height: 650
+        height: 350
 
        TreeView {
             id: sourcesListView
@@ -41,6 +41,32 @@ Window {
                     addMediaSourceDialog.visible = true;
             }
         }
+    }
+
+    Panel {
+        id: sourcesposterWindow
+        x: 0
+        y: 0
+        width: parent.width
+        height: 350
+
+       PosterView {
+            id: sourcesPosterView
+            anchors.fill: parent;
+            treeModel: videoEngine.pluginProperties.videoModel
+            clip: true
+            focus: true;
+            onClicked: {
+                if (currentItem.itemdata.display == qsTr("Add new source"))
+                    addMediaSourceDialog.visible = true;
+            }
+        }
+    }
+
+    ConfluenceText {
+        anchors.bottom:  parent.bottom
+        anchors.horizontalCenter: parent.horizontalCenter
+        text: sourcesPosterView.currentIndex
     }
 
     Item {
