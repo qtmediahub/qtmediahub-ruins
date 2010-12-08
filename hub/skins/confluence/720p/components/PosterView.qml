@@ -26,7 +26,7 @@ PathView {
     property int delegateWidth : 200
     property int delegateHeight : 200
 
-    signal clicked()
+    signal clicked(string filePath)
     signal rootIndexChanged() // this should be automatic, but doesn't trigger :/
 
     function currentModelIndex() {
@@ -107,7 +107,7 @@ PathView {
                         root.rootIndexChanged();
                     } else {
                         root.currentIndex = index;
-                        root.clicked()
+                        root.clicked(filePath)
                     }
                 }
             }

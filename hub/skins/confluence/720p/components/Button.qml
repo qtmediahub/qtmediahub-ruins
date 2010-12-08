@@ -24,20 +24,22 @@ Image {
     property alias text: textLabel.text
     signal clicked()
 
-    width: 80
-    height: textLabel.height
-    source: themeResourcePath + "/media/" + (mouseArea.pressed ? "button-focus.png" : "button-nofocus.png")
+    width: 150
+    height: textLabel.height+10
+
+    source: themeResourcePath + "/media/" + (mouseArea.containsMouse ? "button-focus.png" : "button-nofocus.png")
 
     MouseArea {
         id: mouseArea
         anchors.fill: parent
+        hoverEnabled: true
+
         onClicked: root.clicked()
     }
 
-    Text {
+    ConfluenceText {
         id: textLabel
         anchors.centerIn: parent
-        color: "blue"
     }
 }
 

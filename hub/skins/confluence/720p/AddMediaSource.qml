@@ -26,6 +26,10 @@ Dialog {
 
     property variant engineModel
 
+    onReject: {
+        root.close();
+    }
+
     Item {
         anchors.fill: parent
 
@@ -38,12 +42,12 @@ Dialog {
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
                 text: qsTr("BROWSE FOR THE MEDIA LOCATIONS")
-                color: "blue"
+                color: "steelblue"
             }
             TreeView {
                 id: fileSystemView
                 width: parent.width
-                height: parent.height - browseLabel.height - sourceNameLabel.height - sourceNameInput.height - buttonBox.height 
+                height: parent.height - browseLabel.height - sourceNameLabel.height - sourceNameEntry.height - buttonBox.height
                         - parent.spacing * 4 // ugh
                 treeModel : DirModel { }
                 onRootIndexChanged: sourceNameInput.text = treeModel.baseName(rootIndex)
@@ -54,13 +58,26 @@ Dialog {
                 text: qsTr("ENTER A NAME FOR THIS MEDIA SOURCE.")
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
-                color: "blue"
+                color: "steelblue"
             }
-            TextInput {
-                id: sourceNameInput
+            Image {
+                id: sourceNameEntry
                 width: parent.width
-                text: " "
-                color: "white"
+                source: themeResourcePath + "/media/" + (sourceNameEntryMouseArea.containsMouse || sourceNameInput.activeFocus ? "MenuItemFO.png" : "MenuItemNF.png");
+
+                TextInput {
+                    id: sourceNameInput
+                    anchors.centerIn: parent
+                    text: " "
+                    color: "white"
+                }
+
+                MouseArea {
+                    id: sourceNameEntryMouseArea
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    onClicked: sourceNameInput.forceActiveFocus()
+                }
             }
             DialogButtonBox {
                 id: buttonBox

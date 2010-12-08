@@ -38,7 +38,9 @@ Window {
             focus: true;
             onClicked: {
                 if (currentItem.itemdata.display == qsTr("Add new source"))
-                    addMediaSourceDialog.visible = true;
+                    addMediaSourceDialog.open();
+                else
+                    videoPlayer.play(currentItem.itemdata.filePath)
             }
         }
     }
@@ -50,23 +52,22 @@ Window {
         width: parent.width
         height: 350
 
-       PosterView {
+        PosterView {
             id: sourcesPosterView
             anchors.fill: parent;
             treeModel: videoEngine.pluginProperties.videoModel
             clip: true
             focus: true;
             onClicked: {
-                if (currentItem.itemdata.display == qsTr("Add new source"))
-                    addMediaSourceDialog.visible = true;
+                videoPlayer.play(filePath)
             }
         }
-    }
 
-    ConfluenceText {
-        anchors.bottom:  parent.bottom
-        anchors.horizontalCenter: parent.horizontalCenter
-        text: sourcesPosterView.currentIndex
+        ConfluenceText {
+            anchors.bottom:  parent.bottom
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: sourcesPosterView.currentIndex
+        }
     }
 
     Item {
@@ -93,7 +94,7 @@ Window {
         id: addMediaSourceDialog
         title: qsTr("Add Video source")
         engineModel: videoEngine.pluginProperties.videoModel
-        visible: false
+        opacity: 0
     }
 }
 

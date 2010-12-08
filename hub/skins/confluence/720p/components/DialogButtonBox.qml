@@ -29,6 +29,13 @@ Row {
         text: qsTr("OK")
         onClicked: root.accept()
     }
+
+    Item {
+        id: spacer
+        width: 30
+        height: 1
+    }
+
     Button {
         id: cancelButton
         text: qsTr("Cancel")

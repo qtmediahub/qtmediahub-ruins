@@ -34,6 +34,14 @@ Item {
     function close() {
         opacity = 0;
     }
+
+    function open() {
+        opacity = 1;
+    }
+
+    Behavior on opacity {
+        NumberAnimation{}
+    }
         
     MouseArea {
         parent: confluence
