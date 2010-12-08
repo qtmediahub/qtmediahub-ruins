@@ -152,6 +152,7 @@ FocusScope {
             backend.log(musicWindowLoader.errorString())
 
         //FIXME: function failing here simply skips rest of init, wish they had exceptions
+        videoEngine.pluginProperties.videoModel.setThemeResourcePath(themeResourcePath); // ## Shouldn't be here
         var videoWindowLoader = Qt.createComponent("VideoWindow.qml")
         if(videoWindowLoader.status == Component.Ready)
             videoWindowLoader.createObject(confluence)

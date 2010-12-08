@@ -55,13 +55,12 @@ Window {
         ImageCrossFader {
             id: sourcesArt
             anchors.fill: parent;
-            source: sourcesListView.currentItem.itemdata.thumbnail
+            source: sourcesListView.currentItem.itemdata.decorationUrl
         }
     }
 
     Component.onCompleted: {
         videoEngine.visualElement = root;
-        videoEngine.pluginProperties.videoModel.setThemeResourcePath(themeResourcePath);
     }
 
     AddMediaSource {
