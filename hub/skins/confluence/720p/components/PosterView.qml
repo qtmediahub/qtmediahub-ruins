@@ -25,6 +25,8 @@ PathView {
     property alias rootIndex : visualDataModel.rootIndex
     property int delegateWidth : 200
     property int delegateHeight : 200
+    property string currentSelectedName : ""
+    property string currentSelectedPath : ""
 
     signal clicked(string filePath)
     signal rootIndexChanged() // this should be automatic, but doesn't trigger :/
@@ -32,6 +34,11 @@ PathView {
     function currentModelIndex() {
         //console.log(currentItem.itemdata.filePath);
         return visualDataModel.modelIndex(currentIndex);
+    }
+
+    function currentSelectedItemChanged(name, path) {
+        currentSelectedName = name;
+        currentSelectedPath = path;
     }
 
     model : visualDataModel
@@ -70,6 +77,14 @@ PathView {
             scale: PathView.scale
             opacity : PathView.opacity
             z: PathView.z
+
+            // this needs to be fixed but I have no clue how to access current selected item from outside the delegate
+            property variant foo : PathView.isCurrentItem ? bar() : undefined
+
+            function bar() {
+                root.currentSelectedName = display;
+                root.currentSelectedPath = filePath;
+            }
 
             BorderImage {
                 id: border

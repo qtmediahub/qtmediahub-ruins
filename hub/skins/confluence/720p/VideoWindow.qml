@@ -23,12 +23,22 @@ import "components"
 Window {
     id: root
 
+    Keys.onPressed: {
+        if(event.key == Qt.Key_F10) {
+            sourcesWindow.visible = !sourcesWindow.visible
+            sourcesposterWindow.visible = !sourcesposterWindow.visible
+            // workaround to update things within PathView
+            sourcesPosterView.incrementCurrentIndex();
+       }
+    }
+
     Panel {
         id: sourcesWindow
         x: 60
-        y: 360
+        y: 80
         width: 700
-        height: 350
+        height: 650
+        visible: true
 
        TreeView {
             id: sourcesListView
@@ -38,23 +48,34 @@ Window {
             focus: true;
             onClicked: {
                 if (currentItem.itemdata.display == qsTr("Add new source"))
-                    addMediaSourceDialog.open();
+                    videoEngine.pluginProperties.videoModel.addSearchPath("/home/jzellner/video", "Videos");
+//                    addMediaSourceDialog.open();
                 else
                     videoPlayer.play(currentItem.itemdata.filePath)
             }
         }
     }
 
-    Panel {
+    FocusScope {
         id: sourcesposterWindow
-        x: 0
-        y: 0
-        width: parent.width
-        height: 350
+        anchors.fill: parent
+        visible: false
+
+        BorderImage {
+            id: sourcesPosterViewBackground
+            source: themeResourcePath + "/media/ContentPanel2.png"
+            anchors.fill: parent
+            border.left: 5; border.top: 5
+            border.right: 5; border.bottom: 5
+        }
 
         PosterView {
             id: sourcesPosterView
-            anchors.fill: parent;
+            width: parent.width
+            height: 300
+            anchors.top: parent.top
+            anchors.topMargin: 100
+            anchors.horizontalCenter: parent.horizontalCenter
             treeModel: videoEngine.pluginProperties.videoModel
             clip: true
             focus: true;
@@ -64,9 +85,10 @@ Window {
         }
 
         ConfluenceText {
-            anchors.bottom:  parent.bottom
+            anchors.top:  sourcesPosterView.bottom
+            anchors.topMargin: 30
             anchors.horizontalCenter: parent.horizontalCenter
-            text: sourcesPosterView.currentIndex
+            text: sourcesPosterView.currentSelectedName
         }
     }
 
@@ -75,6 +97,7 @@ Window {
         anchors.left: sourcesWindow.right;
         anchors.leftMargin: 65;
         anchors.bottom: sourcesWindow.bottom;
+        visible: sourcesWindow.visible
 
         width: 342
         height: 348
