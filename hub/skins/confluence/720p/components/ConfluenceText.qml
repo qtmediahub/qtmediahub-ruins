@@ -20,9 +20,26 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 import QtQuick 1.0
 
 Text {
+    id: root
     color: "white"
     //Disable on transitions
     smooth: true
     font.pointSize: 20
     font.weight: Font.DemiBold
+
+    Behavior on text {
+        SequentialAnimation {
+            NumberAnimation {
+                target: root
+                property: "opacity"
+                to: 0
+            }
+            PropertyAction {  }
+            NumberAnimation {
+                target: root
+                property: "opacity"
+                to: 1
+            }
+        }
+    }
 }
