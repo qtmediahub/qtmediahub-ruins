@@ -23,7 +23,6 @@ Dialog {
         //width: childrenRect.width; height: childrenRect.height
         flow:  Flow.TopToBottom
         Item {
-            anchors.right: parent.right
             width: childrenRect.width; height: childrenRect.height
             ConfluenceText { id: confTxt; text: qsTr("All resources and style from ") }
             Image {
@@ -32,7 +31,6 @@ Dialog {
             }
         }
         Item {
-            anchors.right: parent.right
             width: childrenRect.width; height: childrenRect.height
             ConfluenceText { id: xbmcTxt; text: qsTr("Inspired by ") }
             Image {
@@ -40,8 +38,8 @@ Dialog {
                 source: themeResourcePath + "/media/XBMC_Logo.png"
             }
         }
-        ConfluenceText { anchors.horizontalCenter: parent.horizontalCenter; text: "http://xbmc.org/"}
-        ConfluenceText { anchors.horizontalCenter: parent.horizontalCenter; text: "QtMediaCenter is hosted at http://gitorious.org/qtmediahub"}
+        ConfluenceText { text: "http://xbmc.org/"}
+        ConfluenceText { text: "QtMediaCenter is hosted at http://gitorious.org/qtmediahub"}
     }
 
     PropertyAnimation on angle {

@@ -21,7 +21,7 @@ import QtQuick 1.0
 import "components"
 
 BorderImage {
-    id: ticker
+    id: root
     border.left: 100
 
     source: themeResourcePath + "/media/Rss_Back.png"
@@ -29,10 +29,13 @@ BorderImage {
     width: 850; //height: list.height
 
     property string currentFeed: "rss.news.yahoo.com/rss/topstories"
+    property bool active: false
+
+    signal linkClicked (string link);
 
     XmlListModel {
         id: feedModel
-        source: "http://" + ticker.currentFeed
+        source: "http://" + root.currentFeed
         query: "/rss/channel/item"
 
         XmlRole { name: "title"; query: "title/string()" }
@@ -44,37 +47,37 @@ BorderImage {
         id: list
         clip: true
         anchors.right : parent.right
+        anchors.verticalCenter: parent.verticalCenter
         orientation: ListView.Horizontal
-        width: parent.width - 40; height: parent.height
+        width: parent.width - 40; height: parent.height - 5
+        interactive: false
+
         model: feedModel
         delegate: Item {
             id: tickerItem
             width: childrenRect.width; height: parent.height
             ConfluenceText {
                 id: tickerTitle;
-                //FIXME: offset madness
-                y: 5
-                height: tickerItem.height
+                font.pointSize: 15
                 text: title.replace("\n", "")
-                //                verticalAlignment: Text.AlignVCenter
+                color: delegateMouseArea.containsMouse ? "steelblue" : "white"
             }
+
+            ConfluenceText { font.pointSize: 15; anchors.left: tickerTitle.right; text: " - "; color: "steelblue" }
+
             MouseArea {
+                id: delegateMouseArea
                 anchors.fill: parent
                 hoverEnabled: true
-                onEntered:  tickerTitle.color = "blue"
-                onExited:  tickerTitle.color = "white"
-                onClicked: {
-                    webDialog ? webDialog.loadPage(link) : 0
-                }
+                onClicked: linkClicked(link)
             }
-            ConfluenceText { anchors.left: tickerTitle.right; text: " - "; color: "blue" }
         }
 
         Timer {
-            interval: 100;
-            running: confluence.state == "showingRootMenu" && !list.flicking
+            interval: 50;
+            running: root.active && !list.flicking
             repeat: true
-            onTriggered: list.contentX++
+            onTriggered: list.contentX = list.contentX + 2
         }
     }
 

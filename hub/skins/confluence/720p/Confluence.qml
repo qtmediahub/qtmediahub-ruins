@@ -125,6 +125,10 @@ FocusScope {
         //else if((event.key == Qt.Key_Enter) && (keys.modifiers == Qt.AltModifier))
         else if(event.key == Qt.Key_F12)
                 selectedElement && selectedElement.maximizable && (selectedElement.maximized = true);
+        else if(event.key == Qt.Key_F11) {
+            confluence.selectedElement = aboutDialog
+            confluence.state = "showingSelectedElement"
+        }
     }
 
     Component.onCompleted: {
@@ -168,8 +172,10 @@ FocusScope {
             qtcube.x = confluence.width
             qtcube.anchors.top = confluence.top
             qtcube.z = 1000
-        } else if(qtCubeLoader.status == Component.Error)
+        } else if(qtCubeLoader.status == Component.Error) {
             console.log(qtCubeLoader.errorString())
+            qtcube = dummyItem
+        }
 
         confluence.state = "showingRootMenu"
     }
@@ -181,6 +187,12 @@ FocusScope {
         for(var i = 0; i + 2 <= elementProperties.length; i += 2)
             selectedElement[elementProperties[i]] = elementProperties[i+1]
         state = "showingSelectedElement"
+    }
+
+    // dummyItem useful to avoid error ouput on component loader failures
+    Item {
+        id: dummyItem
+        visible: false
     }
 
     Background{
@@ -198,7 +210,17 @@ FocusScope {
 
     ExitDialog { id: exitDialog }
 
-    Ticker { id: ticker; y: confluence.height; z: 1; anchors { right: parent.right } }
+    Ticker {
+        id: ticker;
+        y: confluence.height;
+        z: 1;
+        anchors { right: parent.right }
+        active: confluence.state == "showingRootMenu"
+
+        onLinkClicked: {
+            webDialog ? webDialog.loadPage(link) : 0
+        }
+    }
 
     WebDialog { id: webDialog }
 
@@ -216,11 +238,5 @@ FocusScope {
 
     WeatherDialog { id: weatherDialog; }
 
-    AboutDialog { id: aboutDialog }
-
-    //    BusyIndicator {
-    //        on: true
-    //        anchors.right: parent.right
-    //        anchors.top: parent.top
-    //    }
+    AboutDialog { id: aboutDialog; clip: false }
 }
