@@ -28,9 +28,12 @@ Item {
     property bool hasSubBlade: model.modelData.browseable
     property alias textColor: entry.color
     property alias text: entry.text
+    property int angle: 0
 
     anchors.right: parent.right
     transformOrigin: Item.Right
+
+    transform: Rotation { origin.x: childrenRect.width/2.0; origin.y: childrenRect.height/2.0; axis { x: 0; y: 0; z: 1 } angle: menuItem.angle }
 
     opacity: 0.5
     scale: 0.5
@@ -39,7 +42,7 @@ Item {
         State {
             name: 'selected'
             when: activeFocus && ListView.isCurrentItem && mainBlade.subMenu.state == "closed"
-            PropertyChanges { target: menuItem; scale: 1; opacity:  1 }
+            PropertyChanges { target: menuItem; scale: 1; opacity: 1; angle: 360 }
             StateChangeScript { script: rootMenuList.itemSelected() }
             PropertyChanges { target: subIndicator; opacity: 1 }
         },
@@ -61,6 +64,7 @@ Item {
             ParallelAnimation {
                 NumberAnimation { property: "scale"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
                 NumberAnimation { property: "opacity"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
+                NumberAnimation { property: "angle"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
             }
             PropertyAction { target: entry; property: "smooth"; value: "true" }
         }
@@ -73,7 +77,7 @@ Item {
     ConfluenceText {
         id: entry
         anchors { right: parent.right; rightMargin: 20 }
-        font.pointSize: 60
+        font.pixelSize: 60
         text: model.modelData.name
         horizontalAlignment: Text.AlignRight
         transformOrigin: Item.Right
