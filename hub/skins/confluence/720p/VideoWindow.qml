@@ -23,22 +23,14 @@ import "components"
 Window {
     id: root
 
-    Keys.onPressed: {
-        if(event.key == Qt.Key_F10) {
-            sourcesWindow.visible = !sourcesWindow.visible
-            sourcesposterWindow.visible = !sourcesposterWindow.visible
-            // workaround to update things within PathView
-            sourcesPosterView.incrementCurrentIndex();
-       }
-    }
-
     Panel {
         id: sourcesWindow
         x: 60
         y: 80
         width: 700
-        height: 650
+        height: 550
         visible: true
+        opacity: visible ? 1 : 0
 
        TreeView {
             id: sourcesListView
@@ -47,18 +39,25 @@ Window {
             clip: true
             focus: true;
             onClicked: {
-                if (currentItem.itemdata.display == qsTr("Add new source"))
+                if (currentItem.itemdata.display == qsTr("Add new source")) {
+                    videoEngine.pluginProperties.videoModel.addSearchPath("/home/jzellner/aaa/", "Videos");
                     addMediaSourceDialog.open();
+                }
                 else
                     videoPlayer.play(currentItem.itemdata.filePath)
             }
         }
+
+       Behavior on opacity {
+           NumberAnimation { easing.type: confluenceEasingCurve; duration: confluenceAnimationDuration }
+       }
     }
 
     FocusScope {
         id: sourcesposterWindow
         anchors.fill: parent
         visible: false
+        opacity: visible ? 1 : 0
 
         BorderImage {
             id: sourcesPosterViewBackground
@@ -89,6 +88,20 @@ Window {
             anchors.horizontalCenter: parent.horizontalCenter
             text: sourcesPosterView.currentSelectedName
         }
+
+        ConfluenceText {
+            anchors.top:  sourcesPosterView.bottom
+            anchors.topMargin: 60
+            anchors.horizontalCenter: parent.horizontalCenter
+            font.pointSize: 15
+            font.bold: false
+            color: "steelblue"
+            text: sourcesPosterView.currentSelectedSize < 0 ? "" : (sourcesPosterView.currentSelectedSize/1000000).toFixed(2) + " MB"
+        }
+
+        Behavior on opacity {
+            NumberAnimation { easing.type: confluenceEasingCurve; duration: confluenceAnimationDuration }
+        }
     }
 
     Item {
@@ -97,6 +110,7 @@ Window {
         anchors.leftMargin: 65;
         anchors.bottom: sourcesWindow.bottom;
         visible: sourcesWindow.visible
+        opacity: visible ? 1 : 0
 
         width: 342
         height: 348
@@ -105,6 +119,24 @@ Window {
             id: sourcesArt
             anchors.fill: parent;
             source: sourcesListView.currentItem.itemdata.decorationUrl
+        }
+
+        Behavior on opacity {
+            NumberAnimation { easing.type: confluenceEasingCurve; duration: confluenceAnimationDuration }
+        }
+    }
+
+    Button {
+        id: switchViews
+        text: sourcesWindow.visible ? "Poster View" : "List View"
+        width:  200
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottom: parent.bottom
+        onClicked: {
+            sourcesWindow.visible = !sourcesWindow.visible
+            sourcesposterWindow.visible = !sourcesposterWindow.visible
+            // workaround to update things within PathView
+            sourcesPosterView.incrementCurrentIndex();
         }
     }
 

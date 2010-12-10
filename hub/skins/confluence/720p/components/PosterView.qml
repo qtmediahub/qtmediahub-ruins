@@ -27,6 +27,7 @@ PathView {
     property int delegateHeight : 200
     property string currentSelectedName : ""
     property string currentSelectedPath : ""
+    property int currentSelectedSize : -1
 
     signal clicked(string filePath)
     signal rootIndexChanged() // this should be automatic, but doesn't trigger :/
@@ -34,11 +35,6 @@ PathView {
     function currentModelIndex() {
         //console.log(currentItem.itemdata.filePath);
         return visualDataModel.modelIndex(currentIndex);
-    }
-
-    function currentSelectedItemChanged(name, path) {
-        currentSelectedName = name;
-        currentSelectedPath = path;
     }
 
     model : visualDataModel
@@ -84,6 +80,7 @@ PathView {
             function bar() {
                 root.currentSelectedName = display;
                 root.currentSelectedPath = filePath;
+                root.currentSelectedSize = (type == "File") ? size : -1;
             }
 
             BorderImage {
@@ -115,9 +112,11 @@ PathView {
 
                 onClicked: {
                     if (model.hasModelChildren) {
+                        console.log("poster" + visualDataModel.modelIndex(index) + " " + index)
                         visualDataModel.rootIndex = visualDataModel.modelIndex(index)
                         root.rootIndexChanged();
                     } else if (model.type == "DotDot") { // FIXME: Make this MediaModel.DotDot when we put the model code in a library
+                        console.log("poster dotdot" + visualDataModel.parentModelIndex() + " " + index)
                         visualDataModel.rootIndex = visualDataModel.parentModelIndex();
                         root.rootIndexChanged();
                     } else {
