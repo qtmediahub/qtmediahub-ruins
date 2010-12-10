@@ -40,7 +40,6 @@ Window {
             focus: true;
             onClicked: {
                 if (currentItem.itemdata.display == qsTr("Add new source")) {
-                    videoEngine.pluginProperties.videoModel.addSearchPath("/home/jzellner/aaa/", "Videos");
                     addMediaSourceDialog.open();
                 }
                 else

@@ -92,6 +92,41 @@ FocusScope {
         state: (videoItem.paused || videoItem.playbackRate != 1) && root.state == "maximized" ? "visible" : ""
     }
 
+    Image {
+        id: backToHomeButton
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.margins: -backToHomeButton.width
+        state: root.state == "maximized" ? "visible" : ""
+        source:  themeResourcePath + "/media/" + (mr.containsMouse ? "HomeIcon-Focus" : "HomeIcon") + ".png"
+
+        states: [
+            State {
+                name: "visible"
+                PropertyChanges {
+                    target: backToHomeButton.anchors
+                    margins: 20
+                }
+            }
+        ]
+
+        transitions: [
+            Transition {
+                NumberAnimation { property: "margins"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
+            }
+        ]
+
+        MouseArea {
+            id: mr
+            hoverEnabled: true
+            anchors.fill: parent
+
+            onClicked: {
+                confluence.state = "showingRootBlade"
+            }
+        }
+    }
+
     states: [
         State {
             name: "background"
