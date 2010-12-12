@@ -45,6 +45,12 @@ Window {
                 else
                     videoPlayer.play(currentItem.itemdata.filePath)
             }
+            Keys.onPressed: {
+                if (event.key == Qt.Key_Delete) {
+                    treeModel.removeSearchPath(currentIndex);
+                    event.accepted = true;
+                }
+            }
         }
 
        Behavior on opacity {

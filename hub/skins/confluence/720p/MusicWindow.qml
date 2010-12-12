@@ -40,6 +40,12 @@ Window {
                 if (currentItem.itemdata.display == qsTr("Add new source"))
                     addMediaSourceDialog.visible = true;
                        }
+            Keys.onPressed: {
+                if (event.key == Qt.Key_Delete) {
+                    treeModel.removeSearchPath(currentIndex);
+                    event.accepted = true;
+                }
+            }
         }
     }
 
