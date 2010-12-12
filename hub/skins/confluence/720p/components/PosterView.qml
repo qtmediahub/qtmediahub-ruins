@@ -80,7 +80,7 @@ PathView {
             function bar() {
                 root.currentSelectedName = display;
                 root.currentSelectedPath = filePath;
-                root.currentSelectedSize = (type == "File") ? size : -1;
+                root.currentSelectedSize = (type == "File") ? fileSize : -1;
             }
 
             BorderImage {
