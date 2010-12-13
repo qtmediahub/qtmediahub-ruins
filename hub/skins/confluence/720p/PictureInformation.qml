@@ -1,18 +1,18 @@
 import QtQuick 1.0
 import "util.js" as Util
+import "components"
 
 // We explicitly want to build the model in the QML since we want to the view
 // to entirely control the display of information. 
 // Future work:
 // 1. A live map showing geolocation
 
-Rectangle {
+Item {
     property variant currentItem
 
     width: 500
     height: 500
-    color: "red"
-    z: 100
+    z: 10
     opacity: 0
 
     ListModel {
@@ -58,14 +58,14 @@ Rectangle {
         }
                            }
 
-    ListView {
+    ConfluenceListView {
         id: listView
         anchors.fill: parent
         model : listModel
 
-        delegate: Text {
-            width: parent.width
-            text: key + ' ' + value
+        delegate: ConfluenceTwoColumnDelegate {
+            column1Text: model.key
+            column2Text: model.value
         }
     }
 }
