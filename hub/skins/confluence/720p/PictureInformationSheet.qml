@@ -7,15 +7,12 @@ import "components"
 // Future work:
 // 1. A live map showing geolocation
 
-Item {
+Sheet {
     property variant currentItem
+    width: 600
+    title: qsTr("Picture Information")
 
-    width: 500
-    height: 500
-    z: 10
-    opacity: 0
-
-    ListModel {
+    resources : ListModel {
         id: listModel
     }
 

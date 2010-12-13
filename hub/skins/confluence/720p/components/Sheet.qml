@@ -18,71 +18,81 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 ****************************************************************************/
 
 import QtQuick 1.0
-import "components"
 
-Window {
+Item {
     id: root
 
-    PictureInformationSheet {
-        id: pictureInformationSheet
+    property alias title : titleBarText.text
+    default property alias content : content.children
+
+    x: confluence.width
+    y: 0
+    width: 600 // arbitrary default
+    height: confluence.height
+    z: 10
+
+    function open() {
+        x = confluence.width - width
     }
 
-    Panel {
-        id: sourcesWindow
-        x: 60
-        y: 80
-        width: 700
-        height: 650
+    function close() {
+        x = confluence.width
+    }
 
-       TreeView {
-            id: sourcesListView
-            anchors.fill: parent;
-            treeModel: pictureEngine.pluginProperties.pictureModel
-            clip: true
-            focus: true;
-            onClicked: {
-                if (currentItem.itemdata.display == qsTr("Add new source"))
-                    addMediaSourceDialog.visible = true;
-                else {
-                    pictureInformationSheet.currentItem = sourcesListView.currentItem // this is not a binding for lazy loading
-                    pictureInformationSheet.open();
-                }
-            }
-            Keys.onPressed: {
-                if (event.key == Qt.Key_Delete) {
-                    treeModel.removeSearchPath(currentIndex);
-                    event.accepted = true;
-                }
-            }
-        }
+    Behavior on x {
+        NumberAnimation { }
+    }
+
+    BorderImage {
+        id: panel
+        source: themeResourcePath + "/media/DialogBack.png"
+        border { top: 5; left: 5; bottom: 5; right: 5; }
+        anchors.fill: parent
+    }
+
+    Text {
+        id: titleBarText
+        anchors.top: panel.top
+        anchors.right: panel.right
+        anchors.left: panel.left
+        anchors.topMargin: panel.border.top + 40
+        color: "white"
+        text: "Default dialog title"
+        font.bold: true
+        font.pointSize: 20
+        horizontalAlignment: Text.AlignRight
     }
 
     Item {
-        id: sourceArtWindow
-        anchors.left: sourcesWindow.right;
-        anchors.leftMargin: 65;
-        anchors.bottom: sourcesWindow.bottom;
+        id: content
+        anchors.top: titleBarText.bottom
+        anchors.bottom: panel.bottom
+        anchors.left: panel.left;
+        anchors.right: panel.right
+        anchors.topMargin: panel.border.top + 20
+        anchors.leftMargin : panel.border.left
+        anchors.bottomMargin : panel.border.bottom
+        anchors.rightMargin : panel.border.right
+    }
 
-        width: 342
-        height: 348
+    MouseArea {
+        parent: confluence
+        anchors.fill: parent
+    }
 
-        ImageCrossFader {
-            id: sourcesArt
+    Image {
+        id: closeButton
+        source: themeResourcePath + "/media/" + (closeButtonMouseArea.pressed ? "DialogCloseButton-focus.png" : "DialogCloseButton.png")
+        anchors.top: panel.top
+        anchors.left: panel.left
+        anchors.leftMargin: panel.border.left + 15 
+        anchors.topMargin: panel.border.top + 5
+        MouseArea {
+            id: closeButtonMouseArea
             anchors.fill: parent;
-            source: sourcesListView.currentItem.itemdata.decorationUrl
+
+            onClicked: root.close();
         }
-    }
-
-    Component.onCompleted: {
-        pictureEngine.visualElement = root;
-        pictureEngine.pluginProperties.pictureModel.setThemeResourcePath(themeResourcePath);
-    }
-
-    AddMediaSource {
-        id: addMediaSourceDialog
-        title: qsTr("Add Picture source")
-        engineModel: pictureEngine.pluginProperties.pictureModel
-        visible: false
     }
 }
 
