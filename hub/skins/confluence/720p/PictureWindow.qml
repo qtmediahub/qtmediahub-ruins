@@ -23,6 +23,10 @@ import "components"
 Window {
     id: root
 
+    PictureInformation {
+        id: pictureInformation
+    }
+
     Panel {
         id: sourcesWindow
         x: 60
@@ -39,6 +43,10 @@ Window {
             onClicked: {
                 if (currentItem.itemdata.display == qsTr("Add new source"))
                     addMediaSourceDialog.visible = true;
+                else {
+                    pictureInformation.currentItem = sourcesListView.currentItem // this is not a binding for lazy loading
+                    pictureInformation.opacity = 1
+                }
             }
             Keys.onPressed: {
                 if (event.key == Qt.Key_Delete) {
