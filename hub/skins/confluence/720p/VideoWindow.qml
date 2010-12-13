@@ -39,7 +39,7 @@ Window {
             clip: true
             focus: true;
             onClicked: {
-                if (currentItem.itemdata.display == qsTr("Add new source")) {
+                if (currentItem.itemdata.type == "AddNewSource") {
                     addMediaSourceDialog.open();
                 }
                 else
