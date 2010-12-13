@@ -26,16 +26,18 @@ Item {
     Image {
         id: primary
         anchors.fill: parent;
+        fillMode: Image.PreserveAspectCrop
     }
 
     Image {
         id: secondary
         anchors.fill: parent;
+        fillMode: Image.PreserveAspectCrop
     }
 
     Timer {
         id: staggeredTimer
-        interval: 1000; running: false; repeat: false
+        interval: 500; running: false; repeat: false
         onTriggered: SequentialAnimation {
             PropertyAction { target: secondary; property: "source"; value: primary.source }
             PropertyAction { target: primary; property: "source"; value: imageCrossFader.source }

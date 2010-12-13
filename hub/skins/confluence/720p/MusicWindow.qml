@@ -55,12 +55,15 @@ Window {
         anchors.leftMargin: 65;
         anchors.bottom: sourcesWindow.bottom;
 
-        width: 342
-        height: 348
+        width: sourcesArt.width
+        height: sourcesArt.height
 
         ImageCrossFader {
             id: sourcesArt
             anchors.fill: parent;
+
+            width: sourcesListView.currentItem.itemdata.decorationWidth
+            height: sourcesListView.currentItem.itemdata.decorationHeight
             source: sourcesListView.currentItem.itemdata.decorationUrl
         }
     }
