@@ -37,11 +37,11 @@ Window {
             anchors.fill: parent;
             treeModel: videoEngine.pluginProperties.videoModel
             clip: true
-            focus: true;
+            focus: true
+
             onClicked: {
-                if (currentItem.itemdata.type == "AddNewSource") {
+                if (currentItem.itemdata.type == "AddNewSource")
                     addMediaSourceDialog.open();
-                }
                 else
                     videoPlayer.play(currentItem.itemdata.filePath)
             }

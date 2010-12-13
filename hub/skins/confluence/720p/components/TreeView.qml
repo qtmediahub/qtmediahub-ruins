@@ -32,10 +32,23 @@ ListView {
     }
 
     model : visualDataModel
+    keyNavigationWraps: true
+
+    Keys.onPressed: {
+        if (event.key == Qt.Key_Enter || event.key == Qt.Key_Return) {
+            if (currentItem.itemdata.type == "AddNewSource")
+                addMediaSourceDialog.open();
+            else
+                currentItem.trigger()
+            event.accepted = true;
+        }
+    }
 
     VisualDataModel {
         id: visualDataModel
         delegate : Item {
+            id: delegateItem
+
             property variant itemdata : model
             width: listView.width
             height: sourceText.height + 8
@@ -53,24 +66,28 @@ ListView {
                 color: "white"
             }
 
+            function trigger() {
+                if (model.hasModelChildren) {
+                    console.log("tree" + visualDataModel.modelIndex(index) + " " + index)
+                    visualDataModel.rootIndex = visualDataModel.modelIndex(index)
+                    listView.rootIndexChanged();
+                } else if (model.type == "DotDot") { // FIXME: Make this MediaModel.DotDot when we put the model code in a library
+                    console.log("tree dotdot" + visualDataModel.parentModelIndex() + " " + index)
+                    visualDataModel.rootIndex = visualDataModel.parentModelIndex();
+                    listView.rootIndexChanged();
+                } else {
+                    listView.currentIndex = index;
+                    listView.clicked()
+                }
+            }
+
             MouseArea {
                 anchors.fill: parent;
                 hoverEnabled: true
                 onEntered:
                     listView.currentIndex = index
                 onClicked: {
-                    if (model.hasModelChildren) {
-                        console.log("tree" + visualDataModel.modelIndex(index) + " " + index)
-                        visualDataModel.rootIndex = visualDataModel.modelIndex(index)
-                        listView.rootIndexChanged();
-                    } else if (model.type == "DotDot") { // FIXME: Make this MediaModel.DotDot when we put the model code in a library
-                        console.log("tree dotdot" + visualDataModel.parentModelIndex() + " " + index)
-                        visualDataModel.rootIndex = visualDataModel.parentModelIndex();
-                        listView.rootIndexChanged();
-                    } else {
-                        listView.currentIndex = index;
-                        listView.clicked()
-                    }
+                    delegateItem.trigger()
                 }
             }
         }
