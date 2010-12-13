@@ -43,15 +43,20 @@ Window {
             onClicked: {
                 if (currentItem.itemdata.display == qsTr("Add new source"))
                     addMediaSourceDialog.visible = true;
-                else {
-                    pictureInformationSheet.currentItem = sourcesListView.currentItem // this is not a binding for lazy loading
-                    pictureInformationSheet.open();
-                }
             }
             Keys.onPressed: {
-                if (event.key == Qt.Key_Delete) {
-                    treeModel.removeSearchPath(currentIndex);
-                    event.accepted = true;
+                var itemType = sourcesListView.currentItem.itemdata.type
+                if (itemType == "SearchPath") {
+                    if (event.key == Qt.Key_Delete) {
+                        treeModel.removeSearchPath(currentIndex)
+                        event.accepted = true
+                    }
+                } else if (itemType == "File") {
+                    if (event.key == Qt.Key_I) {
+                        pictureInformationSheet.currentItem = sourcesListView.currentItem // this is not a binding for lazy loading
+                        pictureInformationSheet.open()
+                        event.accepted = true
+                    }
                 }
             }
         }
