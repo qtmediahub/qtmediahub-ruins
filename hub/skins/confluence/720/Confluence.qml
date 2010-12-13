@@ -19,6 +19,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 import QtQuick 1.0
 import "../components"
+//import "testing"
 
 FocusScope {
     id: confluence
@@ -263,4 +264,9 @@ FocusScope {
     }
 
     AboutWindow { id: aboutWindow; clip: false }
+
+    /*Test {
+        id: componentTest
+        Engine { name: qsTr("Components"); role: "components-test"; visualElement: componentTest; }
+    }*/
 }
