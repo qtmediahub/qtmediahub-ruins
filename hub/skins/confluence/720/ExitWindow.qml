@@ -18,66 +18,39 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 ****************************************************************************/
 
 import QtQuick 1.0
-import "components"
+import "../components"
 
 Window {
     id: root
 
+    width: panel.width; height: panel.height;
+
+    Keys.onUpPressed:
+        closeButton.focus = true
+
+    onVisibleChanged:
+        buttonList.resetFocus()
+
     Panel {
-        id: sourcesWindow
-        x: 60
-        y: 80
-        width: 700
-        height: 650
+        id: panel
 
-       TreeView {
-            id: sourcesListView
-            anchors.fill: parent;
-            treeModel: musicEngine.pluginProperties.musicModel
-            clip: true
-            focus: true;
-            onClicked: {
-                if (currentItem.itemdata.type == "AddNewSource")
-                    addMediaSourceDialog.visible = true;
-                       }
-            Keys.onPressed: {
-                if (event.key == Qt.Key_Delete) {
-                    treeModel.removeSearchPath(currentIndex);
-                    event.accepted = true;
-                }
-            }
+        ButtonList {
+            id: buttonList
+            PixmapButton { basePixmap: "ButtonMenuExitNF"; focusedPixmap: "ButtonMenuExitFO"; focus: true; onClicked: Qt.quit() }
+            PixmapButton { basePixmap: "ButtonMenuRestartNF"; focusedPixmap: "ButtonMenuRestartFO" }
+            PixmapButton { basePixmap: "ButtonMenuShutdownNF"; focusedPixmap: "ButtonMenuShutdownFO" }
+            PixmapButton { basePixmap: "ButtonMenuLogOffNF"; focusedPixmap: "ButtonMenuLogOffFO" }
+            PixmapButton { basePixmap: "ButtonMenuSleepNF"; focusedPixmap: "ButtonMenuSleepFO" }
         }
     }
-
-    Item {
-        id: sourceArtWindow
-        anchors.left: sourcesWindow.right;
-        anchors.leftMargin: 65;
-        anchors.bottom: sourcesWindow.bottom;
-
-        width: sourcesArt.width
-        height: sourcesArt.height
-
-        ImageCrossFader {
-            id: sourcesArt
-            anchors.fill: parent;
-
-            width: sourcesListView.currentItem.itemdata.previewWidth
-            height: sourcesListView.currentItem.itemdata.previewHeight
-            source: sourcesListView.currentItem.itemdata.previewUrl
-        }
-    }
-
-    Component.onCompleted: {
-        musicEngine.visualElement = root;
-        musicEngine.pluginProperties.musicModel.setThemeResourcePath(themeResourcePath);
-    }
-
-    AddMediaSource {
-        id: addMediaSourceDialog
-        title: qsTr("Add Music source")
-        engineModel: musicEngine.pluginProperties.musicModel
-        visible: false
+    PixmapButton {
+        id: closeButton
+        anchors { right: root.right; top: root.top }
+        basePixmap: "DialogCloseButton";
+        focusedPixmap: "DialogCloseButton-focus"
+        onClicked:
+            confluence.state = "showingRootBlade"
+        Keys.onDownPressed:
+            buttonList.giveFocus()
     }
 }
-

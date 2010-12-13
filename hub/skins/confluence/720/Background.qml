@@ -18,17 +18,30 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 ****************************************************************************/
 
 import QtQuick 1.0
-import "components"
+import "../components"
 
-Window {
-    states: State {
-        name: "back"
-        PropertyChanges { target: flipable; angle: 180 }
-        when: flipable.flipped
+Item {
+    property string role
+
+    ImageCrossFader {
+        property string backgroundPath: themeResourcePath + "/backgrounds/"
+
+        anchors.fill: parent;
+        source: bgmap[role] ? backgroundPath + bgmap[role] : ""
     }
-    Flipable {
-        id: flipable
-        anchors.fill: parent
 
+    // FIXME: Ideally get this through the plugin interface
+    QtObject {
+        id: bgmap
+        property string music: "music.jpg"
+        property string video: "videos.jpg"
+        property string scripts: "programs.jpg"
+        property string weather: "weather.jpg"
+        property string picture: "pictures.jpg"
+        property string programs: "programs.jpg"
+        property string system: "system.jpg"
+        property string web: "system.jpg"
+        property string maps: "system.jpg"
+        property string dashboard: "system.jpg"
     }
 }

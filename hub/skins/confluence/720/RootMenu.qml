@@ -18,7 +18,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 ****************************************************************************/
 
 import QtQuick 1.0
-import "components"
+import "../components"
 
 
 FocusScope {
@@ -34,7 +34,7 @@ FocusScope {
     signal openSubMenu
 
     Component.onCompleted: {
-        var clickComponent = Qt.createComponent("components/QMHAudio.qml");
+        var clickComponent = Qt.createComponent("../components/QMHAudio.qml");
         if(clickComponent.status == Component.Ready) {
             menuSoundEffect = clickComponent.createObject(parent)
             menuSoundEffect.source = themeResourcePath + "/sounds/click.wav"

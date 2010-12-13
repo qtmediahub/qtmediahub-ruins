@@ -19,7 +19,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 import QtQuick 1.0
 import "util.js" as Util
-import "components"
+import "../components"
 
 // We explicitly want to build the model in the QML since we want to the view
 // to entirely control the display of information. 

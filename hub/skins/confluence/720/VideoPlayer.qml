@@ -19,7 +19,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 import QtQuick 1.0
 import QtMultimediaKit 1.1
-import "components"
+import "../components"
 
 //This serves to isolate import failures if QtMultimedia is not present
 FocusScope {

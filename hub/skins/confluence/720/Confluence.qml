@@ -18,7 +18,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 ****************************************************************************/
 
 import QtQuick 1.0
-import "components"
+import "../components"
 
 FocusScope {
     id: confluence
@@ -138,7 +138,7 @@ FocusScope {
     //FIXME: function failing here simply skips rest of init, wish they had exceptions
     Component.onCompleted: {
         //Create items which may or may not be present
-        var customCursorLoader = Qt.createComponent("components/Cursor.qml")
+        var customCursorLoader = Qt.createComponent("../components/Cursor.qml")
         if(customCursorLoader.status == Component.Ready)
             customCursorLoader.createObject(confluence)
         else if(customCursorLoader.status == Component.Error)

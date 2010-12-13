@@ -18,54 +18,66 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 ****************************************************************************/
 
 import QtQuick 1.0
-import "components"
+import "../components"
 
-Blade {
-    id: mainBlade
-    clip: false
+Window {
+    id: root
 
-    property int visibleWidth: mainBlade.bladeVisibleWidth
-                               + subMenu.bladeVisibleWidth
-    //FIXME: fudge factor below empirically derived
-    //media blade pixmap packing alpha
-                               - 12
-    property alias subMenu : subMenu
-    property alias rootMenu: rootMenu
+    Panel {
+        id: sourcesWindow
+        x: 60
+        y: 80
+        width: 700
+        height: 650
 
-    bladeWidth: 400
-    bladePixmap: themeResourcePath + "/media/HomeBlade.png"
-
-    RootMenu {
-        id: rootMenu
-        buttonGridX: bladeX + 5 + bladeRightMargin; 
-        onOpenSubMenu: {
-            if (currentItem.hasSubBlade) {
-                subMenu.state = "open";
-                // not really nice should be also a property of the currentItem, but I don't know how to add a QList<QObject*> property
-                subMenuList.model = backend.engines[currentIndex].childItems;
+       TreeView {
+            id: sourcesListView
+            anchors.fill: parent;
+            treeModel: musicEngine.pluginProperties.musicModel
+            clip: true
+            focus: true;
+            onClicked: {
+                if (currentItem.itemdata.type == "AddNewSource")
+                    addMediaSourceDialog.visible = true;
+                       }
+            Keys.onPressed: {
+                if (event.key == Qt.Key_Delete) {
+                    treeModel.removeSearchPath(currentIndex);
+                    event.accepted = true;
+                }
             }
         }
     }
 
-    Blade {
-        id: subMenu
+    Item {
+        id: sourceArtWindow
+        anchors.left: sourcesWindow.right;
+        anchors.leftMargin: 65;
+        anchors.bottom: sourcesWindow.bottom;
 
-        closedBladePeek: 10
-        bladeWidth: 200
-        bladeRightMargin: 8
+        width: sourcesArt.width
+        height: sourcesArt.height
 
-        //Magical pixmap offset again
-        anchors { left: mainBlade.right; leftMargin: -10 }
+        ImageCrossFader {
+            id: sourcesArt
+            anchors.fill: parent;
 
-        bladePixmap: themeResourcePath + "/media/MediaBladeSub.png"
-
-        Keys.onLeftPressed: {
-            state = "closed"
-            rootMenu.forceActiveFocus()
-        }
-
-        SubBladeMenu {
-            id: subMenuList
+            width: sourcesListView.currentItem.itemdata.previewWidth
+            height: sourcesListView.currentItem.itemdata.previewHeight
+            source: sourcesListView.currentItem.itemdata.previewUrl
         }
     }
+
+    Component.onCompleted: {
+        musicEngine.visualElement = root;
+        musicEngine.pluginProperties.musicModel.setThemeResourcePath(themeResourcePath);
+    }
+
+    AddMediaSource {
+        id: addMediaSourceDialog
+        title: qsTr("Add Music source")
+        engineModel: musicEngine.pluginProperties.musicModel
+        visible: false
+    }
 }
+

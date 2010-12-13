@@ -18,69 +18,75 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 ****************************************************************************/
 
 import QtQuick 1.0
-import QtWebKit 1.0
-import "components"
+import "../components"
 
-Window {
+BorderImage {
     id: root
+    border.left: 100
 
-    maximizable: true
+    source: themeResourcePath + "/media/Rss_Back.png"
 
-    property alias url: webView.url
-    property string defaultUrl: "http://www.google.com"
+    width: 850; //height: list.height
 
-    function onVisibleTransitionComplete() {
-        webView.forceActiveFocus()
+    property string currentFeed: "rss.news.yahoo.com/rss/topstories"
+    property bool active: confluence.state == "showingRootBlade"
+
+    signal linkClicked (string link);
+
+    onLinkClicked: {
+        browserWindow ? browserWindow.loadPage(link) : backend.openUrlExternally(link)
     }
 
-    function loadPage(url) {
-        webView.url = url
-        webViewport.contentY = 0
+    XmlListModel {
+        id: feedModel
+        source: "http://" + root.currentFeed
+        query: "/rss/channel/item"
 
-        confluence.selectedElement = root
-        confluence.state = "showingSelectedElement"
+        XmlRole { name: "title"; query: "title/string()" }
+        XmlRole { name: "link"; query: "link/string()" }
+        XmlRole { name: "description"; query: "description/string()" }
     }
 
-    Panel {
-        id: panel
-        anchors.centerIn: parent;
-        decorateFrame: !root.maximized
-        Flickable {
-            id: webViewport
-            clip: true
-            boundsBehavior: Flickable.StopAtBounds
-            flickableDirection:  Flickable.VerticalFlick
-            width: root.maximized ? confluence.width : webView.width; 
-            height: root.maximized ? confluence.height : root.height - 60
-            contentWidth: webView.width; 
-            contentHeight: webView.height
-            WebView {
-                id: webView
-                //anchors.centerIn: parent
-                //FIXME: is this expensive at all?
-                //width: root.width
-                url: defaultUrl
-                opacity: progress == 1 ? 1 : 0.5
+    ListView {
+        id: list
+        clip: true
+        anchors.right : parent.right
+        anchors.verticalCenter: parent.verticalCenter
+        orientation: ListView.Horizontal
+        width: parent.width - 40; height: parent.height - 5
+        interactive: false
 
-                Behavior on opacity {
-                    NumberAnimation{}
-                }
-
+        model: feedModel
+        delegate: Item {
+            id: tickerItem
+            width: childrenRect.width; height: parent.height
+            ConfluenceText {
+                id: tickerTitle;
+                font.pointSize: 15
+                text: title.replace("\n", "")
+                color: delegateMouseArea.containsMouse ? "steelblue" : "white"
             }
 
-            Behavior on width {
-                NumberAnimation { }
+            ConfluenceText { font.pointSize: 15; anchors.left: tickerTitle.right; text: " - "; color: "steelblue" }
+
+            MouseArea {
+                id: delegateMouseArea
+                anchors.fill: parent
+                hoverEnabled: true
+                onClicked: linkClicked(link)
             }
         }
 
-        BusyIndicator {
-            anchors.centerIn: webViewport
-            on: webView.progress != 1
+        Timer {
+            interval: 50;
+            running: root.active && !list.flicking
+            repeat: true
+            onTriggered: list.contentX = list.contentX + 2
         }
-
     }
 
-    Engine { name: qsTr("Web"); role: "web"; visualElement: root; visualElementProperties: ["url", defaultUrl] }
-    Engine { name: qsTr("Store"); role: "ovi-store"; visualElement: root; visualElementProperties: ["url", "http://store.ovi.com/"] }
-    Engine { name: qsTr("Maps"); role: "maps"; visualElement: root; visualElementProperties: ["url", generalResourcePath + "/Google\ Maps/Nokia.html"] }
+    BorderImage {
+        source: themeResourcePath + "/media/Rss_Back_Overlay.png"
+        border.left: 100
+    }
 }

@@ -18,39 +18,54 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 ****************************************************************************/
 
 import QtQuick 1.0
-import "components"
+import "../components"
 
-Window {
-    id: root
+Blade {
+    id: mainBlade
+    clip: false
 
-    width: panel.width; height: panel.height;
+    property int visibleWidth: mainBlade.bladeVisibleWidth
+                               + subMenu.bladeVisibleWidth
+    //FIXME: fudge factor below empirically derived
+    //media blade pixmap packing alpha
+                               - 12
+    property alias subMenu : subMenu
+    property alias rootMenu: rootMenu
 
-    Keys.onUpPressed:
-        closeButton.focus = true
+    bladeWidth: 400
+    bladePixmap: themeResourcePath + "/media/HomeBlade.png"
 
-    onVisibleChanged:
-        buttonList.resetFocus()
-
-    Panel {
-        id: panel
-
-        ButtonList {
-            id: buttonList
-            PixmapButton { basePixmap: "ButtonMenuExitNF"; focusedPixmap: "ButtonMenuExitFO"; focus: true; onClicked: Qt.quit() }
-            PixmapButton { basePixmap: "ButtonMenuRestartNF"; focusedPixmap: "ButtonMenuRestartFO" }
-            PixmapButton { basePixmap: "ButtonMenuShutdownNF"; focusedPixmap: "ButtonMenuShutdownFO" }
-            PixmapButton { basePixmap: "ButtonMenuLogOffNF"; focusedPixmap: "ButtonMenuLogOffFO" }
-            PixmapButton { basePixmap: "ButtonMenuSleepNF"; focusedPixmap: "ButtonMenuSleepFO" }
+    RootMenu {
+        id: rootMenu
+        buttonGridX: bladeX + 5 + bladeRightMargin; 
+        onOpenSubMenu: {
+            if (currentItem.hasSubBlade) {
+                subMenu.state = "open";
+                // not really nice should be also a property of the currentItem, but I don't know how to add a QList<QObject*> property
+                subMenuList.model = backend.engines[currentIndex].childItems;
+            }
         }
     }
-    PixmapButton {
-        id: closeButton
-        anchors { right: root.right; top: root.top }
-        basePixmap: "DialogCloseButton";
-        focusedPixmap: "DialogCloseButton-focus"
-        onClicked:
-            confluence.state = "showingRootBlade"
-        Keys.onDownPressed:
-            buttonList.giveFocus()
+
+    Blade {
+        id: subMenu
+
+        closedBladePeek: 10
+        bladeWidth: 200
+        bladeRightMargin: 8
+
+        //Magical pixmap offset again
+        anchors { left: mainBlade.right; leftMargin: -10 }
+
+        bladePixmap: themeResourcePath + "/media/MediaBladeSub.png"
+
+        Keys.onLeftPressed: {
+            state = "closed"
+            rootMenu.forceActiveFocus()
+        }
+
+        SubBladeMenu {
+            id: subMenuList
+        }
     }
 }
