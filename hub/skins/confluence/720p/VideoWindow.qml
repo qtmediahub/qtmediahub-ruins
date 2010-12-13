@@ -124,9 +124,9 @@ Window {
             id: sourcesArt
             anchors.fill: parent;
 
-            width: sourcesListView.currentItem.itemdata.decorationWidth
-            height: sourcesListView.currentItem.itemdata.decorationHeight
-            source: sourcesListView.currentItem.itemdata.decorationUrl
+            width: sourcesListView.currentItem.itemdata.previewWidth
+            height: sourcesListView.currentItem.itemdata.previewHeight
+            source: sourcesListView.currentItem.itemdata.previewUrl
         }
 
         Behavior on opacity {

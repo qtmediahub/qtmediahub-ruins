@@ -93,7 +93,7 @@ PathView {
                 Image {
                     id: backgroundImage
                     anchors.fill: parent
-                    source: model.decorationUrl
+                    source: model.previewUrl
                     anchors.margins: 6
 
                     Image {
