@@ -25,23 +25,21 @@ Window {
 
     property string city: "munich"
 
-    function f2c(f) {
+    function fahrenheit2celsius(f) {
         return ((f-32)*5/9.0).toFixed(0);
     }
 
     Row {
         anchors.centerIn: parent
-        spacing: 100
+        spacing: 60
         Panel {
             id: dialog1
 
-            content:
             Column {
                 anchors.centerIn: parent
                 width: 480
                 height: 600
 
-                //anchors.fill: parent
                 anchors.margins: 30
                 spacing: 5
                 ConfluenceText {
@@ -63,8 +61,8 @@ Window {
 
                 Item {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    width: parent.width/1.3
-                    height: 200
+                    width: parent.width/1.5
+                    height: 220
                     Text {
                         id: weatherDegree
                         color: "white"
@@ -94,13 +92,9 @@ Window {
                 }
 
                 ConfluenceText {
+                    height: 100
                     anchors.horizontalCenter: parent.horizontalCenter
                     text: weatherMeasurements.count > 0 ? weatherMeasurements.get(0).condition : ""
-                }
-
-                Rectangle {
-                    height: 40; width: 5
-                    color: "transparent"
                 }
 
                 ConfluenceText {
@@ -117,14 +111,12 @@ Window {
         Panel {
             id: dialog0
 
-            content:
             Column {
                 anchors.centerIn: parent
                 width: 480
                 height: 600
-                //anchors.fill: parent
-                anchors.margins: 30
-                spacing: 5
+                anchors.margins: 40
+                spacing: 40
 
                 ConfluenceText {
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -141,34 +133,46 @@ Window {
                         height: 120
                         width: forecastListView.width
 
+                        Rectangle {
+                            id: sep
+                            width: forecastListView.width
+                            height: 4
+                            radius: 2
+                            color: "#40FFFFFF"
+                            anchors.topMargin: 5
+                            anchors.horizontalCenter: parent.horizontalCenter
+                        }
+
                         ConfluenceText {
                             id: dayofweek
                             anchors.horizontalCenter: parent.horizontalCenter
+                            anchors.top: sep.bottom; anchors.topMargin: 8
                             text: weatherForecast.count > 0 ? weatherForecast.get(index).day_of_week : ""
                         }
                         ConfluenceText {
                             id: hightemp
                             anchors.top: dayofweek.bottom
-                            text: weatherForecast.count > 0 ? "High: " + root.f2c(weatherForecast.get(index).high_f) + " °C" : ""
+                            text: weatherForecast.count > 0 ? "High: " + root.fahrenheit2celsius(weatherForecast.get(index).high_f) + " °C" : ""
                         }
 
                         ConfluenceText {
                             anchors.left: hightemp.right; anchors.leftMargin: 25
                             anchors.top: dayofweek.bottom
-                            text: weatherForecast.count > 0 ? "Low: " + root.f2c(weatherForecast.get(index).low_f)  + " °C" : ""
+                            text: weatherForecast.count > 0 ? "Low: " + root.fahrenheit2celsius(weatherForecast.get(index).low_f)  + " °C" : ""
+                        }
+                        ConfluenceText {
+                            id: condition
+                            anchors.top: hightemp.bottom
+                            text: weatherForecast.count > 0 ? weatherForecast.get(index).condition : ""
                         }
                         Image {
-                            width: 60
+                            width: parent.height/1.5
                             height: width
                             smooth: true
                             asynchronous: true
                             source: weatherMeasurements.count > 0 ? "http://www.google.com" + weatherForecast.get(index).icon : ""
                             anchors.right: parent.right
-                            anchors.top: hightemp.top
-                        }
-                        ConfluenceText {
-                            anchors.top: hightemp.bottom
-                            text: weatherForecast.count > 0 ? weatherForecast.get(index).condition : ""
+                            anchors.bottom: condition.bottom
                         }
                     }
                 }
