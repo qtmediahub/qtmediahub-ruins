@@ -23,87 +23,102 @@ import "../components"
 Window {
     id: root
 
-    property string city: "munich"
+    property string city: "Munich"
 
     function fahrenheit2celsius(f) {
         return ((f-32)*5/9.0).toFixed(0);
     }
 
     Row {
+        id: weather
         anchors.centerIn: parent
         spacing: 60
         Panel {
             id: dialog1
 
-            Column {
-                anchors.centerIn: parent
+            FocusScope {
                 width: 480
                 height: 600
+                id: currentWeather
 
-                anchors.margins: 30
-                spacing: 5
-                ConfluenceText {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    text: "CURRENT TEMP"
-                }
-
-                ConfluenceText {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    text: weatherModel.count > 0 ? weatherModel.get(0).city : ""
-                }
-
-                Text {
-                    color: "grey"
-                    font.pointSize: 12
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    text: weatherModel.count > 0 ? "Last Updated - " + weatherModel.get(0).current_date_time : ""
-                }
-
-                Item {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    width: parent.width/1.5
-                    height: 220
-                    Text {
-                        id: weatherDegree
-                        color: "white"
-                        font.pointSize: 64
-                        font.bold: true
-                        text: weatherMeasurements.count > 0 ? weatherMeasurements.get(0).temp_c : "0"
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.left: parent.left
+                Column {
+                    anchors.fill: parent
+                    anchors.margins: 30
+                    spacing: 5
+                    ConfluenceText {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        text: "CURRENT TEMP"
                     }
 
                     ConfluenceText {
-                        text: "°C"
-                        anchors.verticalCenter: weatherDegree.top
-                        anchors.left: weatherDegree.right; anchors.leftMargin: 10
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        width: parent.width
+                        horizontalAlignment: Text.AlignHCenter
+                        elide: Text.ElideRight
+                        text: weatherModel.count > 0 ? weatherModel.get(0).city : ""
                     }
 
-                    Image {
-                        id: weatherIcon
-                        width: 120
-                        height: width
-                        smooth: true
-                        asynchronous: true
-                        source: weatherMeasurements.count > 0 ? "http://www.google.com" + weatherMeasurements.get(0).icon : ""
-                        anchors.right: parent.right
-                        anchors.verticalCenter: parent.verticalCenter
+                    Text {
+                        color: "grey"
+                        font.pointSize: 12
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        text: weatherModel.count > 0 ? "Last Updated - " + weatherModel.get(0).current_date_time : ""
+                    }
+
+                    Item {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        width: parent.width/1.3
+                        height: 220
+                        Text {
+                            id: weatherDegree
+                            color: "white"
+                            font.pointSize: 64
+                            font.bold: true
+                            text: weatherMeasurements.count > 0 ? weatherMeasurements.get(0).temp_c : "0"
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.left: parent.left
+                        }
+
+                        ConfluenceText {
+                            text: "°C"
+                            anchors.verticalCenter: weatherDegree.top
+                            anchors.left: weatherDegree.right; anchors.leftMargin: 10
+                        }
+
+                        Image {
+                            id: weatherIcon
+                            width: 120
+                            height: width
+                            smooth: true
+                            asynchronous: true
+                            source: weatherMeasurements.count > 0 ? "http://www.google.com" + weatherMeasurements.get(0).icon : ""
+                            anchors.right: parent.right
+                            anchors.verticalCenter: parent.verticalCenter
+                        }
+                    }
+
+                    ConfluenceText {
+                        height: 100
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        text: weatherMeasurements.count > 0 ? weatherMeasurements.get(0).condition : ""
+                    }
+
+                    ConfluenceText {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        text: weatherMeasurements.count > 0 ? weatherMeasurements.get(0).humidity : ""
+                    }
+                    ConfluenceText {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        text: weatherMeasurements.count > 0 ? weatherMeasurements.get(0).wind_condition : ""
                     }
                 }
 
-                ConfluenceText {
-                    height: 100
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    text: weatherMeasurements.count > 0 ? weatherMeasurements.get(0).condition : ""
-                }
-
-                ConfluenceText {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    text: weatherMeasurements.count > 0 ? weatherMeasurements.get(0).humidity : ""
-                }
-                ConfluenceText {
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    text: weatherMeasurements.count > 0 ? weatherMeasurements.get(0).wind_condition : ""
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        cityListView.state = ""
+                        weather.opacity=0.5
+                    }
                 }
             }
         }
@@ -147,36 +162,73 @@ Window {
                             id: dayofweek
                             anchors.horizontalCenter: parent.horizontalCenter
                             anchors.top: sep.bottom; anchors.topMargin: 8
-                            text: weatherForecast.count > 0 ? weatherForecast.get(index).day_of_week : ""
+                            text: weatherForecast.count > 0 && weatherForecast.get(index) ? weatherForecast.get(index).day_of_week : ""
                         }
                         ConfluenceText {
                             id: hightemp
                             anchors.top: dayofweek.bottom
-                            text: weatherForecast.count > 0 ? "High: " + root.fahrenheit2celsius(weatherForecast.get(index).high_f) + " °C" : ""
+                            text: weatherForecast.count > 0 && weatherForecast.get(index) ? "High: " + root.fahrenheit2celsius(weatherForecast.get(index).high_f) + " °C" : ""
                         }
 
                         ConfluenceText {
                             anchors.left: hightemp.right; anchors.leftMargin: 25
                             anchors.top: dayofweek.bottom
-                            text: weatherForecast.count > 0 ? "Low: " + root.fahrenheit2celsius(weatherForecast.get(index).low_f)  + " °C" : ""
+                            text: weatherForecast.count > 0 && weatherForecast.get(index) ? "Low: " + root.fahrenheit2celsius(weatherForecast.get(index).low_f)  + " °C" : ""
                         }
                         ConfluenceText {
                             id: condition
                             anchors.top: hightemp.bottom
-                            text: weatherForecast.count > 0 ? weatherForecast.get(index).condition : ""
+                            text: weatherForecast.count > 0 && weatherForecast.get(index) ? weatherForecast.get(index).condition : ""
                         }
                         Image {
                             width: parent.height/1.5
                             height: width
                             smooth: true
                             asynchronous: true
-                            source: weatherMeasurements.count > 0 ? "http://www.google.com" + weatherForecast.get(index).icon : ""
+                            source: weatherForecast.count > 0 && weatherForecast.get(index)  ? "http://www.google.com" + weatherForecast.get(index).icon : ""
                             anchors.right: parent.right
                             anchors.bottom: condition.bottom
                         }
                     }
                 }
             }
+        }
+
+        Behavior on opacity { PropertyAnimation { duration: 500 } }
+    }
+
+    Panel {
+        id: cityListView
+        width: 400
+        height: 600
+        x: (root.width-width)/2
+        y: (root.height-height)/2
+        state: "hide"
+
+        ListView {
+            anchors.margins: 30
+            anchors.fill: parent
+            model: cityList
+            delegate: ConfluenceText {
+                text: name
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        city=name
+                        weather.opacity=1.0
+                        cityListView.state = "hide"
+                    }
+                }
+            }
+        }
+
+        states: State {
+             name: "hide"
+             PropertyChanges { target: cityListView; x:-cityListView.width; opacity: 0 }
+        }
+
+        transitions: Transition {
+            PropertyAnimation { properties: "x,opacity"; duration: 1000; easing.type: Easing.OutBack }
         }
     }
 
@@ -217,6 +269,36 @@ Window {
         XmlRole { name: "icon"; query: "icon/@data/string()" }
         XmlRole { name: "condition"; query: "condition/@data/string()" }
 
+    }
+
+    ListModel {
+        id: cityList
+        ListElement { name: "Atlanta" }
+        ListElement { name: "Bangkok" }
+        ListElement { name: "Beijing" }
+        ListElement { name: "Berlin" }
+        ListElement { name: "Bogota" }
+        ListElement { name: "Boston" }
+        ListElement { name: "Cape Town" }
+        ListElement { name: "Casablanca" }
+        ListElement { name: "Helsinki" }
+        ListElement { name: "Juneau" }
+        ListElement { name: "Landshut" }
+        ListElement { name: "Lhasa" }
+        ListElement { name: "Lima" }
+        ListElement { name: "London" }
+        ListElement { name: "Munich" }
+        ListElement { name: "Moscow" }
+        ListElement { name: "New York" }
+        ListElement { name: "Nuuk" }
+        ListElement { name: "Paris" }
+        ListElement { name: "Rome" }
+        ListElement { name: "San Francisco" }
+        ListElement { name: "Sydney" }
+        ListElement { name: "Timbuktu" }
+        ListElement { name: "Tokyo" }
+        ListElement { name: "Ulm" }
+        ListElement { name: "Untermarchtal" }
     }
 
     Engine { name: qsTr("Weather"); role: "weather"; visualElement: root }
