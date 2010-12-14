@@ -17,61 +17,76 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 ****************************************************************************/
 
-#ifndef BACKEND_H
-#define BACKEND_H
+import QtQuick 1.0
+import confluence.components 1.0
 
-#include <QObject>
-#include <QList>
+FocusScope {
+    id: root
 
-class QUrl;
-class BackendPrivate;
-class QMHPlugin;
-class QDeclarativeEngine;
+    property variant foo : bar()
 
-class Backend : public QObject
-{
-    Q_OBJECT
-    Q_PROPERTY(QString skinPath READ skinPath NOTIFY skinPathChanged)
-    Q_PROPERTY(QString pluginPath READ pluginPath NOTIFY pluginPathChanged)
-    Q_PROPERTY(QString resourcePath READ resourcePath NOTIFY resourcePathChanged)
-    Q_PROPERTY(bool transforms READ transforms NOTIFY backendChanged)
-    Q_PROPERTY(QList<QObject*> engines READ engines NOTIFY enginesChanged)
-public:
-    static Backend *instance();
-    static void destroy();
+    function bar() {
+        console.log(themeResourcePath)
+    }
 
-    ~Backend();
-    void initialize(QDeclarativeEngine *engine = 0);
+    ListModel {
+        id: fruitModel
 
-    QString language() const;
+        ListElement {
+            name: "Apple"
+        }
+        ListElement {
+            name: "Coconut"
+        }
+        ListElement {
+            name: "Banana"
+        }
+    }
 
-    QList<QObject*> engines() const;
-    QStringList skins() const;
+    Panel {
+        id: panel
+        width: 700
+        height: 550
+        anchors.centerIn: parent
+        visible: true
+        opacity: visible ? 1 : 0
 
-    QString skinPath() const;
-    QString pluginPath() const;
-    QString resourcePath() const;
-    
-    bool transforms() const;
+        ListView {
+            id: listView
+            anchors.fill: parent;
+            clip: true
+            focus: true
+            model: fruitModel
 
-    Q_INVOKABLE void advertizeEngine(QMHPlugin *engine);
-    Q_INVOKABLE void openUrlExternally(const QUrl &url) const;
-    Q_INVOKABLE void log(const QString &logMsg);
-    Q_INVOKABLE void clearComponentCache();
+            delegate : Item {
+                id: delegateItem
+                width: listView.width
+                height: sourceText.height + 8
+                Image {
+                    id: backgroundImage
+                    anchors.fill: parent;
+                    source: "file://" + themeResourcePath + "/media/" + (ListView.isCurrentItem ? "MenuItemFO.png" : "MenuItemNF.png");
+                }
+                Text {
+                    id: sourceText
+                    anchors.verticalCenter: parent.verticalCenter
+                    z: 1
+                    text: name
+                    font.pointSize: 16
+                    color: "white"
+                }
 
-signals:
-    void skinPathChanged();
-    void pluginPathChanged();
-    void resourcePathChanged();
-    void backendChanged();
-    void enginesChanged();
+                MouseArea {
+                    anchors.fill: parent;
+                    hoverEnabled: true
+                    onEntered:
+                        listView.currentIndex = index
+                }
+            }
+        }
+    }
 
-private:
-    QObject* engine(const QString &role);
-
-    explicit Backend(QObject *parent = 0);
-    static Backend *pSelf;
-    BackendPrivate *d;
-};
-
-#endif // BACKEND_H
+    Behavior on opacity {
+        NumberAnimation { easing.type: confluenceEasingCurve; duration: confluenceAnimationDuration }
+    }
+}

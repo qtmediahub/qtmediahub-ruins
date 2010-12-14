@@ -17,61 +17,29 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 ****************************************************************************/
 
-#ifndef BACKEND_H
-#define BACKEND_H
+import QtQuick 1.0
+import "../components"
 
-#include <QObject>
-#include <QList>
+Window {
+    id: root
 
-class QUrl;
-class BackendPrivate;
-class QMHPlugin;
-class QDeclarativeEngine;
+    maximizable: true
+    Loader {
+        id: loader;
+        anchors.centerIn: parent
+    }
 
-class Backend : public QObject
-{
-    Q_OBJECT
-    Q_PROPERTY(QString skinPath READ skinPath NOTIFY skinPathChanged)
-    Q_PROPERTY(QString pluginPath READ pluginPath NOTIFY pluginPathChanged)
-    Q_PROPERTY(QString resourcePath READ resourcePath NOTIFY resourcePathChanged)
-    Q_PROPERTY(bool transforms READ transforms NOTIFY backendChanged)
-    Q_PROPERTY(QList<QObject*> engines READ engines NOTIFY enginesChanged)
-public:
-    static Backend *instance();
-    static void destroy();
+    Button {
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.bottom: parent.bottom
+        text: qsTr("Reload")
 
-    ~Backend();
-    void initialize(QDeclarativeEngine *engine = 0);
+        onClicked: {
+            backend.clearComponentCache()
+            loader.source = ""
+            loader.source = "http://nebulon.de/RemoteApp.qml"
+        }
+    }
 
-    QString language() const;
-
-    QList<QObject*> engines() const;
-    QStringList skins() const;
-
-    QString skinPath() const;
-    QString pluginPath() const;
-    QString resourcePath() const;
-    
-    bool transforms() const;
-
-    Q_INVOKABLE void advertizeEngine(QMHPlugin *engine);
-    Q_INVOKABLE void openUrlExternally(const QUrl &url) const;
-    Q_INVOKABLE void log(const QString &logMsg);
-    Q_INVOKABLE void clearComponentCache();
-
-signals:
-    void skinPathChanged();
-    void pluginPathChanged();
-    void resourcePathChanged();
-    void backendChanged();
-    void enginesChanged();
-
-private:
-    QObject* engine(const QString &role);
-
-    explicit Backend(QObject *parent = 0);
-    static Backend *pSelf;
-    BackendPrivate *d;
-};
-
-#endif // BACKEND_H
+    Engine { name: qsTr("RemoteApp"); role: "remoteApp"; visualElement: root }
+}

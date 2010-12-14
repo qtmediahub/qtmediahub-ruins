@@ -224,6 +224,13 @@ FocusScope {
             qtcube = dummyItem
         }
 
+        var remoteAppLoader = Qt.createComponent("RemoteAppWindow.qml");
+        if(remoteAppLoader.status == Component.Ready) {
+            remoteAppLoader.createObject(confluence)
+        } else if (remoteAppLoader.status == Component.Error) {
+            backend.log(remoteAppLoader.errorString())
+        }
+
         confluence.state = "showingRootBlade"
     }
 
