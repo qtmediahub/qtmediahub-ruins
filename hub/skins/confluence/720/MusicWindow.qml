@@ -38,8 +38,10 @@ Window {
             focus: true;
             onClicked: {
                 if (currentItem.itemdata.type == "AddNewSource")
-                    addMediaSourceDialog.visible = true;
-                       }
+                    addMediaSourceDialog.open();
+                else
+                    videoPlayer.play(currentItem.itemdata.filePath)
+            }
             Keys.onPressed: {
                 if (event.key == Qt.Key_Delete) {
                     treeModel.removeSearchPath(currentIndex);
@@ -77,7 +79,7 @@ Window {
         id: addMediaSourceDialog
         title: qsTr("Add Music source")
         engineModel: musicEngine.pluginProperties.musicModel
-        visible: false
+        opacity: 0
     }
 }
 

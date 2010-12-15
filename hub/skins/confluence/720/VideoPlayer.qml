@@ -92,6 +92,12 @@ FocusScope {
         state: (videoItem.paused || videoItem.playbackRate != 1) && root.state == "maximized" ? "visible" : ""
     }
 
+    AudioPlayerInfoSmallOSD {
+        id: audioInfoSmallOSD
+        video: videoItem
+        state: !videoItem.hasVideo && videoItem.playing ? "visible" : ""
+    }
+
     Image {
         id: backToHomeButton
         anchors.bottom: parent.bottom
