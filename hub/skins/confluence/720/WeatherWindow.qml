@@ -226,6 +226,7 @@ Window {
             anchors.fill: parent
             keyNavigationWraps: true
             focus: true
+            clip: true
             model: cityList
             delegate: Item {
                 id: delegate
