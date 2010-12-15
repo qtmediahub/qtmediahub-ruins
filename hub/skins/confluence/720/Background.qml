@@ -27,7 +27,7 @@ Item {
         property string backgroundPath: themeResourcePath + "/backgrounds/"
 
         anchors.fill: parent;
-        source: bgmap[role] ? backgroundPath + bgmap[role] : ""
+        source: themeResourcePath ? (bgmap[role] ? backgroundPath + bgmap[role] : backgroundPath + "media-overlay.png") : ""
     }
 
     // FIXME: Ideally get this through the plugin interface
@@ -40,8 +40,7 @@ Item {
         property string picture: "pictures.jpg"
         property string programs: "programs.jpg"
         property string system: "system.jpg"
-        property string web: "system.jpg"
-        property string maps: "system.jpg"
-        property string dashboard: "system.jpg"
+        property string dashboard: "programs.jpg"
+        property string remoteApp: "settings.jpg"
     }
 }
