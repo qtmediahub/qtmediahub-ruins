@@ -50,6 +50,7 @@ Dialog {
                 height: parent.height - browseLabel.height - sourceNameLabel.height - sourceNameEntry.height - buttonBox.height
                         - parent.spacing * 4 // ugh
                 treeModel : DirModel { }
+                rootIndex: treeModel.modelIndexForHomePath()
                 focus: true
                 onRootIndexChanged: sourceNameInput.text = treeModel.baseName(rootIndex)
 
