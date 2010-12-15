@@ -29,22 +29,40 @@ Window {
         return ((f-32)*5/9.0).toFixed(0);
     }
 
+    function showCast(name) {
+        city=name
+        weather.opacity=1.0
+        cityListView.state = "hide"
+        root.forceActiveFocus()
+    }
+
+    function showList() {
+        cityListView.state = ""
+        weather.opacity=0.5
+        listView.forceActiveFocus()
+    }
+
+    Keys.onSpacePressed: {
+        showList()
+        event.accepted = true
+    }
+
     Row {
         id: weather
         anchors.centerIn: parent
         spacing: 60
-        Panel {
-            id: dialog1
 
-            FocusScope {
+        Panel {
+            Item {
+                id: currentWeather
                 width: 480
                 height: 600
-                id: currentWeather
 
                 Column {
                     anchors.fill: parent
                     anchors.margins: 30
                     spacing: 5
+
                     ConfluenceText {
                         anchors.horizontalCenter: parent.horizontalCenter
                         text: "CURRENT TEMP"
@@ -115,17 +133,13 @@ Window {
 
                 MouseArea {
                     anchors.fill: parent
-                    onClicked: {
-                        cityListView.state = ""
-                        weather.opacity=0.5
-                    }
+                    onClicked:
+                        showList()
                 }
             }
         }
 
         Panel {
-            id: dialog0
-
             Column {
                 anchors.centerIn: parent
                 width: 480
@@ -199,25 +213,46 @@ Window {
 
     Panel {
         id: cityListView
-        width: 400
+        width: 360
         height: 600
         x: (root.width-width)/2
         y: (root.height-height)/2
+        z: 1
         state: "hide"
 
         ListView {
+            id: listView
             anchors.margins: 30
             anchors.fill: parent
+            keyNavigationWraps: true
+            focus: true
             model: cityList
-            delegate: ConfluenceText {
-                text: name
+            delegate: Item {
+                id: delegate
+                width: listView.width
+                height: thistext.height + 8
+                Image {
+                    anchors.fill: parent;
+                    source: themeResourcePath + "/media/" + (ListView.isCurrentItem ? "MenuItemFO.png" : "MenuItemNF.png");
+                }
+                Text {
+                    id: thistext
+                    anchors.verticalCenter: parent.verticalCenter
+                    color: "white"
+                    font.pointSize: 16
+                    text: name
+                }
                 MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        city=name
-                        weather.opacity=1.0
-                        cityListView.state = "hide"
-                    }
+                    anchors.fill: parent;
+                    hoverEnabled: true
+                    onEntered:
+                        ListView.view.currentIndex = index
+                    onClicked:
+                        showCast(name)
+                }
+                Keys.onReturnPressed: {
+                    showCast(name)
+                    event.accepted = true
                 }
             }
         }
@@ -231,7 +266,6 @@ Window {
             PropertyAnimation { properties: "x,opacity"; duration: 1000; easing.type: Easing.OutBack }
         }
     }
-
 
     XmlListModel {
         id: weatherModel
