@@ -20,7 +20,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 import QtQuick 1.0
 import Dashboard 1.0
 
-import "../components"
+import confluence.components 1.0
 
 //FIXME: polish this puppy
 
@@ -55,10 +55,11 @@ Window {
 
         Component.onCompleted: {
             var list  = db.discoverWidgets()
+            var dbComponent = Qt.createComponent("../components/DashboardItem.qml")
+            if (dbComponent.status == Component.Error)
+                console.log(dbComponent.errorString())
+
             for(var i = 0; i < list.length; ++i) {
-                var dbComponent = Qt.createComponent("../components/DashboardItem.qml")
-                if (dbComponent.status == Component.Error)
-                    console.log(dbComponent.errorString())
                 var item = dbComponent.createObject(db)
 
                 var widget = Qt.createComponent(list[i])
