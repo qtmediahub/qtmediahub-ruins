@@ -72,7 +72,7 @@ Dialog {
                 TextInput {
                     id: sourceNameInput
                     anchors.centerIn: parent
-                    text: " "
+                    text: qsTr("Home")
                     color: "white"
 
                     Keys.onTabPressed: buttonBox.forceActiveFocus()
