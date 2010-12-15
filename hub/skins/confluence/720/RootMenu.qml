@@ -48,11 +48,6 @@ FocusScope {
     Keys.onLeftPressed:
         buttonGrid.focusUpperItem()
 
-    Item {
-        id: bannerPlaceHolder
-        height: banner.height
-    }
-
     ListView {
         id: rootMenuList
 
@@ -61,9 +56,10 @@ FocusScope {
         //Oversized fonts being downscaled
         spacing: 30
         focus: true
-        keyNavigationWraps: true
 
         anchors.fill: parent
+        preferredHighlightBegin: banner.height; preferredHighlightEnd: height - buttonGrid.height
+        highlightRangeMode: ListView.StrictlyEnforceRange
 
         model: backend.engines //menuList
         delegate:

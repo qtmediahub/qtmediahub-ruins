@@ -33,7 +33,7 @@ Item {
     anchors.right: parent.right
     transformOrigin: Item.Right
 
-    transform: Rotation { origin.x: childrenRect.width/2.0; origin.y: childrenRect.height/2.0; axis { x: 0; y: 0; z: 1 } angle: menuItem.angle }
+    transform: Rotation { origin.x: childrenRect.width/2.0; origin.y: childrenRect.height/2.0; axis { x: 1; y: 0; z: 0 } angle: menuItem.angle }
 
     opacity: 0.5
     scale: 0.5
