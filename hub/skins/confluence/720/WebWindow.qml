@@ -20,6 +20,8 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 import QtQuick 1.0
 import QtWebKit 1.0
 import confluence.components 1.0
+import Qt.labs.Mx 1.0 as MxComponents
+
 
 Window {
     id: root
@@ -39,6 +41,17 @@ Window {
 
         confluence.selectedElement = root
         confluence.state = "showingSelectedElement"
+    }
+
+    Keys.onPressed: {
+        if ((event.key == Qt.Key_Down) && (event.modifiers & Qt.MetaModifier)) {
+            urlBar.forceActiveFocus()
+        } else if(event.key == Qt.Key_Escape) {
+            if(urlBar.activeFocus) {
+                webView.forceActiveFocus()
+                event.accepted = true
+            }
+        }
     }
 
     Panel {
@@ -78,6 +91,50 @@ Window {
             on: webView.progress != 1
         }
 
+    }
+
+    Panel {
+        id: urlBar
+        z:10
+        anchors { horizontalCenter: parent.horizontalCenter }
+        y: -height
+
+        Text {
+            id: inputLabel
+            text: "url:"
+            color: "white"
+        }
+        MxComponents.Entry {
+            id: urlEntry
+            property string defaultText: "http://"
+            width: 440
+            anchors { left: inputLabel.right; verticalCenter: inputLabel.verticalCenter }
+            //hint: "Search..."
+            leftIconSource: generalResourcePath + "/mx-images/edit-find.png"
+            //onLeftIconClicked: text="Hello world";
+            rightIconSource: generalResourcePath + "/mx-images/edit-clear.png"
+            onRightIconClicked: text=defaultText
+            onEnterPressed: {
+                webView.url = text
+                webView.forceActiveFocus()
+            }
+        }
+        Behavior on y {
+            NumberAnimation {}
+        }
+
+        states: State {
+            name: "visible"
+            when: urlBar.activeFocus
+            PropertyChanges {
+                target: urlBar
+                y: 0
+            }
+            PropertyChanges {
+                target: urlEntry
+                text: webView.url ? webView.url : defaultText
+            }
+        }
     }
 
     Engine { name: qsTr("Web"); role: "web"; visualElement: root; visualElementProperties: ["url", defaultUrl] }
