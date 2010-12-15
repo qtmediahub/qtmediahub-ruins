@@ -77,14 +77,23 @@ FocusScope {
         anchors.top: backgroundImage.top
         anchors.margins: 20
 
-        Text {
-            property string artist : video.metaData.albumArtist ? video.metaData.albumArtist : qsTr("Unknown Artist")
-            property string album : video.metaData.albumTitle ? video.metaData.albumTitle : qsTr("Unknown Album")
-            text: artist + "  -  " + album
-            color: "white"
-            font.bold: false
-            font.pointSize: 16
-            anchors.left: parent.left
+        Item {
+            width: parent.width
+            height: childrenRect.height
+
+            Text {
+                property string artist : video.metaData.albumArtist ? video.metaData.albumArtist : qsTr("Unknown Artist")
+                property string album : video.metaData.albumTitle ? video.metaData.albumTitle : qsTr("Unknown Album")
+                text: artist + "  -  " + album
+                color: "white"
+                font.bold: false
+                font.pointSize: 16
+                anchors.left: parent.left
+            }
+
+            Rating {
+                anchors.right: parent.right
+            }
         }
 
         Item {
