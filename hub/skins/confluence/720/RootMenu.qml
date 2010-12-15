@@ -62,11 +62,8 @@ FocusScope {
         spacing: 30
         focus: true
         keyNavigationWraps: true
-        //highlightFollowsCurrentItem: true
 
-        anchors { right: rootMenu.right; top: bannerPlaceHolder.bottom; bottom: buttonGrid.top }
-
-        width: bladeWidth
+        anchors.fill: parent
 
         model: backend.engines //menuList
         delegate:

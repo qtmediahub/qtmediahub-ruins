@@ -33,6 +33,7 @@ ListView {
 
     model : visualDataModel
     keyNavigationWraps: true
+    clip: true
 
     Keys.onPressed: {
         if (event.key == Qt.Key_Enter || event.key == Qt.Key_Return) {
