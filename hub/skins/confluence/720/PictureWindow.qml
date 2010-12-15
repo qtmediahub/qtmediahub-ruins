@@ -42,7 +42,7 @@ Window {
             focus: true;
             onClicked: {
                 if (currentItem.itemdata.type == "AddNewSource")
-                    addMediaSourceDialog.visible = true;
+                    addMediaSourceDialog.open();
             }
             Keys.onPressed: {
                 var itemType = sourcesListView.currentItem.itemdata.type
@@ -90,7 +90,9 @@ Window {
         id: addMediaSourceDialog
         title: qsTr("Add Picture source")
         engineModel: pictureEngine.pluginProperties.pictureModel
-        visible: false
+        opacity: 0
+
+        onClosed: sourcesListView.forceActiveFocus()
     }
 }
 
