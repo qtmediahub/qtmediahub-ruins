@@ -80,6 +80,8 @@ Window {
         title: qsTr("Add Music source")
         engineModel: musicEngine.pluginProperties.musicModel
         opacity: 0
+
+        onClosed: sourcesListView.forceActiveFocus()
     }
 }
 

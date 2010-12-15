@@ -30,9 +30,11 @@ Item {
     default property alias content : content.children
     signal accept
     signal reject
+    signal closed
 
     function close() {
         opacity = 0;
+        root.closed()
     }
 
     function open() {

@@ -23,6 +23,8 @@ import "../components"
 Window {
     id: root
 
+    property variant currentActiveView : sourcesWindow.visible ? sourcesWindow : sourcesposterWindow
+
     Panel {
         id: sourcesWindow
         x: 60
@@ -49,6 +51,11 @@ Window {
                 if (event.key == Qt.Key_Delete) {
                     treeModel.removeSearchPath(currentIndex);
                     event.accepted = true;
+                } else if (event.key == Qt.Key_Return || event.key == Qt.Key_Enter) {
+                    if (currentItem.itemdata.type == "AddNewSource") {
+                        addMediaSourceDialog.open();
+                        event.accepted = true;
+                    }
                 }
             }
         }
@@ -157,6 +164,8 @@ Window {
         title: qsTr("Add Video source")
         engineModel: videoEngine.pluginProperties.videoModel
         opacity: 0
+
+        onClosed: currentActiveView.forceActiveFocus()
     }
 }
 

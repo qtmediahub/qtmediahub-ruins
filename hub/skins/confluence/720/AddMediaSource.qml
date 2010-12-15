@@ -50,7 +50,10 @@ Dialog {
                 height: parent.height - browseLabel.height - sourceNameLabel.height - sourceNameEntry.height - buttonBox.height
                         - parent.spacing * 4 // ugh
                 treeModel : DirModel { }
+                focus: true
                 onRootIndexChanged: sourceNameInput.text = treeModel.baseName(rootIndex)
+
+                Keys.onTabPressed: sourceNameInput.forceActiveFocus()
             }
             Text {
                 id: sourceNameLabel
@@ -70,6 +73,8 @@ Dialog {
                     anchors.centerIn: parent
                     text: " "
                     color: "white"
+
+                    Keys.onTabPressed: buttonBox.forceActiveFocus()
                 }
 
                 MouseArea {
