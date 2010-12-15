@@ -45,9 +45,9 @@ Window {
 
     Keys.onPressed: {
         if ((event.key == Qt.Key_Down) && (event.modifiers & Qt.MetaModifier)) {
-            urlBar.forceActiveFocus()
+            webviewPopup.forceActiveFocus()
         } else if(event.key == Qt.Key_Escape) {
-            if(urlBar.activeFocus) {
+            if(webviewPopup.activeFocus) {
                 webView.forceActiveFocus()
                 event.accepted = true
             }
@@ -93,46 +93,92 @@ Window {
 
     }
 
-    Panel {
-        id: urlBar
+    FocusScope {
+        id: webviewPopup
         z:10
         anchors { horizontalCenter: parent.horizontalCenter }
         y: -height
-
-        Text {
-            id: inputLabel
-            text: "url:"
-            color: "white"
-        }
-        MxComponents.Entry {
-            id: urlEntry
-            property string defaultText: "http://"
-            width: 440
-            anchors { left: inputLabel.right; verticalCenter: inputLabel.verticalCenter }
-            //hint: "Search..."
-            leftIconSource: generalResourcePath + "/mx-images/edit-find.png"
-            //onLeftIconClicked: text="Hello world";
-            rightIconSource: generalResourcePath + "/mx-images/edit-clear.png"
-            onRightIconClicked: text=defaultText
-            onEnterPressed: {
-                webView.url = text
-                webView.forceActiveFocus()
-            }
-        }
-        Behavior on y {
-            NumberAnimation {}
-        }
+        width: childrenRect.width; height: childrenRect.height
 
         states: State {
             name: "visible"
-            when: urlBar.activeFocus
+            when: urlBar.activeFocus || googleBar.activeFocus                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               //urlBar.activeFocus || googleBar.activeFocus
             PropertyChanges {
-                target: urlBar
+                target: webviewPopup
                 y: 0
             }
             PropertyChanges {
                 target: urlEntry
-                text: webView.url ? webView.url : defaultText
+                text: webView.url ? webView.url : urlEntry.defaultText
+            }
+        }
+
+        Behavior on y {
+            NumberAnimation {}
+        }
+
+        ConfluenceFlipable {
+            id: flippable
+            width: urlBar.width; height: urlBar.height
+
+
+            //flipped: googleBar.activeFocus
+
+            front:
+                Panel {
+                id: urlBar
+
+                ConfluenceText {
+                    id: inputLabel
+                    text: "url:"
+                }
+                MxComponents.Entry {
+                    id: urlEntry
+                    property string defaultText: "http://"
+                    text: defaultText
+                    width: 440
+                    anchors { left: inputLabel.right; verticalCenter: inputLabel.verticalCenter }
+                    hint: "url"
+                    leftIconSource: generalResourcePath + "/mx-images/edit-find.png"
+                    onLeftIconClicked: {
+                        flippable.flipped = !flippable.flipped
+                        googleBar.forceActiveFocus()
+                    }
+                    rightIconSource: generalResourcePath + "/mx-images/edit-clear.png"
+                    onRightIconClicked: text=defaultText
+                    onEnterPressed: {
+                        webView.url = text
+                        webView.forceActiveFocus()
+                    }
+                    Connections {
+                        target: webView
+                        onLoadFinished:
+                            urlEntry.text = webView.url
+                    }
+                }
+            }
+            back: Panel {
+                id: googleBar
+                anchors.fill: parent
+                ConfluenceText {
+                    id: googleLabel
+                    text: "google:"
+                }
+                MxComponents.Entry {
+                    anchors { left: googleLabel.right; verticalCenter: googleLabel.verticalCenter; right: parent.right }
+                    hint: "Search..."
+                    leftIconSource: generalResourcePath + "/mx-images/scroll-button-right.png"
+                    onLeftIconClicked: {
+                        flippable.flipped = !flippable.flipped
+                        urlBar.forceActiveFocus()
+                    }
+                    rightIconSource: generalResourcePath + "/mx-images/edit-clear.png"
+                    onRightIconClicked: text=""
+                    onEnterPressed: {
+                        webView.url = "http://www.google.com/search?q=" + text
+                        webView.forceActiveFocus()
+                    }
+                }
             }
         }
     }

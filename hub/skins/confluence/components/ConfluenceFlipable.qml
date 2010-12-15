@@ -37,8 +37,8 @@ Flipable {
 
     states: State {
         name: "back"
-        PropertyChanges { target: rotation; angle: 180; }
         when: root.flipped == true
+        PropertyChanges { target: rotation; angle: 180; }
     }
 }
 
