@@ -89,13 +89,19 @@ FocusScope {
     VideoPlayerInfoOSD {
         id: infoOSD
         video: videoItem
-        state: (videoItem.paused || videoItem.playbackRate != 1) && root.state == "maximized" ? "visible" : ""
+        state: videoItem.hasVideo && (videoItem.paused || videoItem.playbackRate != 1) && root.state == "maximized" ? "visible" : ""
     }
 
     AudioPlayerInfoSmallOSD {
         id: audioInfoSmallOSD
         video: videoItem
-        state: !videoItem.hasVideo && videoItem.playing ? "visible" : ""
+        state: !videoItem.hasVideo && videoItem.playing && root.state != "maximized" ? "visible" : ""
+    }
+
+    AudioPlayerInfoBigOSD {
+        id: audioInfoBigOSD
+        video: videoItem
+        state: !videoItem.hasVideo && videoItem.playing && root.state == "maximized" ? "visible" : ""
     }
 
     Image {

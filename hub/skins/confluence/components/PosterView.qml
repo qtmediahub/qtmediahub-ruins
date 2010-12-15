@@ -112,11 +112,9 @@ PathView {
 
                 onClicked: {
                     if (model.hasModelChildren) {
-                        console.log("poster" + visualDataModel.modelIndex(index) + " " + index)
                         visualDataModel.rootIndex = visualDataModel.modelIndex(index)
                         root.rootIndexChanged();
                     } else if (model.type == "DotDot") { // FIXME: Make this MediaModel.DotDot when we put the model code in a library
-                        console.log("poster dotdot" + visualDataModel.parentModelIndex() + " " + index)
                         visualDataModel.rootIndex = visualDataModel.parentModelIndex();
                         root.rootIndexChanged();
                     } else {

@@ -69,11 +69,9 @@ ListView {
 
             function trigger() {
                 if (model.hasModelChildren) {
-                    console.log("tree" + visualDataModel.modelIndex(index) + " " + index)
                     visualDataModel.rootIndex = visualDataModel.modelIndex(index)
                     listView.rootIndexChanged();
                 } else if (model.type == "DotDot") { // FIXME: Make this MediaModel.DotDot when we put the model code in a library
-                    console.log("tree dotdot" + visualDataModel.parentModelIndex() + " " + index)
                     visualDataModel.rootIndex = visualDataModel.parentModelIndex();
                     listView.rootIndexChanged();
                 } else {
