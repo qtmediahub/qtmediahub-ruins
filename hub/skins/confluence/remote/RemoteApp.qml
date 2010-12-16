@@ -30,16 +30,28 @@ FocusScope {
     }
 
     ListModel {
-        id: fruitModel
+        id: menuModel
 
         ListElement {
-            name: "Apple"
+            name: "Music"
         }
         ListElement {
-            name: "Coconut"
+            name: "Video"
         }
         ListElement {
-            name: "Banana"
+            name: "Pictures"
+        }
+        ListElement {
+            name: "System"
+        }
+        ListElement {
+            name: "Maps"
+        }
+        ListElement {
+            name: "Web"
+        }
+        ListElement {
+            name: "Media Player"
         }
     }
 
@@ -56,27 +68,43 @@ FocusScope {
             anchors.fill: parent;
             clip: true
             focus: true
-            model: fruitModel
+            model: menuModel
+            spacing:  30
 
             delegate : Item {
                 id: delegateItem
+
+                property int angle: ListView.isCurrentItem ? 0 : 360
+
                 width: listView.width
                 height: sourceText.height + 8
+                scale: ListView.isCurrentItem ? 1 : 0.8
+
+                transformOrigin: Item.Right
+
+                transform: Rotation { origin.x: childrenRect.width/2.0; origin.y: childrenRect.height/2.0; axis { x: 1; y: 0; z: 0 } angle: delegateItem.angle }
+
+                Behavior on scale { NumberAnimation{ } }
+                Behavior on angle { NumberAnimation{ } }
+
                 Image {
                     id: backgroundImage
                     anchors.fill: parent;
                     source: "file://" + themeResourcePath + "/media/" + (ListView.isCurrentItem ? "MenuItemFO.png" : "MenuItemNF.png");
                 }
+
                 Text {
                     id: sourceText
+                    anchors { right: parent.right; rightMargin: 50 }
                     anchors.verticalCenter: parent.verticalCenter
                     z: 1
                     text: name
-                    font.pointSize: 16
+                    font.pointSize: 30
                     color: "white"
                 }
 
                 MouseArea {
+                    id: mouseArea
                     anchors.fill: parent;
                     hoverEnabled: true
                     onEntered:

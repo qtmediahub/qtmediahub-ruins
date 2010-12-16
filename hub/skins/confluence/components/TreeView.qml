@@ -35,16 +35,6 @@ ListView {
     keyNavigationWraps: true
     clip: true
 
-    Keys.onPressed: {
-        if (event.key == Qt.Key_Enter || event.key == Qt.Key_Return) {
-            if (currentItem.itemdata.type == "AddNewSource")
-                addMediaSourceDialog.open();
-            else
-                currentItem.trigger()
-            event.accepted = true;
-        }
-    }
-
     VisualDataModel {
         id: visualDataModel
         delegate : Item {
@@ -84,8 +74,10 @@ ListView {
             MouseArea {
                 anchors.fill: parent;
                 hoverEnabled: true
-                onEntered:
+                onEntered: {
                     listView.currentIndex = index
+                    currentItem.forceActiveFocus()
+                }
                 onClicked: {
                     delegateItem.trigger()
                 }
