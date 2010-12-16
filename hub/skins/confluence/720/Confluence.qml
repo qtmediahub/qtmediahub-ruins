@@ -55,7 +55,7 @@ FocusScope {
             }
             PropertyChanges {
                 target: ticker
-                y: confluence.height - ticker.height
+                state: "visible"
             }
             PropertyChanges {
                 target: videoPlayer
@@ -204,7 +204,8 @@ FocusScope {
         var tickerLoader = Qt.createComponent("Ticker.qml");
         if(tickerLoader.status == Component.Ready) {
             ticker = tickerLoader.createObject(confluence)
-            ticker.y = confluence.height;
+            ticker.anchors.top = confluence.bottom
+            ticker.anchors.topMargin = 0
             ticker.z = 1;
             ticker.anchors.right = confluence.right
         } else if (tickerLoader.status == Component.Error) {

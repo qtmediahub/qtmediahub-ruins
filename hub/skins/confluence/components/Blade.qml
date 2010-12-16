@@ -115,6 +115,7 @@ FocusScope {
         Image {
             id: bladePixmap
             anchors.right: blade.right
+            anchors.fill:  parent
         }
         FocusScope {
             id: content

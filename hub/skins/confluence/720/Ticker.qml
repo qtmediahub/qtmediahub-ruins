@@ -23,10 +23,12 @@ import confluence.components 1.0
 BorderImage {
     id: root
     border.left: 100
+    anchors.topMargin: 0
+    anchors.top:  parent.bottom
 
     source: themeResourcePath + "/media/Rss_Back.png"
 
-    width: 850; //height: list.height
+    width: parent.width/1.5;
 
     property string currentFeed: "rss.news.yahoo.com/rss/topstories"
     property bool active: confluence.state == "showingRootBlade"
@@ -88,5 +90,20 @@ BorderImage {
     BorderImage {
         source: themeResourcePath + "/media/Rss_Back_Overlay.png"
         border.left: 100
+    }
+
+    states: [
+        State {
+            name: "visible"
+            PropertyChanges {
+                target: root.anchors
+                topMargin: -root.height
+            }
+        }
+    ]
+
+    transitions: Transition {
+        reversible: true
+        NumberAnimation { target: anchors; properties: "topMargin"; easing.type: confluenceEasingCurve; duration: confluenceAnimationDuration }
     }
 }
