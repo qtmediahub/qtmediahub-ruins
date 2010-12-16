@@ -38,7 +38,7 @@ Window {
             focus: true;
             onClicked: {
                 if (currentItem.itemdata.type == "AddNewSource")
-                    confluence.showModalDialog(addMediaSourceDialog)
+                    confluence.showModal(addMediaSourceDialog)
                 else
                     videoPlayer.play(currentItem.itemdata.filePath)
             }

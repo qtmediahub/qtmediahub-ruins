@@ -288,12 +288,12 @@ FocusScope {
         }
     }
 
-    function showModalDialog(dialog) {
-        var newDialog = dialog.createObject(mouseGrabber)
+    function showModal(component) {
+        var item = component.createObject(mouseGrabber)
         mouseGrabber.opacity = 0.9 // FIXME: this should probably become a confluence state
-        newDialog.closed.connect(function() { mouseGrabber.opacity = 0 })
-        newDialog.open()
-        return newDialog
+        item.closed.connect(function() { mouseGrabber.opacity = 0 })
+        item.open()
+        return item
     }
 
     /*Test {

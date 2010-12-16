@@ -44,7 +44,7 @@ Window {
             focus: true;
             onClicked: {
                 if (currentItem.itemdata.type == "AddNewSource")
-                    confluence.showModalDialog(addMediaSourceDialog)
+                    confluence.showModal(addMediaSourceDialog)
             }
             Keys.onPressed: {
                 var itemType = sourcesListView.currentItem.itemdata.type
@@ -55,7 +55,7 @@ Window {
                     }
                 } else if (itemType == "File") {
                     if (event.key == Qt.Key_I) {
-                        var sheet =  confluence.showModalDialog(pictureInformationSheet)
+                        var sheet =  confluence.showModal(pictureInformationSheet)
                         sheet.currentItem = sourcesListView.currentItem // this is not a binding for lazy loading
                         event.accepted = true
                     }

@@ -43,7 +43,7 @@ Window {
 
             onClicked: {
                 if (currentItem.itemdata.type == "AddNewSource")
-                    confluence.showModalDialog(addMediaSourceDialog)
+                    confluence.showModal(addMediaSourceDialog)
                 else
                     videoPlayer.play(currentItem.itemdata.filePath)
             }
@@ -53,7 +53,7 @@ Window {
                     event.accepted = true;
                 } else if (event.key == Qt.Key_Return || event.key == Qt.Key_Enter) {
                     if (currentItem.itemdata.type == "AddNewSource") {
-                        confluence.showModalDialog(addMediaSourceDialog)
+                        confluence.showModal(addMediaSourceDialog)
                         event.accepted = true;
                     }
                 }
