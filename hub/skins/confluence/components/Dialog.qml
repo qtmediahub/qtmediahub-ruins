@@ -28,12 +28,22 @@ Item {
 
     property alias title : titleBarText.text
     default property alias content : content.children
-    signal accept
-    signal reject
+    signal accepted
+    signal rejected
     signal closed
 
+    function accept() {
+        root.accepted()
+        close()
+    }
+
+    function reject() {
+        root.rejected()
+        close()
+    }
+
     function close() {
-        opacity = 0;
+        opacity = 0
         root.closed()
     }
 

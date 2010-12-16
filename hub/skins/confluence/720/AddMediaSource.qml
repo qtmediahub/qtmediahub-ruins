@@ -84,13 +84,12 @@ Dialog {
             DialogButtonBox {
                 id: buttonBox
                 anchors.horizontalCenter: parent.horizontalCenter
-                onAccept: {
+                onAccepted: {
                     root.engineModel.addSearchPath(fileSystemView.treeModel.filePath(fileSystemView.rootIndex), sourceNameInput.text);
-                    root.close()
+                    root.accept()
                 }
-                onReject: {
+                onRejected: {
                     root.reject()
-                    root.close()
                 }
             }
         }

@@ -21,8 +21,16 @@ import QtQuick 1.0
 
 Row {
     id: root
-    signal accept()
-    signal reject()
+    signal accepted()
+    signal rejected()
+
+    function accept() {
+        root.accepted()
+    }
+
+    function reject() {
+        root.rejected()
+    }
 
     Button {
         id: okButton
