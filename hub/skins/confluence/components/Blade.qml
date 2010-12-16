@@ -21,7 +21,6 @@ import QtQuick 1.0
 
 FocusScope {
     id: root
-    z: 10
     width: blade.width + blade.x; height: parent.height
 
     clip: true

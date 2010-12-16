@@ -257,6 +257,7 @@ FocusScope {
     MainBlade { 
         id: blade; 
         focus: true 
+        z: background.z + 1
         onOpened: confluence.state = "showingRootBlade"
     }
 
@@ -264,7 +265,7 @@ FocusScope {
 
     Image {
         id: banner
-        z: 1000
+        z: blade.z + 1
         source: themeResourcePath + "/media/Confluence_Logo.png"
     }
 
