@@ -18,7 +18,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 ****************************************************************************/
 
 import QtQuick 1.0
-import confluence.components 1.0
+import "../components"
 
 Window {
     id: root
@@ -30,17 +30,41 @@ Window {
     }
 
     function showCast(name) {
-        city=name
-        weather.opacity=1.0
-        cityListView.state = "hide"
-        root.forceActiveFocus()
+        city=name;
+        weather.opacity=1.0;
+        cityListView.state = "hide";
+        root.forceActiveFocus();
     }
 
     function showList() {
-        cityListView.state = ""
-        weather.opacity=0.5
-        listView.forceActiveFocus()
+        cityListView.state = "";
+        weather.opacity=0.5;
+        listView.forceActiveFocus();
     }
+
+    function fullWeekDay(name) {
+        var map = {
+            "Mon" : "MONDAY",
+            "Tue" : "TUESDAY",
+            "Wed" : "WEDNESDAY",
+            "Thu" : "THURSDAY",
+            "Fri" : "FRIDAY",
+            "Sat" : "SATURDAY",
+            "Sun" : "SUNDAY",
+        };
+        return map[name];
+    }
+
+    function mapIcon(name) {
+        var i = name.lastIndexOf("/")+1;
+        var sn = themeResourcePath+"/media/weathericons/"+name.substr(i, name.length-i-4)+".png";
+        return sn;
+    }
+
+    function stripLast5(string) {
+        return (string.substr(0, string.length-5))
+    }
+
 
     Keys.onSpacePressed: {
         showList()
@@ -55,7 +79,7 @@ Window {
         Panel {
             Item {
                 id: currentWeather
-                width: 480
+                width: 440
                 height: 600
 
                 Column {
@@ -80,7 +104,7 @@ Window {
                         color: "grey"
                         font.pointSize: 12
                         anchors.horizontalCenter: parent.horizontalCenter
-                        text: weatherModel.count > 0 ? "Last Updated - " + weatherModel.get(0).current_date_time : ""
+                        text: weatherModel.count > 0 ? "Last Updated - " + stripLast5(weatherModel.get(0).current_date_time) : ""
                     }
 
                     Item {
@@ -109,7 +133,7 @@ Window {
                             height: width
                             smooth: true
                             asynchronous: true
-                            source: weatherMeasurements.count > 0 ? "http://www.google.com" + weatherMeasurements.get(0).icon : ""
+                            source: weatherMeasurements.count > 0 ? mapIcon(weatherMeasurements.get(0).icon) : ""
                             anchors.right: parent.right
                             anchors.verticalCenter: parent.verticalCenter
                         }
@@ -142,9 +166,9 @@ Window {
         Panel {
             Column {
                 anchors.centerIn: parent
-                width: 480
+                width: 440
                 height: 600
-                anchors.margins: 40
+                anchors.margins: 50
                 spacing: 40
 
                 ConfluenceText {
@@ -176,30 +200,54 @@ Window {
                             id: dayofweek
                             anchors.horizontalCenter: parent.horizontalCenter
                             anchors.top: sep.bottom; anchors.topMargin: 8
-                            text: weatherForecast.count > 0 && weatherForecast.get(index) ? weatherForecast.get(index).day_of_week : ""
+                            text: weatherForecast.count > 0 && weatherForecast.get(index) ? fullWeekDay(weatherForecast.get(index).day_of_week) : ""
+                        }
+
+                        Text {
+                            id: hightemptext
+                            anchors.top: dayofweek.bottom
+                            smooth: true
+                            font.pointSize: 20
+                            color: "grey"
+                            text: "High: "
                         }
                         ConfluenceText {
-                            id: hightemp
+                            id: hightempvalue
                             anchors.top: dayofweek.bottom
-                            text: weatherForecast.count > 0 && weatherForecast.get(index) ? "High: " + root.fahrenheit2celsius(weatherForecast.get(index).high_f) + " °C" : ""
+                            anchors.left: hightemptext.right
+                            font.weight: Font.Normal
+                            text: weatherForecast.count > 0 && weatherForecast.get(index) ? root.fahrenheit2celsius(weatherForecast.get(index).high_f) + " °C" : ""
+                        }
+
+                        Text {
+                            id: lowtemptext
+                            anchors.top: dayofweek.bottom
+                            anchors.left: hightempvalue.right; anchors.leftMargin: 25
+                            smooth: true
+                            font.pointSize: 20
+                            color: "grey"
+                            text: "Low: "
+                        }
+                        ConfluenceText {
+                            anchors.left: lowtemptext.right;
+                            anchors.top: dayofweek.bottom
+                            font.weight: Font.Normal
+                            text: weatherForecast.count > 0 && weatherForecast.get(index) ? root.fahrenheit2celsius(weatherForecast.get(index).low_f)  + " °C" : ""
                         }
 
                         ConfluenceText {
-                            anchors.left: hightemp.right; anchors.leftMargin: 25
-                            anchors.top: dayofweek.bottom
-                            text: weatherForecast.count > 0 && weatherForecast.get(index) ? "Low: " + root.fahrenheit2celsius(weatherForecast.get(index).low_f)  + " °C" : ""
-                        }
-                        ConfluenceText {
                             id: condition
-                            anchors.top: hightemp.bottom
+                            anchors.top: hightemptext.bottom
+                            font.weight: Font.Normal
                             text: weatherForecast.count > 0 && weatherForecast.get(index) ? weatherForecast.get(index).condition : ""
                         }
+
                         Image {
                             width: parent.height/1.5
                             height: width
                             smooth: true
                             asynchronous: true
-                            source: weatherForecast.count > 0 && weatherForecast.get(index)  ? "http://www.google.com" + weatherForecast.get(index).icon : ""
+                            source: weatherForecast.count > 0 && weatherForecast.get(index) ? mapIcon(weatherForecast.get(index).icon) : ""
                             anchors.right: parent.right
                             anchors.bottom: condition.bottom
                         }
