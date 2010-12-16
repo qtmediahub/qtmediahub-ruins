@@ -22,7 +22,6 @@ import QtWebKit 1.0
 import confluence.components 1.0
 import Qt.labs.Mx 1.0 as MxComponents
 
-
 Window {
     id: root
 
@@ -44,7 +43,7 @@ Window {
     }
 
     Keys.onPressed: {
-        if ((event.key == Qt.Key_Down) && (event.modifiers & Qt.MetaModifier)) {
+        if ((event.key == Qt.Key_Down) && (event.modifiers & Qt.ShiftModifier)) {
             webviewPopup.forceActiveFocus()
         } else if(event.key == Qt.Key_Escape) {
             if(webviewPopup.activeFocus) {
@@ -69,16 +68,12 @@ Window {
             contentHeight: webView.height
             WebView {
                 id: webView
-                //anchors.centerIn: parent
-                //FIXME: is this expensive at all?
-                //width: root.width
                 url: defaultUrl
                 opacity: progress == 1 ? 1 : 0.5
 
                 Behavior on opacity {
                     NumberAnimation{}
                 }
-
             }
 
             Behavior on width {
@@ -102,7 +97,7 @@ Window {
 
         states: State {
             name: "visible"
-            when: urlBar.activeFocus || googleBar.activeFocus                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               //urlBar.activeFocus || googleBar.activeFocus
+            when: urlBar.activeFocus || googleBar.activeFocus
             PropertyChanges {
                 target: webviewPopup
                 y: 0
