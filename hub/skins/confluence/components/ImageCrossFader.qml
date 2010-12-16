@@ -22,35 +22,33 @@ import QtQuick 1.0
 Item {
     id: imageCrossFader
     property string source
+    property int animationDelay
 
     Image {
         id: primary
         anchors.fill: parent;
         fillMode: Image.PreserveAspectCrop
+        z: 0
     }
 
     Image {
         id: secondary
         anchors.fill: parent;
         fillMode: Image.PreserveAspectCrop
+        z: 1
     }
 
     Timer {
         id: staggeredTimer
-        interval: 500; running: false; repeat: false
+        interval: primary.source == "" ? 0 : imageCrossFader.animationDelay; 
+        running: false; repeat: false
         onTriggered: SequentialAnimation {
-            PropertyAction { target: secondary; property: "source"; value: primary.source }
-            PropertyAction { target: primary; property: "source"; value: imageCrossFader.source }
+            // This is not a PropertyAction because of QTBUG-16146
+            ScriptAction { script: { secondary.source = primary.source; primary.source = imageCrossFader.source } }
             PropertyAnimation { target: secondary; properties: "opacity"; from: 1; to: 0; duration:500; easing.type: confluenceEasingCurve }
         }
     }
 
-    onSourceChanged: {
-        if (primary.source == "") {
-            primary.source = imageCrossFader.source; 
-        } else {
-            staggeredTimer.start();
-        }
-                     }
+    onSourceChanged: staggeredTimer.start();
 }
 

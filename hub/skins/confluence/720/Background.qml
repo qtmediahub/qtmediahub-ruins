@@ -25,7 +25,7 @@ Item {
 
     ImageCrossFader {
         property string backgroundPath: themeResourcePath + "/backgrounds/"
-
+        animationDelay: 500
         anchors.fill: parent;
         source: themeResourcePath ? (bgmap[role] ? backgroundPath + bgmap[role] : backgroundPath + "media-overlay.png") : ""
     }
