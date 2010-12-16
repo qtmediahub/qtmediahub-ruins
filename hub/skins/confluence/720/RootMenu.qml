@@ -61,6 +61,11 @@ FocusScope {
         preferredHighlightBegin: banner.height; preferredHighlightEnd: height - buttonGrid.height
         highlightRangeMode: ListView.StrictlyEnforceRange
 
+        highlight: Image {
+            source:  themeResourcePath + "/media/black-back2.png"
+            opacity:  0.5
+        }
+
         model: backend.engines //menuList
         delegate:
             RootMenuListItem { }

@@ -82,6 +82,8 @@ ListView {
                     delegateItem.trigger()
                 }
             }
+
+            Keys.onReturnPressed: delegateItem.trigger()
         }
     }
 }
