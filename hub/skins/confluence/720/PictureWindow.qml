@@ -23,8 +23,10 @@ import confluence.components 1.0
 Window {
     id: root
 
-    PictureInformationSheet {
+    Component {
         id: pictureInformationSheet
+        PictureInformationSheet {
+        }
     }
 
     Panel {
@@ -53,8 +55,8 @@ Window {
                     }
                 } else if (itemType == "File") {
                     if (event.key == Qt.Key_I) {
-                        pictureInformationSheet.currentItem = sourcesListView.currentItem // this is not a binding for lazy loading
-                        pictureInformationSheet.open()
+                        var sheet =  confluence.showModalDialog(pictureInformationSheet)
+                        sheet.currentItem = sourcesListView.currentItem // this is not a binding for lazy loading
                         event.accepted = true
                     }
                 }

@@ -293,6 +293,7 @@ FocusScope {
         mouseGrabber.opacity = 0.9 // FIXME: this should probably become a confluence state
         newDialog.closed.connect(function() { mouseGrabber.opacity = 0 })
         newDialog.open()
+        return newDialog
     }
 
     /*Test {

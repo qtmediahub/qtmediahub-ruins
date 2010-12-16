@@ -25,6 +25,8 @@ Item {
     property alias title : titleBarText.text
     default property alias content : content.children
 
+    signal closed()
+
     x: confluence.width
     y: 0
     width: 600 // arbitrary default
@@ -37,6 +39,7 @@ Item {
 
     function close() {
         x = confluence.width
+        root.closed()
     }
 
     Behavior on x {
