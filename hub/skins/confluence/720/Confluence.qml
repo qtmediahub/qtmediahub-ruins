@@ -272,7 +272,6 @@ FocusScope {
     }
 
     AboutWindow { id: aboutWindow; clip: false }
-
     /*Test {
         id: componentTest
         Engine { name: qsTr("Components"); role: "components-test"; visualElement: componentTest; }

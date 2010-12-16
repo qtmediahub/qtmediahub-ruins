@@ -82,6 +82,7 @@ Item {
         horizontalAlignment: Text.AlignRight
         transformOrigin: Item.Right
         width: parent.width
+        font.weight: Font.Bold
         MouseArea {
             id: mr
             anchors.fill: entry

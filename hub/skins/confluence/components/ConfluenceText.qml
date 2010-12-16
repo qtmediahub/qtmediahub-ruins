@@ -25,7 +25,7 @@ Text {
     //Disable on transitions
     smooth: true
     font.pointSize: 20
-    font.weight: Font.DemiBold
+    font.weight: Font.Light
 
     Behavior on text {
         SequentialAnimation {
