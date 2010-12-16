@@ -53,7 +53,7 @@ Window {
                     event.accepted = true;
                 } else if (event.key == Qt.Key_Return || event.key == Qt.Key_Enter) {
                     if (currentItem.itemdata.type == "AddNewSource") {
-                        addMediaSourceDialog.open();
+                        confluence.showModalDialog(addMediaSourceDialog)
                         event.accepted = true;
                     }
                 }
