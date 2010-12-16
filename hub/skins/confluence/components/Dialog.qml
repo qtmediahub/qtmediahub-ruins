@@ -73,17 +73,16 @@ Item {
         source: themeResourcePath + "/media/GlassTitleBar.png"
         anchors.top: panel.top
         width: panel.width
-    }
 
-    Text {
-        id: titleBarText
-        parent: glassTitleBar
-        anchors.horizontalCenter: glassTitleBar.horizontalCenter
-        anchors.top: glassTitleBar.top
-        color: "white"
-        text: "Default dialog title"
-        font.bold: true
-        font.pointSize: 14
+        Text {
+            id: titleBarText
+            anchors.horizontalCenter: glassTitleBar.horizontalCenter
+            anchors.top: glassTitleBar.top
+            color: "white"
+            text: "Default dialog title"
+            font.bold: true
+            font.pointSize: 14
+        }
     }
 
     Image {
