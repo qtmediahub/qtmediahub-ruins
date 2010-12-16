@@ -42,7 +42,7 @@ Window {
             focus: true;
             onClicked: {
                 if (currentItem.itemdata.type == "AddNewSource")
-                    addMediaSourceDialog.open();
+                    confluence.showModalDialog(addMediaSourceDialog)
             }
             Keys.onPressed: {
                 var itemType = sourcesListView.currentItem.itemdata.type
@@ -86,13 +86,15 @@ Window {
         pictureEngine.pluginProperties.pictureModel.setThemeResourcePath(themeResourcePath);
     }
 
-    AddMediaSource {
+    Component {
         id: addMediaSourceDialog
-        title: qsTr("Add Picture source")
-        engineModel: pictureEngine.pluginProperties.pictureModel
-        opacity: 0
+        AddMediaSource {
+            title: qsTr("Add Picture source")
+            engineModel: pictureEngine.pluginProperties.pictureModel
+            opacity: 0
 
-        onClosed: sourcesListView.forceActiveFocus()
+            onClosed: sourcesListView.forceActiveFocus()
+        }
     }
 }
 

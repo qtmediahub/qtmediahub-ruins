@@ -26,10 +26,6 @@ Dialog {
 
     property variant engineModel
 
-    onReject: {
-        root.close();
-    }
-
     Item {
         anchors.fill: parent
 

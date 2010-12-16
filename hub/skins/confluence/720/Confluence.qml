@@ -270,8 +270,33 @@ FocusScope {
     }
 
     AboutWindow { id: aboutWindow; clip: false }
+
+    Rectangle {
+        id: mouseGrabber
+        color: "black"
+        anchors.fill: parent;
+        z: banner.z + 1
+        opacity: 0
+
+        Behavior on opacity {
+            NumberAnimation { }
+        }
+
+        MouseArea {
+            anchors.fill: parent;
+            hoverEnabled: true
+        }
+    }
+
+    function showModalDialog(dialog) {
+        var newDialog = dialog.createObject(mouseGrabber)
+        mouseGrabber.opacity = 0.9 // FIXME: this should probably become a confluence state
+        newDialog.closed.connect(function() { mouseGrabber.opacity = 0 })
+        newDialog.open()
+    }
+
     /*Test {
-        id: componentTest
-        Engine { name: qsTr("Components"); role: "components-test"; visualElement: componentTest; }
-    }*/
+          id: componentTest
+          Engine { name: qsTr("Components"); role: "components-test"; visualElement: componentTest; }
+      }*/
 }

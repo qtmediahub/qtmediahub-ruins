@@ -38,7 +38,7 @@ Window {
             focus: true;
             onClicked: {
                 if (currentItem.itemdata.type == "AddNewSource")
-                    addMediaSourceDialog.open();
+                    confluence.showModalDialog(addMediaSourceDialog)
                 else
                     videoPlayer.play(currentItem.itemdata.filePath)
             }
@@ -75,13 +75,15 @@ Window {
         musicEngine.pluginProperties.musicModel.setThemeResourcePath(themeResourcePath);
     }
 
-    AddMediaSource {
+    Component {
         id: addMediaSourceDialog
-        title: qsTr("Add Music source")
-        engineModel: musicEngine.pluginProperties.musicModel
-        opacity: 0
+        AddMediaSource {
+            title: qsTr("Add Music source")
+            engineModel: musicEngine.pluginProperties.musicModel
+            opacity: 0
 
-        onClosed: sourcesListView.forceActiveFocus()
+            onClosed: sourcesListView.forceActiveFocus()
+        }
     }
 }
 
