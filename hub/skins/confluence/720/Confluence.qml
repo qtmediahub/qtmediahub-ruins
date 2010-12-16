@@ -291,7 +291,7 @@ FocusScope {
     function showModal(component) {
         var item = component.createObject(mouseGrabber)
         mouseGrabber.opacity = 0.9 // FIXME: this should probably become a confluence state
-        item.closed.connect(function() { mouseGrabber.opacity = 0 })
+        item.closed.connect(function() { mouseGrabber.opacity = 0; delete item })
         item.open()
         return item
     }
