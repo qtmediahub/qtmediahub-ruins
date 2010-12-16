@@ -28,7 +28,7 @@ Window {
         x: 60
         y: 80
         width: 700
-        height: 650
+        height: 550
 
        TreeView {
             id: sourcesListView
