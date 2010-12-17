@@ -357,6 +357,7 @@ Window {
     ListModel {
         id: cityList
         ListElement { name: "Atlanta" }
+        ListElement { name: "Bangalore" }
         ListElement { name: "Bangkok" }
         ListElement { name: "Beijing" }
         ListElement { name: "Berlin" }
@@ -364,12 +365,14 @@ Window {
         ListElement { name: "Boston" }
         ListElement { name: "Cape Town" }
         ListElement { name: "Casablanca" }
+        ListElement { name: "Durban" }
         ListElement { name: "Helsinki" }
         ListElement { name: "Juneau" }
         ListElement { name: "Landshut" }
         ListElement { name: "Lhasa" }
         ListElement { name: "Lima" }
         ListElement { name: "London" }
+        ListElement { name: "Manila" }
         ListElement { name: "Munich" }
         ListElement { name: "Moscow" }
         ListElement { name: "New York" }
