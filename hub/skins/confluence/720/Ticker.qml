@@ -53,9 +53,11 @@ BorderImage {
         id: list
         clip: true
         anchors.right : parent.right
-        anchors.verticalCenter: parent.verticalCenter
+        anchors.top : parent.top
+        anchors.bottom : parent.bottom
+        anchors.topMargin: 8
         orientation: ListView.Horizontal
-        width: parent.width - 40; height: parent.height - 5
+        width: parent.width - 40;
         interactive: false
 
         model: feedModel
