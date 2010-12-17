@@ -23,53 +23,98 @@ import confluence.components 1.0
 Window {
     id: root
 
-    property variant currentActiveView : sourcesWindow.visible ? sourcesWindow : sourcesposterWindow
+    property variant currentActiveView : sourcesListWindow.visible ? sourcesListWindow : sourcesPosterWindow
 
-    Panel {
-        id: sourcesWindow
-        x: 60
-        y: 80
-        width: 700
-        height: 550
-        visible: true
-        opacity: visible ? 1 : 0
+    FocusScope {
+        id: sourcesListWindow
+        anchors.fill: parent
+        anchors.topMargin: 0
+        opacity: 1
 
-       TreeView {
-            id: sourcesListView
-            anchors.fill: parent;
-            treeModel: videoEngine.pluginProperties.videoModel
-            clip: true
-            focus: true
+        Panel {
+            id: sourcesPanel
+            x: 60
+            y: 80
+            width: 700
+            height: 550
+            opacity: 1
 
-            onClicked: {
-                if (currentItem.itemdata.type == "AddNewSource")
-                    confluence.showModal(addMediaSourceDialog)
-                else
-                    videoPlayer.play(currentItem.itemdata.filePath)
-            }
-            Keys.onPressed: {
-                if (event.key == Qt.Key_Delete) {
-                    treeModel.removeSearchPath(currentIndex);
-                    event.accepted = true;
-                } else if (event.key == Qt.Key_Return || event.key == Qt.Key_Enter) {
-                    if (currentItem.itemdata.type == "AddNewSource") {
+            TreeView {
+                id: sourcesListView
+                anchors.fill: parent;
+                anchors.topMargin: 0
+                treeModel: videoEngine.pluginProperties.videoModel
+                clip: true
+                focus: true
+
+                onClicked: {
+                    if (currentItem.itemdata.type == "AddNewSource")
                         confluence.showModal(addMediaSourceDialog)
+                    else
+                        videoPlayer.play(currentItem.itemdata.filePath)
+                }
+                Keys.onPressed: {
+                    if (event.key == Qt.Key_Delete) {
+                        treeModel.removeSearchPath(currentIndex);
                         event.accepted = true;
+                    } else if (event.key == Qt.Key_Return || event.key == Qt.Key_Enter) {
+                        if (currentItem.itemdata.type == "AddNewSource") {
+                            confluence.showModal(addMediaSourceDialog)
+                            event.accepted = true;
+                        }
                     }
                 }
             }
         }
 
-       Behavior on opacity {
-           NumberAnimation { easing.type: confluenceEasingCurve; duration: confluenceAnimationDuration }
-       }
+        Item {
+            id: sourceArt
+            anchors.left: sourcesPanel.right;
+            anchors.leftMargin: 65;
+            anchors.bottom: sourcesPanel.bottom;
+            visible: sourcesPanel.visible
+            opacity: visible ? 1 : 0
+
+            width: sourcesArt.width
+            height: sourcesArt.height
+
+            ImageCrossFader {
+                id: sourcesArt
+                anchors.fill: parent;
+
+                width: sourcesListView.currentItem.itemdata.previewWidth
+                height: sourcesListView.currentItem.itemdata.previewHeight
+                source: sourcesListView.currentItem.itemdata.previewUrl
+            }
+
+            Behavior on opacity {
+                NumberAnimation { easing.type: confluenceEasingCurve; duration: confluenceAnimationDuration }
+            }
+        }
+
+        states: [
+            State {
+                name: "hidden"
+                PropertyChanges {
+                    target: sourcesListWindow
+                    opacity: 0
+                }
+            }
+        ]
+
+        transitions: [
+            Transition {
+                NumberAnimation { property: "opacity"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
+            }
+        ]
     }
 
     FocusScope {
-        id: sourcesposterWindow
+        id: sourcesPosterWindow
         anchors.fill: parent
-        visible: false
-        opacity: visible ? 1 : 0
+        anchors.topMargin: 0
+        opacity: 1
+        state:  "hidden"
 
         BorderImage {
             id: sourcesPosterViewBackground
@@ -111,47 +156,38 @@ Window {
             text: sourcesPosterView.currentSelectedSize < 0 ? "" : (sourcesPosterView.currentSelectedSize/1000000).toFixed(2) + " MB"
         }
 
-        Behavior on opacity {
-            NumberAnimation { easing.type: confluenceEasingCurve; duration: confluenceAnimationDuration }
-        }
-    }
+        states: [
+            State {
+                name: "hidden"
+                PropertyChanges {
+                    target: sourcesPosterWindow
+                    opacity: 0
+                }
+                PropertyChanges {
+                    target: sourcesPosterWindow.anchors
+                    topMargin: root.height
+                }
+            }
+        ]
 
-    Item {
-        id: sourceArtWindow
-        anchors.left: sourcesWindow.right;
-        anchors.leftMargin: 65;
-        anchors.bottom: sourcesWindow.bottom;
-        visible: sourcesWindow.visible
-        opacity: visible ? 1 : 0
-
-        width: sourcesArt.width
-        height: sourcesArt.height
-
-        ImageCrossFader {
-            id: sourcesArt
-            anchors.fill: parent;
-
-            width: sourcesListView.currentItem.itemdata.previewWidth
-            height: sourcesListView.currentItem.itemdata.previewHeight
-            source: sourcesListView.currentItem.itemdata.previewUrl
-        }
-
-        Behavior on opacity {
-            NumberAnimation { easing.type: confluenceEasingCurve; duration: confluenceAnimationDuration }
-        }
+        transitions: [
+            Transition {
+                NumberAnimation { property: "opacity"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
+                NumberAnimation { target: sourcesPosterWindow.anchors; property: "topMargin"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
+            }
+        ]
     }
 
     Button {
         id: switchViews
-        text: sourcesWindow.visible ? "Poster View" : "List View"
+        text: sourcesListWindow.visible ? "Poster View" : "List View"
         width:  200
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
         onClicked: {
-            sourcesWindow.visible = !sourcesWindow.visible
-            sourcesposterWindow.visible = !sourcesposterWindow.visible
-            // workaround to update things within PathView
-            sourcesPosterView.incrementCurrentIndex();
+            sourcesListWindow.state = sourcesListWindow.state == "hidden" ? "" : "hidden"
+            sourcesPosterWindow.state = sourcesPosterWindow.state == "hidden" ? "" : "hidden"
+            sourcesPosterView.incrementCurrentIndex()
         }
     }
 
