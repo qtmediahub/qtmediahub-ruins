@@ -61,6 +61,10 @@ FocusScope {
                 target: videoPlayer
                 state: "background"
             }
+            PropertyChanges {
+                target: dateTime
+                x: confluence.width - dateTime.width
+            }
             StateChangeScript { script: blade.forceActiveFocus() }
         },
         State {
@@ -261,6 +265,13 @@ FocusScope {
         onOpened: confluence.state = "showingRootBlade"
     }
 
+    DateTime {
+        id: dateTime
+        z: background.z + 1
+        x: confluence.width
+        anchors.top: confluence.top
+    }
+
     ExitWindow { id: exitWindow }
 
     Image {
@@ -301,3 +312,4 @@ FocusScope {
           Engine { name: qsTr("Components"); role: "components-test"; visualElement: componentTest; }
       }*/
 }
+
