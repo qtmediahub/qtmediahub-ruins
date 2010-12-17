@@ -51,6 +51,7 @@ FocusScope {
             }
             PropertyChanges {
                 target: qtcube
+                visible: true
                 x: confluence.width - qtcube.width
             }
             PropertyChanges {
@@ -73,6 +74,14 @@ FocusScope {
                 target: blade
                 state: "closed"
                 visibleContent: selectedElement.bladeContent
+            }
+            PropertyChanges {
+                target: qtcube
+                //FIXME: Gross, use of createComponent prevents
+                //x: from tracking confluence.width
+                //I wish I had a choice
+                x: confluence.width
+                visible: true
             }
             PropertyChanges {
                 target: selectedElement
@@ -218,9 +227,9 @@ FocusScope {
         var qtCubeLoader = Qt.createComponent(generalResourcePath + "/misc/cube/cube.qml")
         if(qtCubeLoader.status == Component.Ready) {
             qtcube = qtCubeLoader.createObject(confluence)
-            qtcube.x = confluence.width
             qtcube.anchors.top = confluence.top
             qtcube.z = 1000
+            qtcube.visible = false
         } else if(qtCubeLoader.status == Component.Error) {
             backend.log(qtCubeLoader.errorString())
             qtcube = dummyItem
