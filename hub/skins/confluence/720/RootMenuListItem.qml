@@ -28,45 +28,41 @@ Item {
     property bool hasSubBlade: model.modelData.browseable
     property alias textColor: entry.color
     property alias text: entry.text
-    property int angle: 0
 
     anchors.right: parent.right
-    transformOrigin: Item.Right
-
-    transform: Rotation { origin.x: childrenRect.width/2.0; origin.y: childrenRect.height/2.0; axis { x: 1; y: 0; z: 0 } angle: menuItem.angle }
-
-    opacity: 0.5
-    scale: 0.5
-
     states: [
         State {
             name: 'selected'
             when: activeFocus && ListView.isCurrentItem && mainBlade.subMenu.state == "closed"
-            PropertyChanges { target: menuItem; scale: 1; opacity: 1; angle: 360 }
             StateChangeScript { script: rootMenuList.itemSelected() }
-            PropertyChanges { target: subIndicator; opacity: 1 }
+            PropertyChanges { target: entry; state: "selected" }
+            PropertyChanges { target: subIndicator; state: "selected" }
         },
         State {
             name: 'triggered'
             when: ListView.isCurrentItem && mainBlade.subMenu.state == "open"
-            PropertyChanges { target: menuItem; opacity: 0.5 }
+            PropertyChanges { target: entry; state: "triggered" }
+            PropertyChanges { target: subIndicator; state: "triggered" }
         },
         State {
             name: 'non-triggered'
             when: !ListView.isCurrentItem && mainBlade.subMenu.state == "open"
-            PropertyChanges { target: menuItem; opacity: 0 }
+            PropertyChanges { target: entry; state: "non-triggered" }
+            PropertyChanges { target: subIndicator; state: "non-triggered" }
         }
     ]
 
-    transitions: Transition {
-        SequentialAnimation {
-            PropertyAction { target: entry; property: "smooth"; value: "false" }
-            ParallelAnimation {
-                NumberAnimation { property: "scale"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
-                NumberAnimation { property: "opacity"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
-                NumberAnimation { property: "angle"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
-            }
-            PropertyAction { target: entry; property: "smooth"; value: "true" }
+    MouseArea {
+        id: mr
+        anchors.fill: menuItem
+        hoverEnabled: true
+
+        onEntered: {
+            rootMenuList.currentIndex = index
+            rootMenuList.forceActiveFocus()
+        }
+        onClicked: {
+            trigger()
         }
     }
 
@@ -76,35 +72,93 @@ Item {
 
     ConfluenceText {
         id: entry
+        property int angle: 0
+
         anchors { right: parent.right; rightMargin: 20 }
+
+        transformOrigin: Item.Right
+        transform: Rotation { origin.x: width/2.0; origin.y: height/2.0; axis { x: 1; y: 0; z: 0 } angle: entry.angle }
+        opacity: 0.5
+        scale: 0.5
+
         font.pixelSize: 60
         text: model.modelData.name
         horizontalAlignment: Text.AlignRight
-        transformOrigin: Item.Right
-        width: parent.width
         font.weight: Font.Bold
-        MouseArea {
-            id: mr
-            anchors.fill: entry
-            hoverEnabled: true
 
-            onEntered: {
-                rootMenuList.currentIndex = index
-                rootMenuList.forceActiveFocus()
+        states: [
+            State {
+                name: 'selected'
+                PropertyChanges { target: entry; scale: 1; opacity: 1; angle: 360 }
+            },
+            State {
+                name: 'triggered'
+                PropertyChanges { target: entry; rightMargin: -20 }
+            },
+            State {
+                name: 'non-triggered'
+                PropertyChanges { target: entry; opacity: 0 }
             }
-            onClicked: {
-                trigger()
+        ]
+
+        transitions: Transition {
+            SequentialAnimation {
+                NumberAnimation { properties: "scale, opacity, angle"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
             }
         }
     }
 
-    Image {
+    Item {
         id: subIndicator
-        anchors { right: entry.right; top: entry.bottom; topMargin: -20; rightMargin: -20 }
-        source: themeResourcePath + "/media/HomeHasSub.png"
+        anchors.fill: menuItem
+
+        Image {
+            id: glare
+            opacity: 0
+            anchors { right: subIndicator.right; bottom: subIndicator.bottom; bottomMargin: -15; rightMargin: -20 }
+            source: themeResourcePath + "/media/radialgradient60.png"
+
+            Behavior on opacity {
+                SequentialAnimation {
+                    // let the indicator flare up
+                    NumberAnimation { duration: confluenceAnimationDuration / 4; easing.type: confluenceEasingCurve }
+                    NumberAnimation { to: 0.0; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
+                }
+            }
+        }
+
+        Image {
+            id: symbol
+            opacity: 0
+            anchors { right: subIndicator.right; bottom: subIndicator.bottom; bottomMargin: 0; rightMargin: -5 }
+            source: themeResourcePath + "/media/HomeHasSub.png"
+
+            /* the behaviour prevents the symbol from vanishing completely again.
+            Behavior on opacity {
+                SequentialAnimation {
+                    NumberAnimation { duration: confluenceAnimationDuration * 2; easing.type: confluenceEasingCurve }
+                }
+            }
+            */
+        }
+
         visible: hasSubBlade
-        opacity: 0
         smooth: true
-        scale: 0.6
+        scale: 1
+
+        states: [
+            State {
+                name: 'selected'
+                PropertyChanges { target: symbol; opacity: 0.6 }
+                PropertyChanges { target: glare; opacity: 0.8 }
+            },
+            State {
+                name: 'triggered'
+            },
+            State {
+                name: 'non-triggered'
+            }
+        ]
+
     }
 }
