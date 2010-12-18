@@ -134,8 +134,14 @@ FocusScope {
     }
 
     Keys.onPressed: {
-        if(event.key == Qt.Key_Escape)
-            selectedElement && selectedElement.maximized ? selectedElement.maximized = false : confluence.state = "showingRootBlade"
+        if(event.key == Qt.Key_Escape) {
+            if(selectedElement && selectedElement.maximized)
+                selectedElement.maximized = false
+            else if(confluence.state == "showingRootBlade" && !!selectedElement)
+                confluence.state = "showingSelectedElement"
+            else
+                confluence.state = "showingRootBlade"
+        }
         //FIXME: keyboard modifiers don't work?
         //else if((event.key == Qt.Key_Enter) && (keys.modifiers == Qt.AltModifier))
         else if(event.key == Qt.Key_F12)
