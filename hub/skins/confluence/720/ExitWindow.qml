@@ -49,7 +49,7 @@ Window {
         basePixmap: "DialogCloseButton";
         focusedPixmap: "DialogCloseButton-focus"
         onClicked:
-            confluence.state = "showingRootBlade"
+            confluence.show(blade)
         Keys.onDownPressed:
             buttonList.giveFocus()
     }

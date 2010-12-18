@@ -123,17 +123,15 @@ FocusScope {
             if(selectedElement && selectedElement.maximized)
                 selectedElement.maximized = false
             else if(confluence.state == "showingRootBlade" && !!selectedElement)
-                confluence.state = "showingSelectedElement"
+                show(selectedElement)
             else
-                confluence.state = "showingRootBlade"
+                show(blade)
         }
-        //FIXME: keyboard modifiers don't work?
-        //else if((event.key == Qt.Key_Enter) && (keys.modifiers == Qt.AltModifier))
-        else if(event.key == Qt.Key_F12)
-                selectedElement && state == "showingSelectedElement" && selectedElement.maximizable && (selectedElement.maximized = true);
+        else if((event.key == Qt.Key_Enter) && (event.modifiers == Qt.AltModifier))
+        //else if(event.key == Qt.Key_F12)
+            selectedElement && state == "showingSelectedElement" && selectedElement.maximizable && (selectedElement.maximized = true);
         else if(event.key == Qt.Key_F11) {
-            confluence.selectedElement = aboutWindow
-            confluence.state = "showingSelectedElement"
+            show(aboutWindow)
         }
     }
 
@@ -233,7 +231,7 @@ FocusScope {
             backend.log(remoteAppLoader.errorString())
         }
 
-        confluence.state = "showingRootBlade"
+        confluence.show(blade)
     }
 
     function setActiveEngine(engine)
@@ -242,7 +240,19 @@ FocusScope {
         var elementProperties = engine.visualElementProperties
         for(var i = 0; i + 2 <= elementProperties.length; i += 2)
             selectedElement[elementProperties[i]] = elementProperties[i+1]
-        state = "showingSelectedElement"
+        show(selectedElement)
+    }
+
+    function show(element)
+    {
+        selectedElement = element
+        if(element == blade) {
+            state = "showingRootBlade"
+        } else if(element == videoPlayer) {
+            state = "showingSelectedElementMaximized"
+        }
+        else
+            state = "showingSelectedElement"
     }
 
     // dummyItem useful to avoid error ouput on component loader failures
@@ -262,7 +272,7 @@ FocusScope {
         id: blade; 
         focus: true 
         z: background.z + 1
-        onOpened: confluence.state = "showingRootBlade"
+        onOpened: confluence.show(blade)
     }
 
     DateTime {

@@ -33,8 +33,6 @@ FocusScope {
         if (controlOSD.state != "visible") {
             showOSD();
             event.accepted = true;
-        } else {
-            confluence.state = "showingRootBlade"
         }
     }
 
@@ -134,7 +132,7 @@ FocusScope {
             anchors.fill: parent
 
             onClicked: {
-                confluence.state = "showingRootBlade"
+                confluence.show(blade)
             }
         }
     }

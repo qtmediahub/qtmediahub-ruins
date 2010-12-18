@@ -38,8 +38,7 @@ Window {
         webView.url = url
         webViewport.contentY = 0
 
-        confluence.selectedElement = root
-        confluence.state = "showingSelectedElement"
+        confluence.show(root)
     }
 
     Keys.onPressed: {
