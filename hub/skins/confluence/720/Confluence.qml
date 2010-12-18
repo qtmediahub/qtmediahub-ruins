@@ -251,10 +251,11 @@ FocusScope {
             if(videoPlayer.video.source == "") {
                 show(videoWindow)
             } else {
-                selectedElement = emptyWindow
-                state = "showingSelectedElementMaximized"
-                videoPlayer.play()
+                show(emptyWindow)
             }
+        } else if (element == emptyWindow) {
+            state = "showingSelectedElementMaximized"
+            videoPlayer.play()
         } else {
             selectedElement = element
             state = "showingSelectedElement"
@@ -318,6 +319,9 @@ FocusScope {
     Window {
         //windowWindow
         id: emptyWindow
+        opacity: 0
+        onFocusChanged:
+            activeFocus ? videoPlayer.forceActiveFocus() : undefined
     }
 
     function showModal(component) {
