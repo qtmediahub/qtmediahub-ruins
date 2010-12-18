@@ -179,9 +179,13 @@ FocusScope {
     }
 
     function play(uri) {
-        video.stop();
-        video.source = uri;
-        video.play();
+        if(uri == null) {
+            video.play()
+        } else {
+            video.stop();
+            video.source = uri
+            video.play();
+        }
     }
 
     function playForeground(uri) {

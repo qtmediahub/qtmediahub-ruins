@@ -34,6 +34,7 @@ FocusScope {
 
     property variant selectedElement
     property variant videoPlayer
+    property variant videoWindow
     property variant qtcube
     property variant browserWindow
     property variant ticker
@@ -128,7 +129,7 @@ FocusScope {
                 show(blade)
         }
         else if((event.key == Qt.Key_Enter) && (event.modifiers == Qt.AltModifier))
-        //else if(event.key == Qt.Key_F12)
+            //else if(event.key == Qt.Key_F12)
             selectedElement && state == "showingSelectedElement" && selectedElement.maximizable && (selectedElement.maximized = true);
         else if(event.key == Qt.Key_F11) {
             show(aboutWindow)
@@ -155,7 +156,7 @@ FocusScope {
         videoEngine.pluginProperties.videoModel.setThemeResourcePath(themeResourcePath); // ## Shouldn't be here
         var videoWindowLoader = Qt.createComponent("VideoWindow.qml")
         if(videoWindowLoader.status == Component.Ready)
-            videoWindowLoader.createObject(confluence)
+            videoWindow = videoWindowLoader.createObject(confluence)
         else if(videoWindowLoader.status == Component.Error)
             backend.log(videoWindowLoader.errorString())
 
@@ -249,7 +250,12 @@ FocusScope {
         if(element == blade) {
             state = "showingRootBlade"
         } else if(element == videoPlayer) {
-            state = "showingSelectedElementMaximized"
+            if(videoPlayer.video.source == "") {
+                show(videoWindow)
+            } else {
+                state = "showingSelectedElementMaximized"
+                videoPlayer.play()
+            }
         }
         else
             state = "showingSelectedElement"
