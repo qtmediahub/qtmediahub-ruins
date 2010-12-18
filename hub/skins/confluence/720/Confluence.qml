@@ -105,27 +105,12 @@ FocusScope {
                 state: "maximized"
             }
             PropertyChanges {
-                target: videoPlayer
+                //Yetch, but better than having a completely seperate state
+                target: selectedElement != videoPlayer ? videoPlayer : undefined
                 state: "hidden"
             }
-        },
-        State {
-            //FIXME: This is hopefully temporary and can be merged into the
-            //above state
-            name: "showingVideoPlayer"
-            PropertyChanges {
-                target: blade
-                state: "closed"
-                visibleContent: selectedElement.bladeContent
-                x: -blade.bladePeek
-            }
-            PropertyChanges {
-                target: videoPlayer
-                state: "maximized"
-            }
-            StateChangeScript { script: videoPlayer.forceActiveFocus() }
+            StateChangeScript { script: selectedElement.forceActiveFocus() }
         }
-
     ]
 
     transitions: Transition {

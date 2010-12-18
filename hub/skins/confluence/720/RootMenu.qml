@@ -99,7 +99,8 @@ FocusScope {
             basePixmap: "home-playmedia"
             focusedPixmap: "home-playmedia-FO"
             onClicked: {
-                confluence.state = "showingVideoPlayer"
+                confluence.selectedElement = videoPlayer
+                confluence.state = "showingSelectedElement"
             }
         }
         PixmapButton { basePixmap: "home-favourites"; focusedPixmap: "home-favourites-FO" }
