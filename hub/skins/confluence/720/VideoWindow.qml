@@ -48,10 +48,12 @@ Window {
                 focus: true
 
                 onClicked: {
-                    if (currentItem.itemdata.type == "AddNewSource")
+                    if (currentItem.itemdata.type == "AddNewSource") {
                         confluence.showModal(addMediaSourceDialog)
-                    else
+                    } else {
+                        confluence.selectedElement = emptyWindow
                         videoPlayer.play(currentItem.itemdata.filePath)
+                    }
                 }
                 Keys.onPressed: {
                     if (event.key == Qt.Key_Delete) {

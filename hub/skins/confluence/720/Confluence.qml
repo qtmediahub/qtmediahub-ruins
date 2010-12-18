@@ -127,8 +127,7 @@ FocusScope {
                 show(selectedElement)
             else
                 show(blade)
-        }
-        else if((event.key == Qt.Key_Enter) && (event.modifiers == Qt.AltModifier))
+        } else if((event.key == Qt.Key_Enter) && (event.modifiers == Qt.AltModifier))
             //else if(event.key == Qt.Key_F12)
             selectedElement && state == "showingSelectedElement" && selectedElement.maximizable && (selectedElement.maximized = true);
         else if(event.key == Qt.Key_F11) {
@@ -246,19 +245,20 @@ FocusScope {
 
     function show(element)
     {
-        selectedElement = element
         if(element == blade) {
             state = "showingRootBlade"
         } else if(element == videoPlayer) {
             if(videoPlayer.video.source == "") {
                 show(videoWindow)
             } else {
+                selectedElement = emptyWindow
                 state = "showingSelectedElementMaximized"
                 videoPlayer.play()
             }
-        }
-        else
+        } else {
+            selectedElement = element
             state = "showingSelectedElement"
+        }
     }
 
     // dummyItem useful to avoid error ouput on component loader failures
@@ -313,6 +313,11 @@ FocusScope {
             anchors.fill: parent;
             hoverEnabled: true
         }
+    }
+
+    Window {
+        //windowWindow
+        id: emptyWindow
     }
 
     function showModal(component) {

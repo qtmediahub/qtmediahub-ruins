@@ -34,6 +34,8 @@ FocusScope {
             showOSD();
             event.accepted = true;
         }
+        //Have to explicitly not accept in order to propagate
+        event.accepted = false
     }
 
     MouseArea {
