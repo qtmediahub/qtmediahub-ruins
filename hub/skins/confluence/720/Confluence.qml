@@ -38,6 +38,7 @@ FocusScope {
     property variant qtcube
     property variant browserWindow
     property variant ticker
+    property variant weatherWindow
 
     height: 720; width: 1280
     focus: true; clip: true
@@ -228,7 +229,7 @@ FocusScope {
         //No XML patterns
         var weatherLoader = Qt.createComponent("WeatherWindow.qml");
         if(weatherLoader.status == Component.Ready) {
-            weatherLoader.createObject(confluence)
+            weatherWindow = weatherLoader.createObject(confluence)
         } else if (weatherLoader.status == Component.Error) {
             backend.log(weatherLoader.errorString())
         }
@@ -328,6 +329,7 @@ FocusScope {
         x: confluence.width
         anchors.top: confluence.top
         anchors.right: dateTimeHeader.left
+        city: weatherWindow.city
     }
 
     ExitWindow { id: exitWindow }
