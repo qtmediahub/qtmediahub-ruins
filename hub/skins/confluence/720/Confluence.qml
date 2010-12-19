@@ -66,6 +66,7 @@ FocusScope {
             PropertyChanges {
                 target: dateTime
                 x: confluence.width - dateTime.width
+                showDate: true
             }
             StateChangeScript { script: blade.forceActiveFocus() }
         },
@@ -83,6 +84,11 @@ FocusScope {
                 //I wish I had a choice
                 x: confluence.width
                 visible: true
+            }
+            PropertyChanges {
+                target: dateTime
+                x: confluence.width - dateTime.width
+                showDate: false
             }
             PropertyChanges {
                 target: selectedElement
@@ -110,14 +116,37 @@ FocusScope {
                 target: videoPlayer
                 state: selectedElement == emptyWindow ? "maximized" : "hidden"
             }
+            PropertyChanges {
+                target: dateTime
+                opacity: 0
+            }
             StateChangeScript { script: selectedElement.forceActiveFocus() }
         }
     ]
 
-    transitions: Transition {
-        reversible: true
-        NumberAnimation { target: qtcube; properties: "x,y"; easing.type: confluenceEasingCurve; duration: confluenceAnimationDuration }
-    }
+    transitions: [
+        Transition {
+            from: "*"
+            to: "showingRootBlade"
+            reversible: true
+            NumberAnimation { targets: [qtcube, dateTime]; properties: "x,y"; easing.type: confluenceEasingCurve; duration: confluenceAnimationDuration }
+            SequentialAnimation {
+                NumberAnimation { target: dateTime; properties: "x"; to: confluence.width; easing.type: confluenceEasingCurve; duration: confluenceAnimationDuration/2 }
+                PropertyAction { target: dateTime; property: "showDate"; value: true }
+                NumberAnimation { target: dateTime; properties: "x"; easing.type: confluenceEasingCurve; duration: confluenceAnimationDuration/2 }
+            }
+        },
+        Transition {
+            from: "*"
+            to: "showingSelectedElement"
+            NumberAnimation { target: qtcube; properties: "x,y"; easing.type: confluenceEasingCurve; duration: confluenceAnimationDuration }
+            SequentialAnimation {
+                NumberAnimation { target: dateTime; properties: "x"; to: confluence.width; easing.type: confluenceEasingCurve; duration: confluenceAnimationDuration/2 }
+                PropertyAction { target: dateTime; property: "showDate"; value: false }
+                NumberAnimation { target: dateTime; properties: "x"; easing.type: confluenceEasingCurve; duration: confluenceAnimationDuration/2 }
+            }
+        }
+    ]
 
     Keys.onPressed: {
         if(event.key == Qt.Key_Escape) {
@@ -287,7 +316,6 @@ FocusScope {
         z: background.z + 1
         x: confluence.width
         anchors.top: confluence.top
-        showDate: false
     }
 
     ExitWindow { id: exitWindow }
