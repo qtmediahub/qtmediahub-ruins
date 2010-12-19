@@ -35,7 +35,7 @@ Blade {
     bladeWidth: 400
     bladePixmap: themeResourcePath + "/media/HomeBlade.png"
 
-    RootMenu {
+    content: RootMenu {
         id: rootMenu
         buttonGridX: bladeX + 5 + bladeRightMargin; 
         onOpenSubMenu: {
@@ -47,7 +47,7 @@ Blade {
         }
     }
 
-    Blade {
+    children: Blade {
         id: subMenu
 
         closedBladePeek: 10

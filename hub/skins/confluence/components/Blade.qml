@@ -35,7 +35,7 @@ FocusScope {
     property alias bladeWidth: blade.width
     property alias bladePixmap: bladePixmap.source
     property alias bladeX: blade.x
-    property alias bladeContent: content
+    default property alias content: content.children
     //pixmap specific offset (pixmap alpha!)
     property int bladeRightMargin: 30
 
@@ -80,24 +80,6 @@ FocusScope {
     onFocusChanged:
         if(activeFocus == false)
             state = "closed"
-
-    onChildrenChanged: {
-        //Always want new content parented to content region
-        for (var i = 0; i < children.length; ++i)
-            children[i] != blade && !children[i].windowingComponent ? children[i].parent = content : 0
-    }
-
-    function setCurrentContent(contentName)
-    {
-        for(var i = 0; i < content.children.length; ++i)
-        {
-            var currentChild = content.children[i]
-            if(currentChild == visibleContent)
-                currentChild.visible = true
-            else
-                currentChild.visible = false
-        }
-    }
 
     Item {
         id: blade
