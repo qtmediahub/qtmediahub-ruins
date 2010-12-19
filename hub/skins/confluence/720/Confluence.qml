@@ -287,6 +287,7 @@ FocusScope {
         z: background.z + 1
         x: confluence.width
         anchors.top: confluence.top
+        showDate: false
     }
 
     ExitWindow { id: exitWindow }
