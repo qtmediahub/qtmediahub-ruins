@@ -1,7 +1,7 @@
 import QtQuick 1.0
 
 Item {
-    width: 375
+    width: text.x + text.width + 10
     height: 32
 
     BorderImage {
