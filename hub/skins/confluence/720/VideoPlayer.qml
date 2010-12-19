@@ -33,9 +33,10 @@ FocusScope {
         if (controlOSD.state != "visible") {
             showOSD();
             event.accepted = true;
+        } else {
+            //Have to explicitly not accept in order to propagate
+            event.accepted = false
         }
-        //Have to explicitly not accept in order to propagate
-        event.accepted = false
     }
 
     MouseArea {
