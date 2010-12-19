@@ -85,6 +85,13 @@ FocusScope {
             rootMenu.openSubMenu()
     }
 
+    Image {
+        id: banner
+        x: 20
+        z: rootMenuList.z + 1
+        source: themeResourcePath + "/media/Confluence_Logo.png"
+    }
+
     ButtonList {
         id: buttonGrid
         y: parent.height - height; // # FIXME: Should not access mainBlade

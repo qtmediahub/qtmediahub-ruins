@@ -334,19 +334,13 @@ FocusScope {
 
     ExitWindow { id: exitWindow }
 
-    Image {
-        id: banner
-        z: blade.z + 1
-        source: themeResourcePath + "/media/Confluence_Logo.png"
-    }
-
     AboutWindow { id: aboutWindow; clip: false }
 
     Rectangle {
         id: mouseGrabber
         color: "black"
         anchors.fill: parent;
-        z: banner.z + 1
+        z: blade.z + 1
         opacity: 0
 
         Behavior on opacity {
