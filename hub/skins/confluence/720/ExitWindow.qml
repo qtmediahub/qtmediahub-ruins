@@ -36,7 +36,7 @@ Window {
 
         ButtonList {
             id: buttonList
-            PixmapButton { basePixmap: "ButtonMenuExitNF"; focusedPixmap: "ButtonMenuExitFO"; focus: true; onClicked: Qt.quit() }
+            PixmapButton { basePixmap: "ButtonMenuExitNF"; focusedPixmap: "ButtonMenuExitFO"; onClicked: Qt.quit() }
             PixmapButton { basePixmap: "ButtonMenuRestartNF"; focusedPixmap: "ButtonMenuRestartFO" }
             PixmapButton { basePixmap: "ButtonMenuShutdownNF"; focusedPixmap: "ButtonMenuShutdownFO" }
             PixmapButton { basePixmap: "ButtonMenuLogOffNF"; focusedPixmap: "ButtonMenuLogOffFO" }

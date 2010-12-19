@@ -73,6 +73,11 @@ FocusScope {
                 target: content.anchors
                 topMargin: -content.height + buttonList.height + buttonList.anchors.bottomMargin
             }
+            StateChangeScript {
+                script: {
+                    buttonList.resetFocus()
+                }
+            }
         }
     ]
 

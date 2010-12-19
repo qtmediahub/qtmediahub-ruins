@@ -20,6 +20,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 import QtQuick 1.0
 
 Flow {
+    id: root
     property int upperThreshold: children.length - 1
 
     property int focusedIndex: 0
@@ -52,7 +53,8 @@ Flow {
             //upperBoundExceeded()
             exceededUpper = true
         }
-        children[focusedIndex].focus = true
+        children[focusedIndex].forceActiveFocus()
+        //.focus = true
 
         if(exceededLower)
             lowerBoundExceeded()
