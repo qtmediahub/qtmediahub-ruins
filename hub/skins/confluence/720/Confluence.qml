@@ -91,6 +91,10 @@ FocusScope {
                 showDate: false
             }
             PropertyChanges {
+                target: weatherHeader
+                opacity: 0
+            }
+            PropertyChanges {
                 target: selectedElement
                 state: "visible"
             }
@@ -128,12 +132,12 @@ FocusScope {
         Transition {
             from: "*"
             to: "showingRootBlade"
-            reversible: true
             NumberAnimation { targets: [qtcube, dateTimeHeader]; properties: "x,y"; easing.type: confluenceEasingCurve; duration: confluenceAnimationDuration }
             SequentialAnimation {
                 NumberAnimation { target: dateTimeHeader; properties: "x"; to: confluence.width; easing.type: confluenceEasingCurve; duration: confluenceAnimationDuration/2 }
                 PropertyAction { target: dateTimeHeader; property: "showDate"; value: true }
                 NumberAnimation { target: dateTimeHeader; properties: "x"; easing.type: confluenceEasingCurve; duration: confluenceAnimationDuration/2 }
+                PropertyAction { target: weatherHeader; property: "opacity"; value: 1 }
             }
         },
         Transition {
@@ -313,9 +317,17 @@ FocusScope {
 
     DateTimeHeader {
         id: dateTimeHeader
+        z: weatherHeader.z + 1
+        x: confluence.width
+        anchors.top: confluence.top
+    }
+
+    WeatherHeader {
+        id: weatherHeader
         z: background.z + 1
         x: confluence.width
         anchors.top: confluence.top
+        anchors.right: dateTimeHeader.left
     }
 
     ExitWindow { id: exitWindow }
