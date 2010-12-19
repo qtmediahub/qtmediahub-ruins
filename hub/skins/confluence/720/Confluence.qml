@@ -116,7 +116,7 @@ FocusScope {
 
     transitions: Transition {
         reversible: true
-        NumberAnimation { properties: "x,y"; easing.type: confluenceEasingCurve; duration: confluenceAnimationDuration }
+        NumberAnimation { target: qtcube; properties: "x,y"; easing.type: confluenceEasingCurve; duration: confluenceAnimationDuration }
     }
 
     Keys.onPressed: {
