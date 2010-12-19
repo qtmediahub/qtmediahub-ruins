@@ -21,10 +21,10 @@ import QtQuick 1.0
 import confluence.components 1.0
 
 Blade {
-    id: mainBlade
+    id: root
     clip: false
 
-    property int visibleWidth: mainBlade.bladeVisibleWidth
+    property int visibleWidth: root.bladeVisibleWidth
                                + subMenu.bladeVisibleWidth
     //FIXME: fudge factor below empirically derived
     //media blade pixmap packing alpha
@@ -55,7 +55,7 @@ Blade {
         bladeRightMargin: 8
 
         //Magical pixmap offset again
-        anchors { left: mainBlade.right; leftMargin: -10 }
+        anchors { left: root.right; leftMargin: -10 }
 
         bladePixmap: themeResourcePath + "/media/MediaBladeSub.png"
 
