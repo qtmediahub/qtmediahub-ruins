@@ -36,7 +36,7 @@ FocusScope {
     property int maximizedWidth: confluence.width
     property int maximizedHeight: confluence.height
 
-    width: confluence.width - blade.visibleWidth
+    width: confluence.width - mainBlade.visibleWidth
     height: confluence.height
 
     //useful for focus debugging
@@ -89,7 +89,7 @@ FocusScope {
             from: ""
             to: "visible"
             SequentialAnimation {
-                PropertyAction { target: root; property: "anchors.horizontalCenterOffset"; value: blade.visibleWidth/2 }
+                PropertyAction { target: root; property: "anchors.horizontalCenterOffset"; value: mainBlade.visibleWidth/2 }
                 PropertyAction { target: root; property: "visible"; value: true }
                 ParallelAnimation {
                     NumberAnimation { property: "opacity"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }

@@ -47,9 +47,9 @@ FocusScope {
         State {
             name: "showingRootBlade"
             PropertyChanges {
-                target: blade
+                target: mainBlade
                 state: "open"
-                visibleContent: blade.rootMenu
+                visibleContent: mainBlade.rootMenu
             }
             PropertyChanges {
                 target: qtcube
@@ -69,12 +69,12 @@ FocusScope {
                 x: confluence.width - dateTimeHeader.width
                 showDate: true
             }
-            StateChangeScript { script: blade.forceActiveFocus() }
+            StateChangeScript { script: mainBlade.forceActiveFocus() }
         },
         State {
             name: "showingSelectedElement"
             PropertyChanges {
-                target: blade
+                target: mainBlade
                 state: "closed"
                 visibleContent: selectedElement.bladeContent
             }
@@ -109,7 +109,7 @@ FocusScope {
             name: "showingSelectedElementMaximized"
             extend: "showingSelectedElement"
             PropertyChanges {
-                target: blade
+                target: mainBlade
                 state: "hidden"
             }
             PropertyChanges {
@@ -159,7 +159,7 @@ FocusScope {
             else if(confluence.state == "showingRootBlade" && !!selectedElement)
                 show(selectedElement)
             else
-                show(blade)
+                show(mainBlade)
         } else if((event.key == Qt.Key_Enter) && (event.modifiers == Qt.AltModifier))
             //else if(event.key == Qt.Key_F12)
             selectedElement && state == "showingSelectedElement" && selectedElement.maximizable && (selectedElement.maximized = true);
@@ -264,7 +264,7 @@ FocusScope {
             backend.log(remoteAppLoader.errorString())
         }
 
-        confluence.show(blade)
+        confluence.show(mainBlade)
     }
 
     function setActiveEngine(engine)
@@ -278,7 +278,7 @@ FocusScope {
 
     function show(element)
     {
-        if(element == blade) {
+        if(element == mainBlade) {
             state = "showingRootBlade"
         } else if(element == videoPlayer) {
             if(videoPlayer.video.source == "") {
@@ -310,10 +310,10 @@ FocusScope {
     }
 
     MainBlade { 
-        id: blade; 
+        id: mainBlade; 
         focus: true 
         z: background.z + 1
-        onOpened: confluence.show(blade)
+        onOpened: confluence.show(mainBlade)
     }
 
     DateTimeHeader {
@@ -340,7 +340,7 @@ FocusScope {
         id: mouseGrabber
         color: "black"
         anchors.fill: parent;
-        z: blade.z + 1
+        z: mainBlade.z + 1
         opacity: 0
 
         Behavior on opacity {
