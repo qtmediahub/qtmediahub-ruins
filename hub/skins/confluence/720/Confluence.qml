@@ -117,9 +117,8 @@ FocusScope {
                 state: "maximized"
             }
             PropertyChanges {
-                //Yetch, but better than having a completely seperate state
                 target: videoPlayer
-                state: selectedElement == emptyWindow ? "maximized" : "hidden"
+                state: selectedElement == transparentVideoOverlay ? "maximized" : "hidden"
             }
             PropertyChanges {
                 target: dateTimeHeader
@@ -285,9 +284,10 @@ FocusScope {
             if(videoPlayer.video.source == "") {
                 show(videoWindow)
             } else {
-                show(emptyWindow)
+                show(transparentVideoOverlay)
             }
-        } else if (element == emptyWindow) {
+        } else if (element == transparentVideoOverlay) {
+            selectedElement = transparentVideoOverlay
             state = "showingSelectedElementMaximized"
             videoPlayer.play()
         } else {
@@ -355,8 +355,7 @@ FocusScope {
 
     Window {
         //windowWindow
-        id: emptyWindow
-        opacity: 0
+        id: transparentVideoOverlay
         onFocusChanged:
             activeFocus ? videoPlayer.forceActiveFocus() : undefined
     }

@@ -51,7 +51,7 @@ Window {
                     if (currentItem.itemdata.type == "AddNewSource") {
                         confluence.showModal(addMediaSourceDialog)
                     } else {
-                        confluence.selectedElement = emptyWindow
+                        confluence.selectedElement = transparentVideoOverlay
                         videoPlayer.play(currentItem.itemdata.filePath)
                     }
                 }
