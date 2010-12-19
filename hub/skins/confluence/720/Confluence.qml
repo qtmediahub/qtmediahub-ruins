@@ -107,8 +107,8 @@ FocusScope {
             }
             PropertyChanges {
                 //Yetch, but better than having a completely seperate state
-                target: selectedElement != videoPlayer ? videoPlayer : undefined
-                state: "hidden"
+                target: videoPlayer
+                state: selectedElement == emptyWindow ? "maximized" : "hidden"
             }
             StateChangeScript { script: selectedElement.forceActiveFocus() }
         }
