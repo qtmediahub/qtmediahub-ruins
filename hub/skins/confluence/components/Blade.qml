@@ -39,8 +39,6 @@ FocusScope {
     //pixmap specific offset (pixmap alpha!)
     property int bladeRightMargin: 30
 
-    property variant visibleContent
-
     state:  "closed"
 
     states: [
@@ -82,9 +80,6 @@ FocusScope {
     onFocusChanged:
         if(activeFocus == false)
             state = "closed"
-
-    onVisibleContentChanged:
-        setCurrentContent(visibleContent)
 
     onChildrenChanged: {
         //Always want new content parented to content region

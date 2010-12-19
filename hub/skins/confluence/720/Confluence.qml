@@ -49,7 +49,6 @@ FocusScope {
             PropertyChanges {
                 target: mainBlade
                 state: "open"
-                visibleContent: mainBlade.rootMenu
             }
             PropertyChanges {
                 target: qtcube
@@ -76,7 +75,6 @@ FocusScope {
             PropertyChanges {
                 target: mainBlade
                 state: "closed"
-                visibleContent: selectedElement.bladeContent
             }
             PropertyChanges {
                 target: qtcube
