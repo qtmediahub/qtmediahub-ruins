@@ -64,8 +64,8 @@ FocusScope {
                 state: "background"
             }
             PropertyChanges {
-                target: dateTime
-                x: confluence.width - dateTime.width
+                target: dateTimeHeader
+                x: confluence.width - dateTimeHeader.width
                 showDate: true
             }
             StateChangeScript { script: blade.forceActiveFocus() }
@@ -86,8 +86,8 @@ FocusScope {
                 visible: true
             }
             PropertyChanges {
-                target: dateTime
-                x: confluence.width - dateTime.width
+                target: dateTimeHeader
+                x: confluence.width - dateTimeHeader.width
                 showDate: false
             }
             PropertyChanges {
@@ -117,7 +117,7 @@ FocusScope {
                 state: selectedElement == emptyWindow ? "maximized" : "hidden"
             }
             PropertyChanges {
-                target: dateTime
+                target: dateTimeHeader
                 opacity: 0
             }
             StateChangeScript { script: selectedElement.forceActiveFocus() }
@@ -129,11 +129,11 @@ FocusScope {
             from: "*"
             to: "showingRootBlade"
             reversible: true
-            NumberAnimation { targets: [qtcube, dateTime]; properties: "x,y"; easing.type: confluenceEasingCurve; duration: confluenceAnimationDuration }
+            NumberAnimation { targets: [qtcube, dateTimeHeader]; properties: "x,y"; easing.type: confluenceEasingCurve; duration: confluenceAnimationDuration }
             SequentialAnimation {
-                NumberAnimation { target: dateTime; properties: "x"; to: confluence.width; easing.type: confluenceEasingCurve; duration: confluenceAnimationDuration/2 }
-                PropertyAction { target: dateTime; property: "showDate"; value: true }
-                NumberAnimation { target: dateTime; properties: "x"; easing.type: confluenceEasingCurve; duration: confluenceAnimationDuration/2 }
+                NumberAnimation { target: dateTimeHeader; properties: "x"; to: confluence.width; easing.type: confluenceEasingCurve; duration: confluenceAnimationDuration/2 }
+                PropertyAction { target: dateTimeHeader; property: "showDate"; value: true }
+                NumberAnimation { target: dateTimeHeader; properties: "x"; easing.type: confluenceEasingCurve; duration: confluenceAnimationDuration/2 }
             }
         },
         Transition {
@@ -141,9 +141,9 @@ FocusScope {
             to: "showingSelectedElement"
             NumberAnimation { target: qtcube; properties: "x,y"; easing.type: confluenceEasingCurve; duration: confluenceAnimationDuration }
             SequentialAnimation {
-                NumberAnimation { target: dateTime; properties: "x"; to: confluence.width; easing.type: confluenceEasingCurve; duration: confluenceAnimationDuration/2 }
-                PropertyAction { target: dateTime; property: "showDate"; value: false }
-                NumberAnimation { target: dateTime; properties: "x"; easing.type: confluenceEasingCurve; duration: confluenceAnimationDuration/2 }
+                NumberAnimation { target: dateTimeHeader; properties: "x"; to: confluence.width; easing.type: confluenceEasingCurve; duration: confluenceAnimationDuration/2 }
+                PropertyAction { target: dateTimeHeader; property: "showDate"; value: false }
+                NumberAnimation { target: dateTimeHeader; properties: "x"; easing.type: confluenceEasingCurve; duration: confluenceAnimationDuration/2 }
             }
         }
     ]
@@ -311,8 +311,8 @@ FocusScope {
         onOpened: confluence.show(blade)
     }
 
-    DateTime {
-        id: dateTime
+    DateTimeHeader {
+        id: dateTimeHeader
         z: background.z + 1
         x: confluence.width
         anchors.top: confluence.top
