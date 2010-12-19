@@ -28,7 +28,6 @@ FocusScope {
     signal opened
     signal closed
 
-    property bool windowingComponent: true
     property int closedBladePeek: 30
 
     property alias bladeVisibleWidth: blade.visibleWidth
