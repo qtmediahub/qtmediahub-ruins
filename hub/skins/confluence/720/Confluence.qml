@@ -33,6 +33,7 @@ FocusScope {
     property variant confluenceAnimationDuration: 350
     property variant confluenceTransformDuration: 1000
 
+    property variant selectedEngine
     property variant selectedElement
     property variant videoPlayer
     property variant videoWindow
@@ -97,6 +98,10 @@ FocusScope {
             }
             PropertyChanges {
                 target: homeHeader
+                opacity: 1
+            }
+            PropertyChanges {
+                target: currentContextHeader
                 opacity: 1
             }
             PropertyChanges {
@@ -278,6 +283,7 @@ FocusScope {
 
     function setActiveEngine(engine)
     {
+        selectedEngine = engine
         selectedElement = engine.visualElement
         var elementProperties = engine.visualElementProperties
         for(var i = 0; i + 2 <= elementProperties.length; i += 2)
@@ -331,16 +337,29 @@ FocusScope {
 
         anchors { top: mainBlade.top; left: mainBlade.right }
         z: mainBlade.z - 1
-        clip: false
         width: homeImage.width + 40
-        height: homeImage.height + 4
         opacity: 0
         Image {
             id: homeImage
             x: 10
-            sourceSize { width: 28; height: 28; }
+            sourceSize { width: height; height: homeHeader.height-4; }
             source: themeResourcePath + "/media/HomeIcon.png"
             MouseArea { anchors.fill: parent; onClicked: confluence.state = "showingRootBlade" }
+        }
+    }
+
+    Header {
+        id: currentContextHeader
+        flip: false
+
+        width: contextText.width + 50
+        anchors { top: homeHeader.top; left: homeHeader.right; }
+        z: mainBlade.z - 1
+        opacity: 0
+        Text { 
+            id: contextText 
+            anchors.verticalCenter: parent.verticalCenter
+            text: selectedEngine ? selectedEngine.name : ""; color: "white"
         }
     }
 
