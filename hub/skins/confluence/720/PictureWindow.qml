@@ -36,7 +36,7 @@ Window {
         width: 700
         height: 550
 
-       TreeView {
+        ConfluenceGridView {
             id: sourcesListView
             anchors.fill: parent;
             treeModel: pictureEngine.pluginProperties.pictureModel

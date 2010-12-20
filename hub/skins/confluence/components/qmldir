@@ -3,6 +3,7 @@ BusyIndicator 1.0 BusyIndicator.qml
 Button 1.0 Button.qml
 ButtonList 1.0 ButtonList.qml
 ConfluenceFlipable 1.0 ConfluenceFlipable.qml
+ConfluenceGridView 1.0 ConfluenceGridView.qml
 ConfluenceListView 1.0 ConfluenceListView.qml
 ConfluenceText 1.0 ConfluenceText.qml
 ConfluenceTwoColumnDelegate 1.0 ConfluenceTwoColumnDelegate.qml
