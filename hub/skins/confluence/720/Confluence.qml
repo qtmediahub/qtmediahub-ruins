@@ -156,7 +156,6 @@ FocusScope {
             SequentialAnimation {
                 NumberAnimation { target: mainBlade; properties: "x"; to: -mainBlade.width - mainBlade.closedBladePeek; duration: confluenceAnimationDuration/2; easing.type: confluenceEasingCurve }
                 PropertyAction { target: homeHeader; property: "opacity"; value: 1 }
-                NumberAnimation { target: mainBlade; properties: "x"; duration: confluenceAnimationDuration/2; easing.type: confluenceEasingCurve }
             }
             SequentialAnimation {
                 NumberAnimation { target: dateTimeHeader; properties: "x"; to: confluence.width; easing.type: confluenceEasingCurve; duration: confluenceAnimationDuration/2 }
@@ -335,13 +334,13 @@ FocusScope {
         id: homeHeader
         flip : false
 
-        anchors { top: mainBlade.top; left: mainBlade.right }
-        z: mainBlade.z - 1
-        width: homeImage.width + 40
+        anchors { top: confluence.top; left: confluence.left }
+        z: background.z + 1
+        width: homeImage.width + 80
         opacity: 0
         Image {
             id: homeImage
-            x: 10
+            x: 40
             sourceSize { width: height; height: homeHeader.height-4; }
             source: themeResourcePath + "/media/HomeIcon.png"
             MouseArea { anchors.fill: parent; onClicked: confluence.state = "showingRootBlade" }
@@ -354,7 +353,7 @@ FocusScope {
 
         width: contextText.width + 50
         anchors { top: homeHeader.top; left: homeHeader.right; }
-        z: mainBlade.z - 1
+        z: background.z + 1
         opacity: 0
         Text { 
             id: contextText 

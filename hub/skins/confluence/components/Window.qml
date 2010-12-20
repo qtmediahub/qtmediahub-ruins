@@ -36,8 +36,22 @@ FocusScope {
     property int maximizedWidth: confluence.width
     property int maximizedHeight: confluence.height
 
-    width: confluence.width - mainBlade.visibleWidth
+    width: confluence.width
     height: confluence.height
+
+    property Component bladeComponent : Blade {
+        clip: false
+        bladeWidth: 50
+        bladePixmap: themeResourcePath + "/media/HomeBlade.png"
+        parent: root
+        visible: true
+        z: 1
+        onOpened: confluence.state = "showingRootBlade" // # FIXME: Don't miss with another component's state!
+    }
+
+    Loader {
+        sourceComponent: bladeComponent
+    }
 
     //useful for focus debugging
     //onActiveFocusChanged: console.log(idtext + " just " + (activeFocus ? "got" : "lost") + " focus")
@@ -89,7 +103,7 @@ FocusScope {
             from: ""
             to: "visible"
             SequentialAnimation {
-                PropertyAction { target: root; property: "anchors.horizontalCenterOffset"; value: mainBlade.visibleWidth/2 }
+                PropertyAction { target: root; property: "anchors.horizontalCenterOffset"; value: 0 }
                 PropertyAction { target: root; property: "visible"; value: true }
                 ParallelAnimation {
                     NumberAnimation { property: "opacity"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
