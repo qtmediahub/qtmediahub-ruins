@@ -115,7 +115,6 @@ Window {
                             id: weatherDegree
                             color: "white"
                             font.pointSize: 64
-                            font.bold: true
                             text: weatherMeasurements.count > 0 ? weatherMeasurements.get(0).temp_c : "0"
                             anchors.verticalCenter: parent.verticalCenter
                             anchors.left: parent.left
@@ -305,6 +304,16 @@ Window {
                 }
             }
         }
+
+        Keys.onEscapePressed:
+            if(state == "") {  // poor focus scope workaround
+                weather.opacity=1.0;
+                cityListView.state = "hide";
+                root.forceActiveFocus();
+                event.accepted = true;
+            } else {
+                event.accepted = false;
+            }
 
         states: State {
              name: "hide"
