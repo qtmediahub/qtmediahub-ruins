@@ -19,6 +19,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 import QtQuick 1.0
 import confluence.components 1.0
+import "../components/"
 //import "testing"
 
 FocusScope {
@@ -95,6 +96,10 @@ FocusScope {
                 opacity: 0
             }
             PropertyChanges {
+                target: homeHeader
+                opacity: 1
+            }
+            PropertyChanges {
                 target: selectedElement
                 state: "visible"
             }
@@ -145,6 +150,7 @@ FocusScope {
             NumberAnimation { target: qtcube; properties: "x,y"; easing.type: confluenceEasingCurve; duration: confluenceAnimationDuration }
             SequentialAnimation {
                 NumberAnimation { target: mainBlade; properties: "x"; to: -mainBlade.width - mainBlade.closedBladePeek; duration: confluenceAnimationDuration/2; easing.type: confluenceEasingCurve }
+                PropertyAction { target: homeHeader; property: "opacity"; value: 1 }
                 NumberAnimation { target: mainBlade; properties: "x"; duration: confluenceAnimationDuration/2; easing.type: confluenceEasingCurve }
             }
             SequentialAnimation {
@@ -317,6 +323,25 @@ FocusScope {
         focus: true 
         z: background.z + 1
         onOpened: confluence.show(mainBlade)
+    }
+
+    Header {
+        id: homeHeader
+        flip : false
+
+        anchors { top: mainBlade.top; left: mainBlade.right }
+        z: mainBlade.z - 1
+        clip: false
+        width: homeImage.width + 40
+        height: homeImage.height + 4
+        opacity: 0
+        Image {
+            id: homeImage
+            x: 10
+            sourceSize { width: 28; height: 28; }
+            source: themeResourcePath + "/media/HomeIcon.png"
+            MouseArea { anchors.fill: parent; onClicked: confluence.state = "showingRootBlade" }
+        }
     }
 
     DateTimeHeader {
