@@ -45,7 +45,6 @@ FocusScope {
             name: "closed"
             PropertyChanges {
                 target: blade
-                clickToShow: true
                 visibleWidth: root.closedBladePeek
             }
         },
@@ -53,7 +52,6 @@ FocusScope {
             name: "hidden"
             PropertyChanges {
                 target: blade
-                clickToShow: false
                 visibleWidth: 0
             }
         },
@@ -84,7 +82,6 @@ FocusScope {
         id: blade
         x: -width + visibleWidth
         property int visibleWidth
-        property bool clickToShow: false
         clip: true
         height: parent.height
         Image {
