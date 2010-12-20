@@ -75,6 +75,7 @@ FocusScope {
             PropertyChanges {
                 target: mainBlade
                 state: "closed"
+                x: 0
             }
             PropertyChanges {
                 target: qtcube
@@ -142,6 +143,10 @@ FocusScope {
             from: "*"
             to: "showingSelectedElement"
             NumberAnimation { target: qtcube; properties: "x,y"; easing.type: confluenceEasingCurve; duration: confluenceAnimationDuration }
+            SequentialAnimation {
+                NumberAnimation { target: mainBlade; properties: "x"; to: -mainBlade.width - mainBlade.closedBladePeek; duration: confluenceAnimationDuration/2; easing.type: confluenceEasingCurve }
+                NumberAnimation { target: mainBlade; properties: "x"; duration: confluenceAnimationDuration/2; easing.type: confluenceEasingCurve }
+            }
             SequentialAnimation {
                 NumberAnimation { target: dateTimeHeader; properties: "x"; to: confluence.width; easing.type: confluenceEasingCurve; duration: confluenceAnimationDuration/2 }
                 PropertyAction { target: dateTimeHeader; property: "showDate"; value: false }
