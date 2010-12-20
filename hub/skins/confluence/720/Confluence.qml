@@ -252,7 +252,7 @@ FocusScope {
             ticker = tickerLoader.createObject(confluence)
             ticker.anchors.top = confluence.bottom
             ticker.anchors.topMargin = 0
-            ticker.z = 1;
+            ticker.z = background.z + 1
             ticker.anchors.right = confluence.right
         } else if (tickerLoader.status == Component.Error) {
             backend.log(tickerLoader.errorString())
@@ -264,7 +264,7 @@ FocusScope {
         if(qtCubeLoader.status == Component.Ready) {
             qtcube = qtCubeLoader.createObject(confluence)
             qtcube.anchors.top = confluence.top
-            qtcube.z = 1000
+            qtcube.z = background.z + 1
             qtcube.visible = false
         } else if(qtCubeLoader.status == Component.Error) {
             backend.log(qtCubeLoader.errorString())
