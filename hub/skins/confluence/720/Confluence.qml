@@ -380,6 +380,7 @@ FocusScope {
         x: confluence.width
         anchors.top: confluence.top
         anchors.right: dateTimeHeader.left
+        anchors.rightMargin: -25;
         city: weatherWindow.city
     }
 

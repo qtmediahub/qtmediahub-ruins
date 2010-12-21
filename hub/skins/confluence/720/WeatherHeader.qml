@@ -22,7 +22,7 @@ import "../components/"
 
 Header {
     id: root
-    width: row.x + row.width + 10
+    width: row.x + row.width + 35
 
     property string city: "Munich"
 
