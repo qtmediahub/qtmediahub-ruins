@@ -27,6 +27,9 @@ FocusScope {
     clip: true
 
     signal clicked
+    property bool hoverEnabled: false
+    signal entered
+    signal exited
 
     property int closedBladePeek: 30
 
@@ -92,8 +95,11 @@ FocusScope {
             width: blade.width; height: blade.height
         }
         MouseArea {
+            hoverEnabled: root.hoverEnabled
             anchors.fill: parent
             onPressed: { root.clicked(); mouse.accepted = false } // propagate the mouse to the child content
+            onEntered: root.entered()
+            onExited: root.exited()
         }
         Behavior on x {
             NumberAnimation { duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
