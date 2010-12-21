@@ -35,6 +35,8 @@ Window {
         parent: root
         visible: true
         z: 1
+
+        onViewChanged: console.log('view has changed to ' + viewType)
     }
 
     Panel {
