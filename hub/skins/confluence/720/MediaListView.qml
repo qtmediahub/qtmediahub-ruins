@@ -6,12 +6,13 @@ Item {
     property variant engineName
     property variant engineModel
     property variant informationSheetComponent
+    property bool hidePreview: false
 
     Panel {
         id: sourcesWindow
         x: 60
         y: 80
-        width: 700
+        width: root.hidePreview ? 950 : 700
         height: 550
 
         TreeView {
@@ -47,6 +48,7 @@ Item {
         anchors.left: sourcesWindow.right;
         anchors.leftMargin: 65;
         anchors.bottom: sourcesWindow.bottom;
+        opacity: root.hidePreview ? 0 : 1
 
         width: sourcesArt.width
         height: sourcesArt.height
@@ -55,9 +57,9 @@ Item {
             id: sourcesArt
             anchors.fill: parent;
 
-            width: sourcesListView.currentItem.itemdata.previewWidth
-            height: sourcesListView.currentItem.itemdata.previewHeight
-            source: sourcesListView.currentItem.itemdata.previewUrl
+            width: sourcesListView.currentItem ? sourcesListView.currentItem.itemdata.previewWidth : 0
+            height: sourcesListView.currentItem ? sourcesListView.currentItem.itemdata.previewHeight : 0
+            source: sourcesListView.currentItem ? sourcesListView.currentItem.itemdata.previewUrl : ""
         }
     }
 

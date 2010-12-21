@@ -36,12 +36,18 @@ Window {
         visible: true
         z: 1
 
-        onViewChanged: 
-            if (viewType == "THUMBNAIL") {
+        onViewChanged:  {
+            if (viewType == "THUMBNAIL" || viewType == "PIC THUMBS") {
                 viewLoader.sourceComponent = thumbnailView
-            } else if (viewType == "LIST") {
+                viewLoader.item.hidePreview = viewType == "PIC THUMBS"
+            } else if (viewType == "LIST" || viewType == "BIG LIST") {
                 viewLoader.sourceComponent = listView
+                viewLoader.item.hidePreview = viewType == "BIG LIST"
             }
+            viewLoader.item.engineName = pictureEngine.name
+            viewLoader.item.engineModel = pictureEngine.pluginProperties.pictureModel
+            viewLoader.item.informationSheetComponent = pictureInformationSheet
+        }
     }
 
     Component {
@@ -64,12 +70,17 @@ Window {
 
     Loader {
         id: viewLoader
-        sourceComponent: listView
     }
 
     Component.onCompleted: {
         pictureEngine.visualElement = root;
         pictureEngine.pluginProperties.pictureModel.setThemeResourcePath(themeResourcePath);
+
+        // FIXME: restore from settings
+        viewLoader.sourceComponent = listView
+        viewLoader.item.engineName = pictureEngine.name
+        viewLoader.item.engineModel = pictureEngine.pluginProperties.pictureModel
+        viewLoader.item.informationSheetComponent = pictureInformationSheet
     }
 }
 
