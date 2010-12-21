@@ -4,11 +4,14 @@ ListView {
     id: list
     keyNavigationWraps: true
 
+    signal activated(variant item)
+
     Keys.onEnterPressed:
-        currentItem.trigger()
+        list.activated(list.currentItem)
 
     delegate: Item {
         id: delegate
+        property variant modeldata: model
         anchors.right: parent.right
         transformOrigin: Item.Right
         width: parent.width
@@ -79,14 +82,12 @@ ListView {
             }
 
             onClicked: {
-                var options = model.options.split(",")
-                list.model.setProperty(index, "currentOption", (currentOption+1)%options.length)
-                delegate.trigger()
+                if (model.options) {
+                    var options = model.options.split(",")
+                    list.model.setProperty(index, "currentOption", (currentOption+1)%options.length)
+                }
+                list.activated(list.currentItem)
             }
-        }
-
-        function trigger() {
-            // do stuff
         }
     }
 }
