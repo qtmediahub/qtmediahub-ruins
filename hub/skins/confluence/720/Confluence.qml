@@ -185,35 +185,35 @@ FocusScope {
     Component.onCompleted: {
         //Create items which may or may not be present
         var customCursorLoader = Qt.createComponent("../components/Cursor.qml")
-        if(customCursorLoader.status == Component.Ready)
+        if (customCursorLoader.status == Component.Ready)
             customCursorLoader.createObject(confluence)
-        else if(customCursorLoader.status == Component.Error)
+        else if (customCursorLoader.status == Component.Error)
             backend.log(customCursorLoader.errorString())
 
         musicEngine.pluginProperties.musicModel.setThemeResourcePath(themeResourcePath); // ## Shouldn't be here
         var musicWindowLoader = Qt.createComponent("MusicWindow.qml")
-        if(musicWindowLoader.status == Component.Ready)
+        if (musicWindowLoader.status == Component.Ready)
             musicWindowLoader.createObject(confluence)
-        else if(musicWindowLoader.status == Component.Error)
+        else if (musicWindowLoader.status == Component.Error)
             backend.log(musicWindowLoader.errorString())
 
         //FIXME: function failing here simply skips rest of init, wish they had exceptions
         videoEngine.pluginProperties.videoModel.setThemeResourcePath(themeResourcePath); // ## Shouldn't be here
         var videoWindowLoader = Qt.createComponent("VideoWindow.qml")
-        if(videoWindowLoader.status == Component.Ready)
+        if (videoWindowLoader.status == Component.Ready)
             videoWindow = videoWindowLoader.createObject(confluence)
-        else if(videoWindowLoader.status == Component.Error)
+        else if (videoWindowLoader.status == Component.Error)
             backend.log(videoWindowLoader.errorString())
 
         pictureEngine.pluginProperties.pictureModel.setThemeResourcePath(themeResourcePath); // ## Shouldn't be here
         var pictureWindowLoader = Qt.createComponent("PictureWindow.qml")
-        if(pictureWindowLoader.status == Component.Ready)
+        if (pictureWindowLoader.status == Component.Ready)
             pictureWindowLoader.createObject(confluence)
-        else if(pictureWindowLoader.status == Component.Error)
+        else if (pictureWindowLoader.status == Component.Error)
             backend.log(pictureWindowLoader.errorString())
 
         var videoPlayerComponent = Qt.createComponent("VideoPlayer.qml");
-        if(videoPlayerComponent.status == Component.Ready) {
+        if (videoPlayerComponent.status == Component.Ready) {
             videoPlayer = videoPlayerComponent.createObject(confluence)
             // FIXME: nothing to get video-path during runtime, yet
             videoPlayer.state = "hidden"
@@ -223,7 +223,7 @@ FocusScope {
         }
 
         var dashboardLoader = Qt.createComponent("DashboardWindow.qml");
-        if(dashboardLoader.status == Component.Ready) {
+        if (dashboardLoader.status == Component.Ready) {
             var dashboard = dashboardLoader.createObject(confluence)
             dashboard.z = 1
         } else if (dashboardLoader.status == Component.Error) {
@@ -232,7 +232,7 @@ FocusScope {
 
         //No webkit
         var webLoader = Qt.createComponent("WebWindow.qml");
-        if(webLoader.status == Component.Ready) {
+        if (webLoader.status == Component.Ready) {
             browserWindow = webLoader.createObject(confluence)
         } else if (webLoader.status == Component.Error) {
             backend.log(webLoader.errorString())
@@ -240,14 +240,14 @@ FocusScope {
 
         //No XML patterns
         var weatherLoader = Qt.createComponent("WeatherWindow.qml");
-        if(weatherLoader.status == Component.Ready) {
+        if (weatherLoader.status == Component.Ready) {
             weatherWindow = weatherLoader.createObject(confluence)
         } else if (weatherLoader.status == Component.Error) {
             backend.log(weatherLoader.errorString())
         }
 
         var tickerLoader = Qt.createComponent("Ticker.qml");
-        if(tickerLoader.status == Component.Ready) {
+        if (tickerLoader.status == Component.Ready) {
             ticker = tickerLoader.createObject(confluence)
             ticker.anchors.top = confluence.bottom
             ticker.anchors.topMargin = 0
@@ -260,18 +260,18 @@ FocusScope {
 
         //no qt3d
         var qtCubeLoader = Qt.createComponent(generalResourcePath + "/misc/cube/cube.qml")
-        if(qtCubeLoader.status == Component.Ready) {
+        if (qtCubeLoader.status == Component.Ready) {
             qtcube = qtCubeLoader.createObject(confluence)
             qtcube.anchors.top = confluence.top
             qtcube.z = background.z + 1
             qtcube.visible = false
-        } else if(qtCubeLoader.status == Component.Error) {
+        } else if (qtCubeLoader.status == Component.Error) {
             backend.log(qtCubeLoader.errorString())
             qtcube = dummyItem
         }
 
         var remoteAppLoader = Qt.createComponent("RemoteAppWindow.qml");
-        if(remoteAppLoader.status == Component.Ready) {
+        if (remoteAppLoader.status == Component.Ready) {
             remoteAppLoader.createObject(confluence)
         } else if (remoteAppLoader.status == Component.Error) {
             backend.log(remoteAppLoader.errorString())
