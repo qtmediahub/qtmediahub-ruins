@@ -30,6 +30,13 @@ Window {
         }
     }
 
+    PictureSlideShow {
+        id: slideShow
+        running: false
+        anchors.fill: parent
+        pictureModel: pictureEngine.pluginProperties.pictureModel
+    }
+
     bladeComponent: PictureWindowBlade {
         id: pictureWindowBlade
         parent: root
@@ -48,6 +55,12 @@ Window {
             viewLoader.item.engineModel = pictureEngine.pluginProperties.pictureModel
             viewLoader.item.informationSheetComponent = pictureInformationSheet
         }
+
+        onSlideShowClicked: {
+            root.maximized = true // ## broken
+            slideShow.rootIndex = viewLoader.item.rootIndex
+            slideShow.running = true
+                            }
     }
 
     Component {

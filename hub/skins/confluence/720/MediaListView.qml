@@ -7,6 +7,7 @@ Item {
     property variant engineModel
     property variant informationSheetComponent
     property bool hidePreview: false
+    property alias rootIndex: sourcesListView.rootIndex
 
     Panel {
         id: sourcesWindow
