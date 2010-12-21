@@ -23,8 +23,7 @@ Item {
     id: root
     width: 640
     height: 480
-    x: confluence.width/2 - width/2
-    y: confluence.height/2 - height/2
+    anchors.centerIn: parent
 
     property alias title : titleBarText.text
     default property alias content : content.children
