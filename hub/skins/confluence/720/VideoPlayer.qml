@@ -135,7 +135,7 @@ FocusScope {
             anchors.fill: parent
 
             onClicked: {
-                confluence.show(blade)
+                confluence.show(mainBlade) // # Evil
             }
         }
     }
