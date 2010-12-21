@@ -46,7 +46,7 @@ FocusScope {
         parent: root
         visible: true
         z: 1
-        onOpened: confluence.state = "showingRootBlade" // # FIXME: Don't miss with another component's state!
+        onClicked: confluence.state = "showingRootBlade" // # FIXME: Don't miss with another component's state!
     }
 
     Loader {

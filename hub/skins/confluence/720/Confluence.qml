@@ -332,7 +332,7 @@ FocusScope {
         id: mainBlade; 
         focus: true 
         z: background.z + 1
-        onOpened: confluence.show(mainBlade)
+        onClicked: confluence.show(mainBlade)
     }
 
     Header {

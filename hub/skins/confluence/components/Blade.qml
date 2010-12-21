@@ -26,8 +26,7 @@ FocusScope {
 
     clip: true
 
-    signal opened
-    signal closed
+    signal clicked
 
     property int closedBladePeek: 30
 
@@ -69,9 +68,6 @@ FocusScope {
         Transition {
             to: "open"
             ScriptAction { script: forceActiveFocus() }
-        }, Transition {
-            to: "closed"
-            ScriptAction { script: closed() }
         }
     ]
 
@@ -97,10 +93,7 @@ FocusScope {
         }
         MouseArea {
             anchors.fill: parent
-            onPressed: {
-                root.state == "open" ? root.closed() : root.opened()
-                mouse.accepted = false
-            }
+            onPressed: { root.clicked(); mouse.accepted = false } // propagate the mouse to the child content
         }
         Behavior on x {
             NumberAnimation { duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }

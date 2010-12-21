@@ -8,7 +8,7 @@ Blade {
     bladeWidth: banner.x + banner.width + 50
     bladePixmap: themeResourcePath + "/media/HomeBlade.png"
 
-    onOpened: state = "open"
+    onClicked: state = "open"
 
     resources: ListModel {
         // FIXME: Cannot qsTr() the values of ListElement. We need the equivalent of QT_TRANSLATE_NOOP
