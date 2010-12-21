@@ -192,24 +192,27 @@ FocusScope {
 
         musicEngine.pluginProperties.musicModel.setThemeResourcePath(themeResourcePath); // ## Shouldn't be here
         var musicWindowLoader = Qt.createComponent("MusicWindow.qml")
-        if (musicWindowLoader.status == Component.Ready)
-            musicWindowLoader.createObject(confluence)
-        else if (musicWindowLoader.status == Component.Error)
+        if (musicWindowLoader.status == Component.Ready) {
+            var musicWindow = musicWindowLoader.createObject(confluence)
+            musicWindow.z = background.z + 2
+        } else if (musicWindowLoader.status == Component.Error)
             backend.log(musicWindowLoader.errorString())
 
         //FIXME: function failing here simply skips rest of init, wish they had exceptions
         videoEngine.pluginProperties.videoModel.setThemeResourcePath(themeResourcePath); // ## Shouldn't be here
         var videoWindowLoader = Qt.createComponent("VideoWindow.qml")
-        if (videoWindowLoader.status == Component.Ready)
+        if (videoWindowLoader.status == Component.Ready) {
             videoWindow = videoWindowLoader.createObject(confluence)
-        else if (videoWindowLoader.status == Component.Error)
+            videoWindow.z = background.z + 2
+        } else if (videoWindowLoader.status == Component.Error)
             backend.log(videoWindowLoader.errorString())
 
         pictureEngine.pluginProperties.pictureModel.setThemeResourcePath(themeResourcePath); // ## Shouldn't be here
         var pictureWindowLoader = Qt.createComponent("PictureWindow.qml")
-        if (pictureWindowLoader.status == Component.Ready)
-            pictureWindowLoader.createObject(confluence)
-        else if (pictureWindowLoader.status == Component.Error)
+        if (pictureWindowLoader.status == Component.Ready) {
+            var pictureWindow = pictureWindowLoader.createObject(confluence)
+            pictureWindow.z = background.z + 2
+        } else if (pictureWindowLoader.status == Component.Error)
             backend.log(pictureWindowLoader.errorString())
 
         var videoPlayerComponent = Qt.createComponent("VideoPlayer.qml");
@@ -225,7 +228,7 @@ FocusScope {
         var dashboardLoader = Qt.createComponent("DashboardWindow.qml");
         if (dashboardLoader.status == Component.Ready) {
             var dashboard = dashboardLoader.createObject(confluence)
-            dashboard.z = 1
+            dashboard.z = background.z + 2
         } else if (dashboardLoader.status == Component.Error) {
             backend.log(dashboardLoader.errorString())
         }
@@ -234,6 +237,7 @@ FocusScope {
         var webLoader = Qt.createComponent("WebWindow.qml");
         if (webLoader.status == Component.Ready) {
             browserWindow = webLoader.createObject(confluence)
+            browserWindow.z = background.z + 2
         } else if (webLoader.status == Component.Error) {
             backend.log(webLoader.errorString())
         }
@@ -242,6 +246,7 @@ FocusScope {
         var weatherLoader = Qt.createComponent("WeatherWindow.qml");
         if (weatherLoader.status == Component.Ready) {
             weatherWindow = weatherLoader.createObject(confluence)
+            weatherWindow.z = background.z = 2
         } else if (weatherLoader.status == Component.Error) {
             backend.log(weatherLoader.errorString())
         }
