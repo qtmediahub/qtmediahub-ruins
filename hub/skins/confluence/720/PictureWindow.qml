@@ -19,6 +19,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 import QtQuick 1.0
 import confluence.components 1.0
+import "../components/"
 
 Window {
     id: root
@@ -27,6 +28,13 @@ Window {
         id: pictureInformationSheet
         PictureInformationSheet {
         }
+    }
+
+    bladeComponent: PictureWindowBlade {
+        id: pictureWindowBlade
+        parent: root
+        visible: true
+        z: 1
     }
 
     Panel {
