@@ -340,7 +340,7 @@ FocusScope {
         flip : false
 
         anchors { top: confluence.top; left: confluence.left }
-        z: background.z + 1
+        z: currentContextHeader.z + 1
         width: homeImage.width + 80
         opacity: 0
         Image {
@@ -357,10 +357,11 @@ FocusScope {
         flip: false
 
         width: contextText.width + 50
-        anchors { top: homeHeader.top; left: homeHeader.right; }
+        anchors { top: homeHeader.top; left: homeHeader.right; leftMargin: -25 }
         z: background.z + 1
         opacity: 0
         Text { 
+            x: 25
             id: contextText 
             anchors.verticalCenter: parent.verticalCenter
             text: selectedEngine ? selectedEngine.name : ""; color: "white"
