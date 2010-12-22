@@ -297,7 +297,7 @@ FocusScope {
 
     function show(element)
     {
-        if(element == mainBlade) {
+        if (element == mainBlade) {
             state = "showingRootBlade"
         } else if(element == videoPlayer) {
             if(videoPlayer.video.source == "") {
