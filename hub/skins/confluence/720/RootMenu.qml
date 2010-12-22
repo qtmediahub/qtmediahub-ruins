@@ -92,6 +92,11 @@ FocusScope {
         source: themeResourcePath + "/media/Confluence_Logo.png"
     }
 
+    Component {
+        id: exitDialogComponent
+        ExitDialog { }
+    }
+
     ButtonList {
         id: buttonGrid
         y: parent.height - height; // # FIXME: Should not access mainBlade
@@ -114,7 +119,7 @@ FocusScope {
             basePixmap: "home-power";
             focusedPixmap: "home-power-FO";
             onClicked:
-                confluence.show(exitWindow)
+                confluence.showModal(exitDialogComponent)
         }
     }
 }

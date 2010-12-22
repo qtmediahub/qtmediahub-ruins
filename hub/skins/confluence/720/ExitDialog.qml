@@ -20,10 +20,10 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 import QtQuick 1.0
 import confluence.components 1.0
 
-Window {
+Dialog {
     id: root
 
-    width: panel.width; height: panel.height;
+    title: qsTr("Exit")
 
     Keys.onUpPressed:
         closeButton.focus = true
@@ -31,26 +31,13 @@ Window {
     onVisibleChanged:
         buttonList.resetFocus()
 
-    Panel {
-        id: panel
-
-        ButtonList {
-            id: buttonList
-            PixmapButton { basePixmap: "ButtonMenuExitNF"; focusedPixmap: "ButtonMenuExitFO"; onClicked: Qt.quit() }
-            PixmapButton { basePixmap: "ButtonMenuRestartNF"; focusedPixmap: "ButtonMenuRestartFO" }
-            PixmapButton { basePixmap: "ButtonMenuShutdownNF"; focusedPixmap: "ButtonMenuShutdownFO" }
-            PixmapButton { basePixmap: "ButtonMenuLogOffNF"; focusedPixmap: "ButtonMenuLogOffFO" }
-            PixmapButton { basePixmap: "ButtonMenuSleepNF"; focusedPixmap: "ButtonMenuSleepFO" }
-        }
-    }
-    PixmapButton {
-        id: closeButton
-        anchors { right: root.right; top: root.top }
-        basePixmap: "DialogCloseButton";
-        focusedPixmap: "DialogCloseButton-focus"
-        onClicked:
-            confluence.show(blade)
-        Keys.onDownPressed:
-            buttonList.giveFocus()
+    ButtonList {
+        id: buttonList
+        PixmapButton { basePixmap: "ButtonMenuExitNF"; focusedPixmap: "ButtonMenuExitFO"; onClicked: Qt.quit() }
+        PixmapButton { basePixmap: "ButtonMenuRestartNF"; focusedPixmap: "ButtonMenuRestartFO" }
+        PixmapButton { basePixmap: "ButtonMenuShutdownNF"; focusedPixmap: "ButtonMenuShutdownFO" }
+        PixmapButton { basePixmap: "ButtonMenuLogOffNF"; focusedPixmap: "ButtonMenuLogOffFO" }
+        PixmapButton { basePixmap: "ButtonMenuSleepNF"; focusedPixmap: "ButtonMenuSleepFO" }
     }
 }
+

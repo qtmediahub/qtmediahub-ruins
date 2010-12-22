@@ -385,8 +385,6 @@ FocusScope {
         city: weatherWindow.city
     }
 
-    ExitWindow { id: exitWindow }
-
     AboutWindow { id: aboutWindow; clip: false }
 
     Rectangle {
