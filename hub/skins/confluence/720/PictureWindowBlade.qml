@@ -29,11 +29,11 @@ Blade {
         anchors.topMargin: 50
         anchors.leftMargin: closedBladePeek + 5
         anchors.rightMargin: 5
-        spacing: 10
 
         Image {
             id: banner
             source: themeResourcePath + "/media/Confluence_Logo.png"
+            anchors.bottomMargin: 10
         }
         
         ConfluenceListView2 {

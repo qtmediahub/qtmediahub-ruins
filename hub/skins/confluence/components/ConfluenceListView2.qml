@@ -1,13 +1,13 @@
 import QtQuick 1.0
 
-ListView {
-    id: list
-    keyNavigationWraps: true
+Repeater {
+    id: repeater
+    property int currentIndex: 0
 
     signal activated(variant item)
 
     Keys.onEnterPressed:
-        list.activated(list.currentItem)
+        repeater.activated(repeater.currentItem)
 
     delegate: Item {
         id: delegate
@@ -57,7 +57,7 @@ ListView {
         states:  [
             State {
                 name: "selected"
-                when: list.currentIndex == index
+                when: repeater.currentIndex == index
                 PropertyChanges {
                     target: delegateImage
                     opacity: 1
@@ -77,16 +77,16 @@ ListView {
             hoverEnabled: true
 
             onEntered: {
-                list.currentIndex = index
-                list.forceActiveFocus()
+                repeater.currentIndex = index
+                repeater.forceActiveFocus()
             }
 
             onClicked: {
                 if (model.options) {
                     var options = model.options.split(",")
-                    list.model.setProperty(index, "currentOption", (currentOption+1)%options.length)
+                    repeater.model.setProperty(index, "currentOption", (currentOption+1)%options.length)
                 }
-                list.activated(list.currentItem)
+                repeater.activated(delegate)
             }
         }
     }
