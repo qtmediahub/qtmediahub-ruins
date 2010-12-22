@@ -56,6 +56,10 @@ Window {
             viewLoader.item.informationSheetComponent = pictureInformationSheet
         }
 
+        onSortOrderChanged: {
+            pictureEngine.pluginProperties.pictureModel.sort(viewLoader.item.rootIndex, sortOrderType)
+                            }
+
         onSlideShowClicked: {
             root.maximized = true // ## broken
             slideShow.rootIndex = viewLoader.item.rootIndex
