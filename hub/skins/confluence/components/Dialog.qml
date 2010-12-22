@@ -21,12 +21,13 @@ import QtQuick 1.0
 
 Item {
     id: root
-    width: 640
-    height: 480
+    width: contentItem.childrenRect.width + contentItem.anchors.leftMargin + contentItem.anchors.rightMargin
+    height: glassTitleBar.height + contentItem.childrenRect.height + contentItem.anchors.topMargin + contentItem.anchors.bottomMargin
+
     anchors.centerIn: parent
 
     property alias title : titleBarText.text
-    default property alias content : content.children
+    default property alias content : contentItem.children
     signal accepted
     signal rejected
     signal closed
@@ -53,7 +54,8 @@ Item {
     Behavior on opacity {
         NumberAnimation{}
     }
-        
+
+    // FIXME
     MouseArea {
         parent: confluence
         anchors.fill: parent
@@ -67,7 +69,7 @@ Item {
     }
 
     Item {
-        id: content
+        id: contentItem
         anchors.top: glassTitleBar.bottom
         anchors.bottom: panel.bottom
         anchors.left: panel.left;
@@ -82,11 +84,11 @@ Item {
         source: themeResourcePath + "/media/GlassTitleBar.png"
         anchors.top: panel.top
         width: panel.width
+        height: titleBarText.height + 10
 
         Text {
             id: titleBarText
-            anchors.horizontalCenter: glassTitleBar.horizontalCenter
-            anchors.top: glassTitleBar.top
+            anchors.centerIn: parent
             color: "white"
             text: "Default dialog title"
             font.bold: true
@@ -99,7 +101,7 @@ Item {
         source: themeResourcePath + "/media/" + (closeButtonMouseArea.pressed ? "DialogCloseButton-focus.png" : "DialogCloseButton.png")
         anchors.top: panel.top
         anchors.right: panel.right
-        anchors { rightMargin: 40; topMargin: 5; }
+        anchors { rightMargin: 10; topMargin: 5; }
         MouseArea {
             id: closeButtonMouseArea
             anchors.fill: parent;

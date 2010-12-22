@@ -27,8 +27,8 @@ Dialog {
     property variant engineModel
 
     Column {
-        anchors.fill: parent;
         spacing: 5
+        width: 620
         Text {
             id: browseLabel
             width: parent.width
@@ -40,8 +40,7 @@ Dialog {
         TreeView {
             id: fileSystemView
             width: parent.width
-            height: parent.height - browseLabel.height - sourceNameLabel.height - sourceNameEntry.height - buttonBox.height
-                    - parent.spacing * 4 // ugh
+            height: 350
             treeModel : DirModel { }
             rootIndex: treeModel.modelIndexForHomePath()
             focus: true
@@ -89,6 +88,8 @@ Dialog {
                 root.reject()
             }
         }
-    }
+
+     }
 }
+
 
