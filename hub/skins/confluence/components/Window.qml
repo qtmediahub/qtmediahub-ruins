@@ -53,9 +53,6 @@ FocusScope {
         sourceComponent: bladeComponent
     }
 
-    //useful for focus debugging
-    //onActiveFocusChanged: console.log(idtext + " just " + (activeFocus ? "got" : "lost") + " focus")
-
     onMaximizedChanged:
         confluence.state = root.maximized ? "showingSelectedElementMaximized" : "showingSelectedElement"
 
@@ -78,12 +75,6 @@ FocusScope {
                 height: maximizedHeight
                 anchors.horizontalCenterOffset: 0
             }
-            //Anchor changes better not extend to offsets!
-            //
-            //AnchorChanges {
-            //    target: root
-            //    anchors.horizontalCenterOffset: 0
-            //}
         }
     ]
 
@@ -117,10 +108,6 @@ FocusScope {
             reversible: true
             from: "visible"
             to: "maximized"
-            //FIXME: I had a dream...
-            //NumberAnimation { property: "x"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
-            //AnchorAnimation { duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
-            //PropertyAction { target: root; property: "anchors.horizontalCenterOffset"; value: 0 }
         }
     ]
 
@@ -138,9 +125,4 @@ FocusScope {
     Behavior on height {
         NumberAnimation { duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
     }
-
-    //Don't want this everywhere since x determines width!
-    //Behavior on x {
-    //    NumberAnimation { duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
-    //}
 }
