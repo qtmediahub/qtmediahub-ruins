@@ -55,12 +55,6 @@ Item {
         NumberAnimation{}
     }
 
-    // FIXME
-    MouseArea {
-        parent: confluence
-        anchors.fill: parent
-    }
-
     BorderImage {
         id: panel
         source: themeResourcePath + "/media/OverlayDialogBackground.png"
