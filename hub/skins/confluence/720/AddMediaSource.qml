@@ -26,71 +26,67 @@ Dialog {
 
     property variant engineModel
 
-    Item {
-        anchors.fill: parent
+    Column {
+        anchors.fill: parent;
+        spacing: 5
+        Text {
+            id: browseLabel
+            width: parent.width
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            text: qsTr("BROWSE FOR THE MEDIA LOCATIONS")
+            color: "steelblue"
+        }
+        TreeView {
+            id: fileSystemView
+            width: parent.width
+            height: parent.height - browseLabel.height - sourceNameLabel.height - sourceNameEntry.height - buttonBox.height
+                    - parent.spacing * 4 // ugh
+            treeModel : DirModel { }
+            rootIndex: treeModel.modelIndexForHomePath()
+            focus: true
+            onRootIndexChanged: sourceNameInput.text = treeModel.baseName(rootIndex)
 
-        Column {
-            anchors.fill: parent;
-            spacing: 5
-            Text {
-                id: browseLabel
-                width: parent.width
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-                text: qsTr("BROWSE FOR THE MEDIA LOCATIONS")
-                color: "steelblue"
+            Keys.onTabPressed: sourceNameInput.forceActiveFocus()
+        }
+        Text {
+            id: sourceNameLabel
+            width: parent.width
+            text: qsTr("ENTER A NAME FOR THIS MEDIA SOURCE.")
+            horizontalAlignment: Text.AlignHCenter
+            verticalAlignment: Text.AlignVCenter
+            color: "steelblue"
+        }
+        Image {
+            id: sourceNameEntry
+            width: parent.width
+            source: themeResourcePath + "/media/" + (sourceNameEntryMouseArea.containsMouse || sourceNameInput.activeFocus ? "MenuItemFO.png" : "MenuItemNF.png");
+
+            TextInput {
+                id: sourceNameInput
+                anchors.centerIn: parent
+                text: qsTr("Home")
+                color: "white"
+
+                Keys.onTabPressed: buttonBox.forceActiveFocus()
             }
-            TreeView {
-                id: fileSystemView
-                width: parent.width
-                height: parent.height - browseLabel.height - sourceNameLabel.height - sourceNameEntry.height - buttonBox.height
-                        - parent.spacing * 4 // ugh
-                treeModel : DirModel { }
-                rootIndex: treeModel.modelIndexForHomePath()
-                focus: true
-                onRootIndexChanged: sourceNameInput.text = treeModel.baseName(rootIndex)
 
-                Keys.onTabPressed: sourceNameInput.forceActiveFocus()
+            MouseArea {
+                id: sourceNameEntryMouseArea
+                anchors.fill: parent
+                hoverEnabled: true
+                onClicked: sourceNameInput.forceActiveFocus()
             }
-            Text {
-                id: sourceNameLabel
-                width: parent.width
-                text: qsTr("ENTER A NAME FOR THIS MEDIA SOURCE.")
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-                color: "steelblue"
+        }
+        DialogButtonBox {
+            id: buttonBox
+            anchors.horizontalCenter: parent.horizontalCenter
+            onAccepted: {
+                root.engineModel.addSearchPath(fileSystemView.treeModel.filePath(fileSystemView.rootIndex), sourceNameInput.text);
+                root.accept()
             }
-            Image {
-                id: sourceNameEntry
-                width: parent.width
-                source: themeResourcePath + "/media/" + (sourceNameEntryMouseArea.containsMouse || sourceNameInput.activeFocus ? "MenuItemFO.png" : "MenuItemNF.png");
-
-                TextInput {
-                    id: sourceNameInput
-                    anchors.centerIn: parent
-                    text: qsTr("Home")
-                    color: "white"
-
-                    Keys.onTabPressed: buttonBox.forceActiveFocus()
-                }
-
-                MouseArea {
-                    id: sourceNameEntryMouseArea
-                    anchors.fill: parent
-                    hoverEnabled: true
-                    onClicked: sourceNameInput.forceActiveFocus()
-                }
-            }
-            DialogButtonBox {
-                id: buttonBox
-                anchors.horizontalCenter: parent.horizontalCenter
-                onAccepted: {
-                    root.engineModel.addSearchPath(fileSystemView.treeModel.filePath(fileSystemView.rootIndex), sourceNameInput.text);
-                    root.accept()
-                }
-                onRejected: {
-                    root.reject()
-                }
+            onRejected: {
+                root.reject()
             }
         }
     }
