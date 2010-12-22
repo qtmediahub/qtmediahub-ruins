@@ -177,7 +177,7 @@ FocusScope {
             //else if(event.key == Qt.Key_F12)
             selectedElement && state == "showingSelectedElement" && selectedElement.maximizable && (selectedElement.maximized = true);
         else if(event.key == Qt.Key_F11) {
-            show(aboutWindow)
+            showModal(aboutDialogComponent)
         }
     }
 
@@ -385,7 +385,10 @@ FocusScope {
         city: weatherWindow.city
     }
 
-    AboutWindow { id: aboutWindow; clip: false }
+    Component {
+        id: aboutDialogComponent
+        AboutDialog { }
+    }
 
     Rectangle {
         id: mouseGrabber

@@ -20,7 +20,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 import QtQuick 1.0
 import confluence.components 1.0
 
-Window {
+Dialog {
     id: root
 
     property variant startupAnimationComponent
@@ -29,22 +29,22 @@ Window {
     ConfluenceFlipable {
         id: flipable
         anchors.centerIn: parent
-        width: frontPanel.width
-        height: frontPanel.height
+        width: startupQmlLoader.item.width
+        height: startupQmlLoader.item.height
 
         MouseArea {
             anchors.fill: parent
             onClicked: flipable.flipped = !flipable.flipped;
         }
 
-        front: Panel { 
-            id: frontPanel 
+        front: Loader {
+            id: startupQmlLoader
+            source: generalResourcePath + "/qml-startup/startup.qml"
         }
-        back: Panel { 
+
+        back: Item { 
             id: backPanel
-            // ## Why does anchors.fill: parent cause an anchor loop?
-            width: frontPanel.width
-            height: frontPanel.height
+            anchors.fill: parent
             Flow {
                 anchors.centerIn: parent
                 flow:  Flow.TopToBottom
@@ -67,19 +67,6 @@ Window {
                 ConfluenceText { text: "http://xbmc.org/"}
                 ConfluenceText { text: "QtMediaCenter is hosted at http://gitorious.org/qtmediahub"}
             }
-        }
-    }
-
-    onVisibleChanged: {
-        if (visible == true) {
-            startupAnimationComponent = Qt.createComponent(generalResourcePath + "/qml-startup/startup.qml")
-            if (startupAnimationComponent.status == Component.Ready) {
-                startupAnimation = startupAnimationComponent.createObject(frontPanel.contentItem)
-            }
-        } else {
-            //We don't want to hold on to these objects
-            startupAnimationComponent.destroy()
-            startupAnimation.destroy()
         }
     }
 }
