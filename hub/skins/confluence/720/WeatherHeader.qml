@@ -60,6 +60,15 @@ Header {
             color: "white"
             font.pointSize: 14
             text: (currentConditions.count > 0 ? currentConditions.get(0).temp_c : "0") + "°C"
+
+	    Text {
+	        id: weatherDegreeShadow
+	        color: "black"
+                font.pointSize: 14
+                x: 1; y: 1
+                z: parent.z - 1
+                text: (currentConditions.count > 0 ? currentConditions.get(0).temp_c : "0") + "°C"
+	    }
         }
     }
 }

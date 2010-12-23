@@ -18,8 +18,20 @@ Header {
     }
 
     Text {
+        property string plainCurrentTime: Qt.formatDateTime(backend.currentDateTime, "hh:mm:ss AP")
+        property string plainCurrentDateTime: Qt.formatDateTime(backend.currentDateTime, "dddd, MMMM, yyyy") + " | "
+                                              + plainCurrentTime
+        id: shadowText
+        x: root.showDate ? 41 : 21;
+        y: 1
+        font.pointSize: 14
+        color: "black"
+        text: showDate ? plainCurrentDateTime : plainCurrentTime
+    }
+
+    Text {
         x: root.showDate ? 40 : 20
-        id: text
+        id: text // same as the property?
         text: showDate ? currentDateTime() : currentTime()
         font.pointSize: 14
     }
