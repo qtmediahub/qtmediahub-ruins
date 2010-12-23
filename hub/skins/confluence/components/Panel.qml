@@ -48,6 +48,7 @@ FocusScope {
 
     Item {
         id: content
+        clip: true
         anchors.fill: frame
         anchors.margins: frame.border.left
     }
