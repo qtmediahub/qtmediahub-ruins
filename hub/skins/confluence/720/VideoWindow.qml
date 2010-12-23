@@ -23,189 +23,102 @@ import confluence.components 1.0
 Window {
     id: root
 
-    property variant currentActiveView : sourcesListWindow.visible ? sourcesListWindow : sourcesPosterWindow
+    bladeComponent: VideoWindowBlade {
+        id: videoWindowBlade
+        parent: root
+        visible: true
+        z: 1
 
-    FocusScope {
-        id: sourcesListWindow
-        anchors.fill: parent
-        anchors.topMargin: 0
-        opacity: 1
-
-        Panel {
-            id: sourcesPanel
-            x: 60
-            y: 80
-            width: 700
-            height: 550
-            opacity: 1
-
-            TreeView {
-                id: sourcesListView
-                anchors.fill: parent;
-                anchors.topMargin: 0
-                treeModel: videoEngine.pluginProperties.videoModel
-                clip: true
-                focus: true
-
-                onClicked: {
-                    if (currentItem.itemdata.type == "AddNewSource") {
-                        confluence.showModal(addMediaSourceDialog)
-                    } else {
-                        confluence.selectedElement = transparentVideoOverlay
-                        videoPlayer.play(currentItem.itemdata.filePath)
-                    }
-                }
-                Keys.onPressed: {
-                    if (event.key == Qt.Key_Delete) {
-                        treeModel.removeSearchPath(currentIndex);
-                        event.accepted = true;
-                    } else if (event.key == Qt.Key_Return || event.key == Qt.Key_Enter) {
-                        if (currentItem.itemdata.type == "AddNewSource") {
-                            confluence.showModal(addMediaSourceDialog)
-                            event.accepted = true;
-                        }
-                    }
-                }
+        onViewChanged:  {
+            if (viewType == "THUMBNAIL" || viewType == "PIC THUMBS") {
+                viewLoader.sourceComponent = thumbnailView
+                viewLoader.item.hidePreview = viewType == "PIC THUMBS"
+            } else if (viewType == "LIST" || viewType == "BIG LIST") {
+                viewLoader.sourceComponent = listView
+                viewLoader.item.hidePreview = viewType == "BIG LIST"
+            } else if (viewType == "POSTER") {
+                viewLoader.sourceComponent = posterView
             }
+
+            viewLoader.item.engineName = videoEngine.name
+            viewLoader.item.engineModel = videoEngine.pluginProperties.videoModel
         }
 
-        Item {
-            id: sourceArt
-            anchors.left: sourcesPanel.right;
-            anchors.leftMargin: 65;
-            anchors.bottom: sourcesPanel.bottom;
-            visible: sourcesPanel.visible
-            opacity: visible ? 1 : 0
-
-            width: sourcesArt.width
-            height: sourcesArt.height
-
-            ImageCrossFader {
-                id: sourcesArt
-                anchors.fill: parent;
-
-                width: sourcesListView.currentItem.itemdata.previewWidth
-                height: sourcesListView.currentItem.itemdata.previewHeight
-                source: sourcesListView.currentItem.itemdata.previewUrl
-            }
-
-            Behavior on opacity {
-                NumberAnimation { easing.type: confluenceEasingCurve; duration: confluenceAnimationDuration }
-            }
+        onSortOrderChanged: {
+            videoEngine.pluginProperties.videoModel.sort(viewLoader.item.rootIndex, sortOrderType)
         }
 
-        states: [
-            State {
-                name: "hidden"
-                PropertyChanges {
-                    target: sourcesListWindow
-                    opacity: 0
-                }
-            }
-        ]
-
-        transitions: [
-            Transition {
-                NumberAnimation { property: "opacity"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
-            }
-        ]
+        onSlideShowClicked: {
+            root.maximized = true // ## broken
+            slideShow.rootIndex = viewLoader.item.rootIndex
+            slideShow.running = true
+        }
     }
 
-    FocusScope {
-        id: sourcesPosterWindow
-        anchors.fill: parent
-        anchors.topMargin: 0
-        opacity: 1
-        state:  "hidden"
-
-        BorderImage {
-            id: sourcesPosterViewBackground
-            source: themeResourcePath + "/media/ContentPanel2.png"
-            anchors.fill: parent
-            border.left: 5; border.top: 5
-            border.right: 5; border.bottom: 5
+    Component {
+        id: thumbnailView
+        MediaThumbnailView {
+            engineName: videoEngine.name
+            engineModel: videoEngine.pluginProperties.videoModel
         }
-
-        PosterView {
-            id: sourcesPosterView
-            width: parent.width
-            height: 300
-            anchors.top: parent.top
-            anchors.topMargin: 100
-            anchors.horizontalCenter: parent.horizontalCenter
-            treeModel: videoEngine.pluginProperties.videoModel
-            clip: true
-            focus: true;
-            onClicked: {
-                videoPlayer.play(filePath)
-            }
-        }
-
-        ConfluenceText {
-            anchors.top:  sourcesPosterView.bottom
-            anchors.topMargin: 30
-            anchors.horizontalCenter: parent.horizontalCenter
-            text: sourcesPosterView.currentSelectedName
-        }
-
-        ConfluenceText {
-            anchors.top:  sourcesPosterView.bottom
-            anchors.topMargin: 60
-            anchors.horizontalCenter: parent.horizontalCenter
-            font.pointSize: 15
-            font.bold: false
-            color: "steelblue"
-            text: sourcesPosterView.currentSelectedSize < 0 ? "" : (sourcesPosterView.currentSelectedSize/1000000).toFixed(2) + " MB"
-        }
-
-        states: [
-            State {
-                name: "hidden"
-                PropertyChanges {
-                    target: sourcesPosterWindow
-                    opacity: 0
-                }
-                PropertyChanges {
-                    target: sourcesPosterWindow.anchors
-                    topMargin: root.height
-                }
-            }
-        ]
-
-        transitions: [
-            Transition {
-                NumberAnimation { property: "opacity"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
-                NumberAnimation { target: sourcesPosterWindow.anchors; property: "topMargin"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
-            }
-        ]
     }
 
-    Button {
-        id: switchViews
-        text: sourcesListWindow.visible ? "Poster View" : "List View"
-        width:  200
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.bottom: parent.bottom
-        onClicked: {
-            sourcesListWindow.state = sourcesListWindow.state == "hidden" ? "" : "hidden"
-            sourcesPosterWindow.state = sourcesPosterWindow.state == "hidden" ? "" : "hidden"
-            sourcesPosterView.incrementCurrentIndex()
+    Component {
+        id: listView
+        MediaListView {
+            engineName: videoEngine.name
+            engineModel: videoEngine.pluginProperties.videoModel
+        }
+    }
+
+
+    Component {
+        id: posterView
+        MediaPosterView {
+            engineName: videoEngine.name
+            engineModel: videoEngine.pluginProperties.videoModel
+        }
+    }
+
+    Loader {
+        id: viewLoader
+        anchors.fill: parent
+        onStatusChanged: {
+            if (viewLoader.status == Loader.Error)
+                console.log("Error loading component: " + viewLoader.errorString())
         }
     }
 
     Component.onCompleted: {
         videoEngine.visualElement = root;
+        videoEngine.pluginProperties.videoModel.setThemeResourcePath(themeResourcePath);
+
+        // FIXME: restore from settings
+        viewLoader.sourceComponent = listView
+        viewLoader.item.engineName = videoEngine.name
+        viewLoader.item.engineModel = videoEngine.pluginProperties.videoModel
     }
 
-    Component {
-        id: addMediaSourceDialog
-        AddMediaSource {
-            title: qsTr("Add Video source")
-            engineModel: videoEngine.pluginProperties.videoModel
-            opacity: 0
+//        states: [
+//            State {
+//                name: "hidden"
+//                PropertyChanges {
+//                    target: sourcesPosterWindow
+//                    opacity: 0
+//                }
+//                PropertyChanges {
+//                    target: sourcesPosterWindow.anchors
+//                    topMargin: root.height
+//                }
+//            }
+//        ]
 
-            onClosed: currentActiveView.forceActiveFocus()
-        }
-    }
+//        transitions: [
+//            Transition {
+//                NumberAnimation { property: "opacity"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
+//                NumberAnimation { target: sourcesPosterWindow.anchors; property: "topMargin"; duration: confluenceAnimationDuration; easing.type: confluenceEasingCurve }
+//            }
+//        ]
+//    }
 }
 
