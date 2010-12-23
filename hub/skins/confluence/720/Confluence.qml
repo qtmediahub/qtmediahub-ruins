@@ -31,7 +31,6 @@ FocusScope {
     //FIXME: QML const equivalent?
     property variant confluenceEasingCurve: Easing.InQuad
     property variant confluenceAnimationDuration: 350
-    property variant confluenceTransformDuration: 1000
 
     property variant selectedEngine
     property variant selectedElement
