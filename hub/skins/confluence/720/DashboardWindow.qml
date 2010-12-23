@@ -22,49 +22,34 @@ import Dashboard 1.0
 
 import confluence.components 1.0
 
-//FIXME: polish this puppy
-
 Window {
     id: dashboardWindow
     Dashboard {
         id: db
-        clip: true
         anchors.fill: parent
-
-        state: "invisible"
+        anchors.leftMargin: dashboardWindow.defaultBlade.closedBladePeek
 
         widgetPath: generalResourcePath + "/widgets"
 
-        /* FIXME: constrained widgets
-    Grid {
-        id: grid
-        z: 1
-        scale: scaleFactor()
-        columns: Math.sqrt(children.length)
-        spacing: 50
-        anchors.margins: spacing
-        anchors.centerIn: parent
-
-        function scaleFactor() {
-            var widthRatio = (db.width - (columns+1)*spacing)/childrenRect.width
-            var heightRatio = (db.height - (rows+1)*spacing)/childrenRect.height
-            var scale = widthRatio < heightRatio ? widthRatio : heightRatio
-            return scale
+        Flow {
+            id: grid
+            scale: 0.6 // magic value by experimentation
+            anchors.centerIn: parent
         }
-    }*/
+
+        Component {
+            id: panelComponent
+            Panel { movable: true }
+        }
 
         Component.onCompleted: {
             var list  = db.discoverWidgets()
-            var dbComponent = Qt.createComponent("../components/DashboardItem.qml")
-            if (dbComponent.status == Component.Error)
-                console.log(dbComponent.errorString())
-
             for(var i = 0; i < list.length; ++i) {
-                var item = dbComponent.createObject(db)
+                var panel = panelComponent.createObject(grid)
 
                 var widget = Qt.createComponent(list[i])
                 if(widget.status == Component.Ready)
-                    widget.createObject(item.container)
+                    widget.createObject(panel.contentItem)
                 else if(widget.status == Component.Error)
                     console.log(widget.errorString())
             }
@@ -72,3 +57,4 @@ Window {
         }
     }
 }
+
