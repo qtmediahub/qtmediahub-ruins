@@ -30,6 +30,8 @@ FocusScope {
     opacity: 0; visible: false
     scale: 0
 
+    property alias defaultBlade: bladeLoader.item
+
     property bool maximized: false
     property bool maximizable: false
 
@@ -50,6 +52,7 @@ FocusScope {
     }
 
     Loader {
+        id: bladeLoader
         sourceComponent: bladeComponent
     }
 
