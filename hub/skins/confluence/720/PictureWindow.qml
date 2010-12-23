@@ -51,9 +51,6 @@ Window {
                 viewLoader.sourceComponent = listView
                 viewLoader.item.hidePreview = viewType == "BIG LIST"
             }
-            viewLoader.item.engineName = pictureEngine.name
-            viewLoader.item.engineModel = pictureEngine.pluginProperties.pictureModel
-            viewLoader.item.informationSheetComponent = pictureInformationSheet
         }
 
         onSortOrderChanged: {
