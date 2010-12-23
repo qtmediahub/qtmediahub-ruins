@@ -26,30 +26,30 @@ FocusScope {
     property alias contentItem : content
     property alias backgroundImageSource : frame.source
 
-    width: frame.border.left + frame.border.right + content.childrenRect.width
-    height: frame.border.top + frame.border.bottom + content.childrenRect.height
+    width: frame.border.left + frame.border.right + contentItem.childrenRect.width
+    height: frame.border.top + frame.border.bottom + contentItem.childrenRect.height
 
-    clip: true
     focus: true
 
     BorderImage {
         id: frame
-        source: themeResourcePath + "/media/ContentPanel.png"
         anchors.fill: parent
+        source: themeResourcePath + "/media/ContentPanel.png"
         border { left: 30; top: 30; right: 30; bottom: 30 }
+
         BorderImage {
             id: titlebar
-            source: themeResourcePath + "/media/GlassTitleBar.png"
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.top:  parent.top
-            anchors.topMargin: 10
+            width: parent.width
+            source: themeResourcePath + "/media/GlassTitleBar.png"
         }
     }
 
     Item {
         id: content
         anchors.fill: frame
-        anchors.margins: 30
+        anchors.margins: frame.border.left
     }
 }
 
