@@ -383,6 +383,11 @@ FocusScope {
         anchors.right: dateTimeHeader.left
         anchors.rightMargin: -25;
         city: weatherWindow.city
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: confluence.show(weatherWindow)
+        }
     }
 
     Component {
