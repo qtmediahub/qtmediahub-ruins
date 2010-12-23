@@ -427,6 +427,13 @@ FocusScope {
         return item
     }
 
+    function showFullScreen(item) {
+        item.z = background.z + 2
+        item.parent = confluence
+        item.opacity = 1
+        item.forceActiveFocus()
+    }
+
     /*Test {
           id: componentTest
           Engine { name: qsTr("Components"); role: "components-test"; visualElement: componentTest; }

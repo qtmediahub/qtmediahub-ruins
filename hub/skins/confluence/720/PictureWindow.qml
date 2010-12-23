@@ -26,15 +26,21 @@ Window {
 
     Component {
         id: pictureInformationSheet
-        PictureInformationSheet {
-        }
+        PictureInformationSheet { }
     }
 
     PictureSlideShow {
         id: slideShow
         running: false
-        anchors.fill: parent
         pictureModel: pictureEngine.pluginProperties.pictureModel
+        anchors.fill: parent
+        opacity: 0
+        Keys.onPressed:
+            if (event.key == Qt.Key_Escape) {
+                opacity = 0
+                running = false
+                event.accepted = true
+            }
     }
 
     bladeComponent: PictureWindowBlade {
@@ -58,9 +64,9 @@ Window {
                             }
 
         onSlideShowClicked: {
-            root.maximized = true // ## broken
             slideShow.rootIndex = viewLoader.item.rootIndex
-            slideShow.running = true
+            slideShow.restart()
+            confluence.showFullScreen(slideShow)
                             }
     }
 
