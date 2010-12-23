@@ -20,11 +20,13 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 import QtQuick 1.0
 
 FocusScope {
+    id: root
     property alias decorateFrame: frame.visible
     property alias decorateTitleBar: titlebar.visible
     default property alias content : content.children
     property alias contentItem : content
     property alias backgroundImageSource : frame.source
+    property bool movable: false
 
     width: frame.border.left + frame.border.right + contentItem.childrenRect.width
     height: frame.border.top + frame.border.bottom + contentItem.childrenRect.height
@@ -43,6 +45,13 @@ FocusScope {
             anchors.top:  parent.top
             width: parent.width
             source: themeResourcePath + "/media/GlassTitleBar.png"
+
+            MouseArea {
+                enabled: root.movable
+                anchors.fill: parent
+                drag.target: root
+                drag.axis: Drag.XandYAxis
+            }
         }
     }
 
