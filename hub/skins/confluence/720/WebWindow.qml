@@ -130,7 +130,7 @@ Window {
                     id: urlEntry
                     property string defaultText: "http://"
                     text: defaultText
-                    width: 440
+                    width: confluence.width/2
                     anchors { left: inputLabel.right; verticalCenter: inputLabel.verticalCenter }
                     hint: "url"
                     leftIconSource: generalResourcePath + "/mx-images/edit-find.png"
@@ -161,7 +161,7 @@ Window {
                 MxComponents.Entry {
                     anchors { left: googleLabel.right; verticalCenter: googleLabel.verticalCenter; right: parent.right }
                     hint: "Search..."
-                    leftIconSource: generalResourcePath + "/mx-images/scroll-button-right.png"
+                    leftIconSource: generalResourcePath + "/mx-images/edit-clear.png"
                     onLeftIconClicked: {
                         flippable.flipped = !flippable.flipped
                         urlBar.forceActiveFocus()
