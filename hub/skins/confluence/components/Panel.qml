@@ -19,8 +19,6 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 import QtQuick 1.0
 
-//tried declaring this component inline
-//could not resolve themeResourcePath
 FocusScope {
     property alias decorateFrame: frame.visible
     property alias decorateTitleBar: titlebar.visible
